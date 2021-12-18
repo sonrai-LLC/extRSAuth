@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>f2c1a509-83c8-4346-8e36-35388dra2b79</id>
+    <version>1.0.0</version>
+    <title>ExtRSAuth</title>
+    <authors>sonrai</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/cfitzg/ExtRSAuth-open-src</projectUrl>
+    <iconUrl>https://jbarber2016.gallerycdn.vsassets.io/extensions/jbarber2016/vsts-ssrs-v2-deploy/1.0.6/1568114793417/Microsoft.VisualStudio.Services.Icons.Default</iconUrl>
+    <description>This package extends SSRS security. Replace [encKey] with symetric encryption key used to Encryption.Encrypt() SSRS API request URIs.</description>
+    <releaseNotes>Initial release, MVP version.</releaseNotes>
+    <copyright>2021$</copyright>
+    <tags>SSRS MSSQL SQL Server</tags>
+  </metadata>
+</package>

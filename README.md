@@ -1,4 +1,4 @@
-# ExtRSAuth for custom SSRS Authentication
+# ExtRSAuth for custom SSRS Security
 This assembly extends the Microsoft Custom Security Sample to allow for a pass-thru of the Login page if something present in the HttpRequest verifies that user is already authenticated. For instance, the user already has an app token or are on the intranet- any type of custom authentication and level of authorization is possible.
 
 # Requirements

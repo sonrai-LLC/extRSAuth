@@ -10,4 +10,4 @@ This package includes the following components:
 - ExtRSAuth.dll
 
 # Related SSRS Tools
-- ExtRS for extending the capabilities of the SSRS- report rendering, management tools and realtime monitoring.
+- *[ExtRS](https://github.com/sonrai-LLC/ExtRS)* for extending the capabilities of the SSRS including report rendering, management tools and realtime monitoring.

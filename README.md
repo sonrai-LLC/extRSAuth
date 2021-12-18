@@ -1,7 +1,7 @@
 # ExtRSAuth for custom SSRS Security
 This assembly extends the Microsoft Custom Security Sample to allow for a pass-thru of the Login page if something present in the HttpRequest verifies that user is already authenticated. For instance, the user already has an app token from an app that communicates with the report server and you require the communications with the report server to not involved any login UI.
 
-The default here is to allow local connections, which grants Admin rights for any local requests. If the SSRS request is external, a fallback option accepts an AES 128-bit encrypted querstring from the calling app, and the decrypted contents are allowed to communicate using a read-only SSRS user; any exception thrown indicates the request neither local nor a secure request from the external app.
+The default here is to allow local connections, which grants Admin rights for any local requests. If the SSRS request is external, a fallback option accepts an AES 128-bit encrypted querystring from the calling app, and the application, if decryption works, is authenticated and allowed to communicate using a read-only SSRS user; any exception thrown indicates the request neither local nor a secure request from the external app.
 
 This is only how the code curently works to demonstrate one of many approaches. Any type of custom authentication and level of authorization is possible.
 

@@ -58,11 +58,10 @@ namespace Sonrai.ExtRSAuth
             return AuthenticationUtilities.VerifyPassword(userName, password);
         }
 
-        // TODO: Refactor asap
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public void GetUserInfo(out IIdentity userIdentity, out IntPtr userId)
         {
-            if (HttpContext.Current == null)
+            if (HttpContext.Current.Request == null)
                 userIdentity = new GenericIdentity(this.LocalizedName);
 
             if (HttpContext.Current.User.Identity.IsAuthenticated && HttpContext.Current.User.Identity.Name != string.Empty)

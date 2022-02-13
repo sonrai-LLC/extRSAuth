@@ -5,6 +5,8 @@ The default here is to allow local connections, which grants Admin rights for an
 
 This is only how the code curently works to demonstrate one of many approaches. Any type of custom authentication and level of authorization is possible.
 
+This Custom Auth assembly has been tested with several client apps, with the SSRS API and all its operations, with the SSRS /ReportServer and the /Reports management interface as well as Visual Studio 2019 Reporting Services projects (you can deploy seamlessly from VS to your report server with ExtRSAuth.dll).
+
 # Requirements
 This plug-in relies on SSRS (2016 or later), and a report server configuration as described in Microsoft's Reporting Services Custom Security Sample: https://github.com/Microsoft/Reporting-Services/tree/master/CustomSecuritySample
 

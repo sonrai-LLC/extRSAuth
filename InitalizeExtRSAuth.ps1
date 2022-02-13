@@ -10,7 +10,7 @@ GO
 ALTER PROCEDURE [dbo].[SetLastModified]
 @Path nvarchar (425),
 @ModifiedBySid varbinary (85) = NULL,
-@ModifiedByName nvarchar(260) = ''ADMIN'',
+@ModifiedByName nvarchar(260) = ''BUILTIN\Administrators'',
 @AuthType int,
 @ModifiedDate DateTime
 AS
@@ -28,7 +28,7 @@ ALTER PROCEDURE [dbo].[SetAllProperties]
 @Description ntext = NULL,
 @Hidden bit = NULL,
 @ModifiedBySid varbinary (85) = NULL,
-@ModifiedByName nvarchar(260) = ''ADMIN'',
+@ModifiedByName nvarchar(260) = ''BUILTIN\Administrators'',
 @AuthType int,
 @ModifiedDate DateTime
 AS

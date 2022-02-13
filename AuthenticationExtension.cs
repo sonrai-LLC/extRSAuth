@@ -118,7 +118,7 @@ namespace Sonrai.ExtRSAuth
         public void GetUserInfo(IRSRequestContext requestContext, out IIdentity userIdentity, out IntPtr userId)
         {
             userIdentity = null;
-            if (requestContext.User != null && requestContext.User.Name == "AdminUser")
+            if (requestContext.User != null && requestContext.User.Name == @"BUILTIN\Administrators")
                 userIdentity = requestContext.User;
 
             // initialize a pointer to the current user id to zero

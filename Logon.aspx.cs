@@ -38,7 +38,7 @@ namespace Sonrai.ExtRSAuth
             var isLocalConn = System.Web.HttpContext.Current.Request.IsLocal;
             if (isLocalConn)
             {
-                FormsAuthentication.SetAuthCookie("AdminUser", true);
+                FormsAuthentication.SetAuthCookie(@"BUILTIN\Administrators", true);
                 Response.Redirect(System.Web.HttpContext.Current.Request.Url.ToString());
             }
             else
@@ -46,7 +46,7 @@ namespace Sonrai.ExtRSAuth
                 try
                 {
                     var decryptedUri = Encryption.Decrypt(ExtractEncQs(System.Web.HttpContext.Current.Request.Url.PathAndQuery), ConfigurationManager.AppSettings["Cle"]);
-                    FormsAuthentication.SetAuthCookie("ReadOnlyUser", true);
+                    FormsAuthentication.SetAuthCookie(@"\Everyone", true);
                     Response.Redirect(decryptedUri);
                 }
                 catch (Exception)

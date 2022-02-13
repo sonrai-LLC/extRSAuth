@@ -12,7 +12,7 @@ namespace Sonrai.ExtRSAuth.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.0.3.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -20,17 +20,6 @@ namespace Sonrai.ExtRSAuth.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:80/ReportServer_SQL2014/ReportService2010.asmx")]
-        public string Microsoft_Samples_ReportingServices_CustomSecurity_localhost_ReportingService2010 {
-            get {
-                return ((string)(this["Microsoft_Samples_ReportingServices_CustomSecurity_localhost_ReportingService2010" +
-                    ""]));
             }
         }
         
@@ -45,7 +34,7 @@ namespace Sonrai.ExtRSAuth.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[Your_Sym_Encr_Key]")]
+        [global::System.Configuration.DefaultSettingValueAttribute("[your_sym_encr_key]")]
         public string Cle {
             get {
                 return ((string)(this["Cle"]));

@@ -26,7 +26,7 @@ namespace Sonrai.ExtRSAuth
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
     internal sealed class AuthenticationUtilities
     {
-        public const string ExtRsUser = "AdminUser";
+        public const string ExtRsUser = @"BUILTIN\Administrators";
         // Method that indicates whether the supplied username and password are valid
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:DisposeObjectsBeforeLosingScope")]
         internal static bool VerifyPassword(string suppliedUserName, string suppliedPassword)

@@ -670,7 +670,7 @@ namespace Sonrai.ExtRSAuth
             get
             {
                 // Return a localized name for this extension
-                return "AdminUser";
+                return @"BUILTIN\Administrators";
             }
         }
     }

@@ -4,7 +4,7 @@ This assembly, forked from the [Microsoft Custom Security Sample](https://github
 # What does ExtRSAuth do to authenticate SSRS user connections?
 The default here is to allow local connections, which grants Admin rights for any local requests. If the SSRS request is external, a fallback option accepts an AES 128-bit encrypted querystring from the calling app, and the application, if decryption works, is authenticated and allowed to communicate using a read-only SSRS user; any exception thrown indicates the request is neither from a local connection nor a secure request from the external app.
 
-This is but one of the ways to demonstrate one of many approaches one could take with ExtRSAuth in an SSRS-connected application or business environment. Any type of custom authentication and level of authorization is possible. The only ingredient needed is a .NET developer or developers willing to customize a pretty basic .NET security model.
+This is but one of the ways to demonstrate one of many approaches one could take with ExtRSAuth in an SSRS-connected application or business environment. Any type and granularity of custom authentication and level of authorization is possible. The only ingredient needed is a .NET developer or developers willing to customize a pretty basic .NET security model.
 
 # Real-world applications
 This Custom Auth assembly has been tested with (1) several .NET Framework 4.8 and .NET 5 and 6 applications, (2) with the SSRS API and all its operations, (3) with the SSRS /ReportServer and the /Reports management web interface as well as (4) Visual Studio 2019 Reporting Services projects (report designers can seamlessly deploy Report Server projects from VS to the Report Server with ExtRSAuth).

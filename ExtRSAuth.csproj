@@ -133,16 +133,6 @@
     <Compile Include="AuthenticationUtilities.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CustomSecurity.ES-mx.Designer.cs">
-      <DependentUpon>CustomSecurity.ES-mx.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="CustomSecurity.FR-ca.Designer.cs">
-      <DependentUpon>CustomSecurity.FR-ca.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Encyption.cs" />
     <Compile Include="Authorization.cs">
       <SubType>Code</SubType>
@@ -183,16 +173,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CustomSecurity.ES-mx.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>CustomSecurity.ES-mx.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomSecurity.FR-ca.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>CustomSecurity.FR-ca.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="CustomSecurity.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CustomSecurity.Designer.cs</LastGenOutput>

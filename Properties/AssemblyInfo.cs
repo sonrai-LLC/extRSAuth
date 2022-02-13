@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SSRS 2019 Custom Auth")]
+[assembly: AssemblyTitle("SSRS 2022 Custom Auth")]
 [assembly: AssemblyDescription("Forms-based authentication for authenticating apps to SSRS")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("cfitzg")]
 [assembly: AssemblyProduct("MSPullRequest")]
-[assembly: AssemblyCopyright("2020")]
+[assembly: AssemblyCopyright("2022")]
 [assembly: AssemblyTrademark("MIT")]
 [assembly: AssemblyCulture("")]
 
@@ -28,5 +28,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]

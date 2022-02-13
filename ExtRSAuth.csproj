@@ -133,7 +133,7 @@
     <Compile Include="AuthenticationUtilities.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Encyption.cs" />
+    <Compile Include="Encryption.cs" />
     <Compile Include="Authorization.cs">
       <SubType>Code</SubType>
     </Compile>

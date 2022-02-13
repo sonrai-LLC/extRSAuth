@@ -27,11 +27,11 @@ namespace Sonrai.ExtRSAuth
     internal sealed class AuthenticationUtilities
     {
         public const string ExtRsUser = @"BUILTIN\Administrators";
-        // Method that indicates whether the supplied username and password are valid
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:DisposeObjectsBeforeLosingScope")]
         internal static bool VerifyPassword(string suppliedUserName, string suppliedPassword)
         {
-            return true;
+            return true; //already auth'd
         }
     }
 }

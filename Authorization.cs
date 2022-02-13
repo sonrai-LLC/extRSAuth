@@ -41,20 +41,6 @@ namespace Sonrai.ExtRSAuth
             InitializeMaps();
         }
 
-        /// <summary>
-        /// Returns a security descriptor that is stored with an individual 
-        /// item in the report server database. 
-        /// </summary>
-        /// <param name="acl">The access control list (ACL) created by the report 
-        /// server for the item. It contains a collection of access code entry 
-        /// (ACE) structures.</param>
-        /// <param name="itemType">The type of item for which the security 
-        /// descriptor is created.</param>
-        /// <param name="stringSecDesc">Optional. A user-friendly description 
-        /// of the security descriptor, used for debugging. This is not stored
-        /// by the report server.</param>
-        /// <returns>Should be implemented to return a serialized access code 
-        /// list for the item.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public byte[] CreateSecurityDescriptor(AceCollection acl, SecurityItemType itemType, out string stringSecDesc)
         {
@@ -70,11 +56,6 @@ namespace Sonrai.ExtRSAuth
 
         public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelItemOperation modelItemOperation = ModelItemOperation.ReadProperties)
         {
-            // If the user is the administrator, allow unrestricted access.
-            // Because SQL Server defaults to case-insensitive, we have to
-            // perform a case insensitive comparison. Ideally you would check
-            // the SQL Server instance CaseSensitivity property before making
-            // a case-insensitive comparison.
             if (CheckUserToken(userToken))
                 userName = m_adminUserName;
             if (0 == String.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
@@ -83,13 +64,8 @@ namespace Sonrai.ExtRSAuth
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
-                // First check to see if the user or group has an access control 
-                //  entry for the item
                 if (0 == String.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
                 {
-                    // If an entry is found, 
-                    // return true if the given required operation
-                    // is contained in the ACE structure
                     foreach (ModelItemOperation aclOperation in ace.ModelItemOperations)
                     {
                         if (aclOperation == modelItemOperation)
@@ -103,11 +79,6 @@ namespace Sonrai.ExtRSAuth
 
         public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelOperation modelOperation = ModelOperation.ReadProperties)
         {
-            // If the user is the administrator, allow unrestricted access.
-            // Because SQL Server defaults to case-insensitive, we have to
-            // perform a case insensitive comparison. Ideally you would check
-            // the SQL Server instance CaseSensitivity property before making
-            // a case-insensitive comparison.
             if (CheckUserToken(userToken))
                 userName = m_adminUserName;
             if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
@@ -116,13 +87,8 @@ namespace Sonrai.ExtRSAuth
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
-                // First check to see if the user or group has an access control 
-                //  entry for the item
                 if (0 == String.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
                 {
-                    // If an entry is found, 
-                    // return true if the given required operation
-                    // is contained in the ACE structure
                     foreach (ModelOperation aclOperation in ace.ModelOperations)
                     {
                         if (aclOperation == modelOperation)
@@ -133,26 +99,8 @@ namespace Sonrai.ExtRSAuth
             return false;
         }
 
-        /// <summary>
-        /// Indicates whether a given user is authorized to access the item 
-        /// for a given catalog operation.
-        /// </summary>
-        /// <param name="userName">The name of the user as returned by the 
-        /// GetUserInfo method.</param>
-        /// <param name="userToken">Pointer to the user ID returned by 
-        /// GetUserInfo.</param>
-        /// <param name="secDesc">The security descriptor returned by 
-        /// CreateSecurityDescriptor.</param>
-        /// <param name="requiredOperation">The operation being requested by 
-        /// the report server for a given user.</param>
-        /// <returns>True if the user is authorized.</returns>
         public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, CatalogOperation requiredOperation = CatalogOperation.ReadRoleProperties)
         {
-            // If the user is the administrator, allow unrestricted access.
-            // Because SQL Server defaults to case-insensitive, we have to
-            // perform a case insensitive comparison. Ideally you would check
-            // the SQL Server instance CaseSensitivity property before making
-            // a case-insensitive comparison.
             if (CheckUserToken(userToken))
                 userName = m_adminUserName;
             if (0 == String.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
@@ -161,13 +109,8 @@ namespace Sonrai.ExtRSAuth
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
-                // First check to see if the user or group has an access control 
-                //  entry for the item
                 if (0 == String.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
                 {
-                    // If an entry is found, 
-                    // return true if the given required operation
-                    // is contained in the ACE structure
                     foreach (CatalogOperation aclOperation in ace.CatalogOperations)
                     {
                         if (aclOperation == requiredOperation)
@@ -220,7 +163,7 @@ namespace Sonrai.ExtRSAuth
 
         public bool CheckUserToken(IntPtr token)
         {
-            return true; //TODO: refactor and test
+            return true;
         }
 
         // Overload for Folder operations
@@ -334,20 +277,6 @@ namespace Sonrai.ExtRSAuth
             return false;
         }
 
-        /// <summary>
-        /// Returns the set of permissions a specific user has for a specific 
-        /// item managed in the report server database. This provides underlying 
-        /// support for the Web service method GetPermissions().
-        /// </summary>
-        /// <param name="userName">The name of the user as returned by the 
-        /// GetUserInfo method.</param>
-        /// <param name="userToken">Pointer to the user ID returned by 
-        /// GetUserInfo.</param>
-        /// <param name="itemType">The type of item for which the permissions 
-        /// are returned.</param>
-        /// <param name="secDesc">The security descriptor associated with the 
-        /// item.</param>
-        /// <returns></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public StringCollection GetPermissions(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), SecurityItemType itemType = SecurityItemType.Unknown, byte[] secDesc = null)
         {
@@ -433,9 +362,6 @@ namespace Sonrai.ExtRSAuth
         private static readonly Dictionary<DatasourceOperation, string> _dataSourceOperationNames = new Dictionary<DatasourceOperation, string>();
         private static readonly List<string> _fullPermissions = new List<string>();
 
-        // Utility method used to create mappings to the various
-        // operations in Reporting Services. These mappings support
-        // the implementation of the GetPermissions method.
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes")]
         private static void InitializeMaps()
         {
@@ -462,10 +388,7 @@ namespace Sonrai.ExtRSAuth
             _modelOperNames.Add(ModelOperation.UpdateProperties, OperationNames.OperUpdatePolicy);
 
             if (_modelOperNames.Count != Enum.GetValues(typeof(ModelOperation)).Length)
-            {
-                //Model name mismatch
                 throw new Exception("Model name mismatch");
-            }
 
             // create operation names data
             _catalogOperationNames.Add(CatalogOperation.CreateRoles, OperationNames.OperCreateRoles);
@@ -486,10 +409,8 @@ namespace Sonrai.ExtRSAuth
             _catalogOperationNames.Add(CatalogOperation.ExecuteReportDefinition, OperationNames.ExecuteReportDefinition);
 
             if (_catalogOperationNames.Count != Enum.GetValues(typeof(CatalogOperation)).Length)
-            {
                 //Catalog name mismatch
                 throw new Exception("Catalog name mismatch");
-            }
 
             _folderOperationNames.Add(FolderOperation.CreateFolder, OperationNames.OperCreateFolder);
             _folderOperationNames.Add(FolderOperation.Delete, OperationNames.OperDelete);
@@ -502,10 +423,8 @@ namespace Sonrai.ExtRSAuth
             _folderOperationNames.Add(FolderOperation.CreateDatasource, OperationNames.OperCreateDatasource);
             _folderOperationNames.Add(FolderOperation.CreateModel, OperationNames.OperCreateModel);
             if (_folderOperationNames.Count != Enum.GetValues(typeof(FolderOperation)).Length)
-            {
                 //Folder name mismatch
                 throw new Exception("Folder name mismatch");
-            }
 
             _reportOperationNames.Add(ReportOperation.Delete, OperationNames.OperDelete);
             _reportOperationNames.Add(ReportOperation.ReadProperties, OperationNames.OperReadProperties);
@@ -538,10 +457,7 @@ namespace Sonrai.ExtRSAuth
             _reportOperationNames.Add(ReportOperation.ManageComments, OperationNames.OperManageComments);
 
             if (_reportOperationNames.Count != Enum.GetValues(typeof(ReportOperation)).Length)
-            {
-                //Report name mismatch
                 throw new Exception("Report name mismatch");
-            }
 
             _resourceOperationNames.Add(ResourceOperation.Delete, OperationNames.OperDelete);
             _resourceOperationNames.Add(ResourceOperation.ReadProperties, OperationNames.OperReadProperties);
@@ -554,10 +470,7 @@ namespace Sonrai.ExtRSAuth
             _resourceOperationNames.Add(ResourceOperation.ManageComments, OperationNames.OperManageComments);
 
             if (_resourceOperationNames.Count != Enum.GetValues(typeof(ResourceOperation)).Length)
-            {
-                //Resource name mismatch
                 throw new Exception("Resource name mismatch");
-            }
 
             _dataSourceOperationNames.Add(DatasourceOperation.Delete, OperationNames.OperDelete);
             _dataSourceOperationNames.Add(DatasourceOperation.ReadProperties, OperationNames.OperReadProperties);
@@ -568,12 +481,8 @@ namespace Sonrai.ExtRSAuth
             _dataSourceOperationNames.Add(DatasourceOperation.UpdateDeleteAuthorizationPolicy, OperationNames.OperUpdateDeleteAuthorizationPolicy);
 
             if (_dataSourceOperationNames.Count != Enum.GetValues(typeof(DatasourceOperation)).Length)
-            {
-                //Datasource name mismatch
                 throw new Exception("Datasource name mismatch");
-            }
 
-            // Initialize permission collection.
             foreach (CatalogOperation oper in _catalogOperationNames.Keys)
             {
                 if (!_fullPermissions.Contains(_catalogOperationNames[oper]))
@@ -626,28 +535,17 @@ namespace Sonrai.ExtRSAuth
         private bool IsAdmin(string userName = AuthenticationUtilities.ExtRsUser)
         {
             if (string.IsNullOrEmpty(userName))
-            {
                 return false;
-            }
 
             if (userName.Equals(m_adminUserName, StringComparison.OrdinalIgnoreCase))
-            {
                 return true;
-            }
 
             return false;
         }
 
-        /// <summary>
-        /// You must implement SetConfiguration as required by IExtension
-        /// </summary>
-        /// <param name="configuration">Configuration data as an XML
-        /// string that is stored along with the Extension element in
-        /// the configuration file.</param>
         [SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes")]
         public void SetConfiguration(string configuration)
         {
-            // Retrieve admin user and password from the config settings and verify
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(configuration);
             if (doc.DocumentElement.Name == "AdminConfiguration")

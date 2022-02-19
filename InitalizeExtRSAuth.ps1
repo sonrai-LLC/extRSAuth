@@ -1,4 +1,17 @@
-﻿# This script configures everything needed for ExtRSAuth to work; run 1x and configure your ExtRSAuth project build to update .
+﻿# Create function to inspect the config files for existing entries
+Function Get-StrPattern{
+Param ($filePath, $string)
+$found = Get-Content $filePath `
+            | %{ $res = $false } `
+               { $res = $res -or $_.Contains($string) } `
+               { return $res }
+
+return $found
+
+}
+
+
+# This script configures everything needed for ExtRSAuth to work; run 1x and configure your ExtRSAuth project build to update .
 $SQLServer = "."
 $db = "ReportServer"
 $sql1 = @'
@@ -47,7 +60,7 @@ END
 '@
 
 $IsExtRSAuthInstalled = Test-Path -Path "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll"
-if($IsExtRSAuthInstalled)
+if(($IsExtRSAuthInstalled))
 {
   Write-Host "ExtRSAuth is already installed on this Report Server" 
   break;
@@ -60,22 +73,41 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql2
 
 $rsDir = "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS"
 $rsSrvDir = "C:\Program Files\Microsoft SQL Server Reporting Services\"
+$extRSAuthDir = "C:\ExtRSAuth\"
 
+if(!(Test-Path 'C:\Program Files\Microsoft SQL Server Reporting Services\SSRS.ORIGINAL'))
+{
 Write-Host "Copy backup of original SSRS config files `n" -ForegroundColor Cyan
-Copy-Item -Path "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\*" -Destination "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS.orig\" -PassThru
+Copy-Item -Path "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\*" -Destination "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS.ORIGINAL\" -PassThru
+}
 
+if(!(Test-Path ($extRSAuthDir + "\Logon.aspx")))
+{
 Write-Host "Copying Logon.aspx page `n" -ForegroundColor Cyan
-Copy-Item -Path Logon.aspx -Destination "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\ReportServer"
+Copy-Item -Path ($extRSAuthDir + "\Logon.aspx") -Destination "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\ReportServer"
+}
 
+if(!(Test-Path ($extRSAuthDir + "\bin\debug\Sonrai.ExtRSAuth.dll")))
+{
 Write-Host "Copying Sonrai.ExtRSAuth.dll `n" -ForegroundColor Cyan
-Copy-Item -Path bin/debug/Sonrai.ExtRSAuth.dll -Destination ($rsDir + "\ReportServer\Bin")
+Copy-Item -Path ($extRSAuthDir + "\bin\debug\Sonrai.ExtRSAuth.dll") -Destination ($rsDir + "\ReportServer\Bin")
+}
 
+if(!(Test-Path ($extRSAuthDir + "\bin\debug\Sonrai.ExtRSAuth.dll.config")))
+{
 Write-Host "Copybin/debug/ing Microsoft.Samples.ReportingServices.CustomSecurity.dll.config `n" -ForegroundColor Cyan
-Copy-Item -Path bin/debug/Sonrai.ExtRSAuth.dll.config -Destination ($rsDir + "\ReportServer\Bin")
+Copy-Item -Path ($extRSAuthDir + "\bin\debug\Sonrai.ExtRSAuth.dll.config") -Destination ($rsDir + "\ReportServer\Bin")
+}
+
+if(!(Test-Path ($extRSAuthDir + "\bin\debug\Sonrai.ExtRSAuth.pdb")))
+{
 
 Write-Host "Copying Microsoft.Samples.ReportingServices.CustomSecurity.pdb `n" -ForegroundColor Cyan
-Copy-Item -Path bin/debug/Sonrai.ExtRSAuth.pdb -Destination ($rsDir + "\ReportServer\Bin\")
+Copy-Item -Path ($extRSAuthDir + "\bin\debug\Sonrai.ExtRSAuth.pdb") -Destination ($rsDir + "\ReportServer\Bin\")
+}
 
+if(!(Get-StrPattern ($rsDir + "\ReportServer\rsreportserver.config") 'Sonrai.ExtRSAuth.Authorization'))
+{
 Write-Host "Updating rsreportserver.config `n" -ForegroundColor Cyan
 $rsConfigFilePath = ($rsDir + "\ReportServer\rsreportserver.config")
 [xml]$rsConfigFile = (Get-Content $rsConfigFilePath)
@@ -92,7 +124,10 @@ $rsConfigFile.Configuration.Extensions.Security.AppendChild($extension)
 $rsConfigFile.Configuration.Extensions.Authentication.Extension.Name ="Forms"
 $rsConfigFile.Configuration.Extensions.Authentication.Extension.Type ="Sonrai.ExtRSAuth.AuthenticationExtension, Sonrai.ExtRSAuth"
 $rsConfigFile.Save($rsConfigFilePath)
+}
 
+if(!(Get-StrPattern ($rsDir + "\ReportServer\rssrvpolicy.config") 'ReportServer\bin\Sonrai.ExtRSAuth.dll'))
+{
 Write-Host "Updating RSSrvPolicy.config `n" -ForegroundColor Cyan
 $rsPolicyFilePath = ($rsDir + "\ReportServer\rssrvpolicy.config")
 [xml]$rsPolicy = (Get-Content $rsPolicyFilePath)
@@ -106,8 +141,10 @@ $codeGroup.SetAttribute("PermissionSetName","FullTrust")
 $codeGroup.InnerXml ="<IMembershipCondition class=""UrlMembershipCondition"" version=""1"" Url=""" + $rsDir + "\ReportServer\bin\Sonrai.ExtRSAuth.dll""/>"
 $rsPolicy.Configuration.mscorlib.security.policy.policylevel.CodeGroup.CodeGroup.AppendChild($codeGroup)
 $rsPolicy.Save($rsPolicyFilePath)
+}
 
-
+if(!(Get-StrPattern ($rsDir + "\ReportServer\web.config")  'sqlAuthCookie'))
+{
 Write-Host "Updating web.config and adding machine keys `n" -ForegroundColor Cyan
 $webConfigFilePath = ($rsDir + "\ReportServer\web.config")
 [xml]$webConfig = (Get-Content $webConfigFilePath)
@@ -143,5 +180,6 @@ $customUI = $rsConfigFile.CreateElement("CustomAuthenticationUI")
 $customUI.InnerXml ="<PassThroughCookies><PassThroughCookie>sqlAuthCookie</PassThroughCookie></PassThroughCookies>"
 $rsConfigFile.Configuration.UI.AppendChild($customUI)
 $rsConfigFile.Save($rsConfigFilePath)
+}
 
 Write-Host "Configuration of ExtRSAuth complete! Press any key to continue...`n" -ForegroundColor Cyan

@@ -105,7 +105,7 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql2
         Write-Host "Updating rsreportserver.config `n" -ForegroundColor Cyan
         $rsConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\rsreportserver.config")
         [xml]$rsConfigFile = (Get-Content $rsConfigFilePath)
-        Write-Host "Copy of the original config file in $rsConfigFilePath.backup"
+        Write-Host "Copy of the original config file in $rsConfigFilePath.backup" -ForegroundColor Cyan
         $rsConfigFile.Save("$rsConfigFilePath.backup")
         $rsConfigFile.Configuration.Authentication.AuthenticationTypes.InnerXml = "<Custom />"
         $extension = $rsConfigFile.CreateElement("Extension")

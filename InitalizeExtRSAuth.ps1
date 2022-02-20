@@ -62,49 +62,48 @@ $rsSrvDir = "C:\Program Files\Microsoft SQL Server Reporting Services"
 $extRSAuthDir = "C:\ExtRSAuth"
 
 # First see if .dll already installed
-$IsExtRSAuthInstalled = Test-Path -Path ($extRSAuthDir + "\bin\Sonrai.ExtRSAuth.dll")
-if(($IsExtRSAuthInstalled))
+$IsExtRSAuthInstalled = Test-Path -Path ($rsSrvDir + "\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll")
+If(($IsExtRSAuthInstalled))
 {
   Write-Host "ExtRSAuth is already installed on this Report Server" -ForegroundColor Cyan
   break;
 }
 
-Write-Host "ALTER necessary SSRS SPs to work with ExtRSAuth custom authentction" -ForegroundColor Cyan
+Write-Host "ALTER necessary SSRS SPs to work with ExtRSAuth custom authentication `n" -ForegroundColor Cyan
 Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql1
 Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql2
 
-
-if(!(Test-Path ($rsSrvDir + "\SSRS.ORIGINAL")))
+If(-Not(Test-Path ($rsSrvDir + "\SSRS.ORIGINAL")))
 {
     Write-Host "Copy backup of original SSRS config files `n" -ForegroundColor Cyan
     Copy-Item -Path rsSrvDir + "\SSRS\*" -Destination rsSrvDir + "\SSRS.ORIGINAL" -PassThru
 }
 
-if(!(Test-Path ($rsSrvDir + "\SSRS\ReportServer\Logon.aspx")))
+If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\Logon.aspx")))
 {
     Write-Host "Copying Logon.aspx page `n" -ForegroundColor Cyan
     Copy-Item -Path ($extRSAuthDir + "\bin\Logon.aspx") -Destination $rsSrvDir + "\SSRS\ReportServer"
 }
 
-if(!(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\debug\Sonrai.ExtRSAuth.dll")))
+If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\debug\Sonrai.ExtRSAuth.dll")))
 {
     Write-Host "Copying Sonrai.ExtRSAuth.dll `n" -ForegroundColor Cyan
     Copy-Item -Path ($extRSAuthDir + "\bin\debug\Sonrai.ExtRSAuth.dll") -Destination ($rsSrvDir + "\SSRS\ReportServer\Bin")
 }
 
-if(!(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\debug\Sonrai.ExtRSAuth.dll.config")))
+If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\debug\Sonrai.ExtRSAuth.dll.config")))
 {
     Write-Host "Copying bin/debug/ing Microsoft.Samples.ReportingServices.CustomSecurity.dll.config `n" -ForegroundColor Cyan
     Copy-Item -Path ($extRSAuthDir + "\bin\debug\Sonrai.ExtRSAuth.dll.config") -Destination ($rsSrvDir + "\SSRS\ReportServer\Bin")
 }
 
-if(!(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\debug\Sonrai.ExtRSAuth.pdb")))
+If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\debug\Sonrai.ExtRSAuth.pdb")))
 {
     Write-Host "Copying Microsoft.Samples.ReportingServices.CustomSecurity.pdb `n" -ForegroundColor Cyan
     Copy-Item -Path ($extRSAuthDir + "\bin\debug\Sonrai.ExtRSAuth.pdb") -Destination ($rsSrvDir + "\SSRS\ReportServer\Bin")
 }
 
-if(!(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\rsreportserver.config") 'Sonrai.ExtRSAuth.Authorization'))
+If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\rsreportserver.config") 'Sonrai.ExtRSAuth.Authorization'))
 {
     Write-Host "Updating rsreportserver.config `n" -ForegroundColor Cyan
     $rsConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\rsreportserver.config")
@@ -124,7 +123,7 @@ if(!(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\rsreportserver.config") 'So
     $rsConfigFile.Save($rsConfigFilePath)
 }
 
-if(!(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\rssrvpolicy.config") 'ReportServer\bin\Sonrai.ExtRSAuth.dll'))
+If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\rssrvpolicy.config") 'ReportServer\bin\Sonrai.ExtRSAuth.dll'))
 {
     Write-Host "Updating RSSrvPolicy.config `n" -ForegroundColor Cyan
     $rsPolicyFilePath = ($rsSrvDir + "\SSRS\ReportServer\rssrvpolicy.config")
@@ -141,7 +140,7 @@ if(!(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\rssrvpolicy.config") 'Repor
     $rsPolicy.Save($rsPolicyFilePath)
 }
 
-if(!(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\web.config")  'sqlAuthCookie'))
+If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\web.config")  'sqlAuthCookie'))
 {
     Write-Host "Updating web.config and adding machine keys `n" -ForegroundColor Cyan
     $webConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\web.config")

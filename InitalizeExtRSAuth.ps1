@@ -79,7 +79,7 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql2
     If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\Logon.aspx")))
     {
         Write-Host "Copying Logon.aspx page `n" -ForegroundColor Cyan
-        Copy-Item -Path ($extRSAuthDir + "\bin\Logon.aspx") -Destination $rsSrvDir + "\SSRS\ReportServer"
+        Copy-Item -Path ($extRSAuthDir + "\Logon.aspx") -Destination ($rsSrvDir + "\SSRS\ReportServer")
     }
 
     If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\debug\Sonrai.ExtRSAuth.dll")))
@@ -126,15 +126,13 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql2
             $rsPolicyFilePath = ($rsSrvDir + "\SSRS\ReportServer\rssrvpolicy.config")
             [xml]$rsPolicy = (Get-Content $rsPolicyFilePath)
         
-
             $codeGroup = $rsPolicy.CreateElement("CodeGroup")
             $codeGroup.SetAttribute("class","UnionCodeGroup")
             $codeGroup.SetAttribute("version","1")
-
             $codeGroup.SetAttribute("Name","SecurityExtensionCodeGroup")
             $codeGroup.SetAttribute("Description","Code group for the sample security extension")
             $codeGroup.SetAttribute("PermissionSetName","FullTrust")
-            $codeGroup.InnerXml ="<IMembershipCondition class=""UrlMembershipCondition"" version=""1"" Url=""" + ($rsSrvDir + "\ReportServer\bin\Sonrai.ExtRSAuth.dll") +"""/>"""
+            $codeGroup.InnerXml ="<IMembershipCondition class=""UrlMembershipCondition"" version=""1"" Url=""" + ($rsSrvDir + "\ReportServer\bin\Sonrai.ExtRSAuth.dll") + """/>"
             $rsPolicy.Configuration.mscorlib.security.policy.policylevel.CodeGroup.CodeGroup.AppendChild($codeGroup)
             $rsPolicy.Save($rsPolicyFilePath)
         
@@ -178,11 +176,11 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql2
         $rsConfigFile.Save($rsConfigFilePath)
     }
     
-    Write-Host "Configuration of ExtRSAuth complete! Happy ExtRSing... :) `n" -ForegroundColor Cyan
+    Write-Host "Configuration of ExtRSAuth complete! Happy ExtRSing... :) `n" -ForegroundColor Green
         break;
 }
 Else
 {
-   Write-Host "ExtRSAuth is already installed on this Report Server" -ForegroundColor Cyan
+   Write-Host "ExtRSAuth is already installed on this Report Server" -ForegroundColor Green
    break;
 }

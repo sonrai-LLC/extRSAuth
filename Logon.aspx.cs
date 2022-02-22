@@ -31,7 +31,7 @@ namespace Sonrai.ExtRSAuth
 {
    public class Logon : System.Web.UI.Page
    {
-        protected System.Web.UI.WebControls.Button BtnLogon;
+        public System.Web.UI.WebControls.Button BtnLogon;
 
         private void Page_Init(object sender, EventArgs e)
         {

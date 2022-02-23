@@ -73,7 +73,7 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql2
     If(-Not(Test-Path ($rsSrvDir + "\SSRS.ORIGINAL")))
     {
         Write-Host "Copy backup of original SSRS config files `n" -ForegroundColor Cyan
-        Copy-Item -Path rsSrvDir + "\SSRS\*" -Destination rsSrvDir + "\SSRS.ORIGINAL" -PassThru
+        Copy-Item -Path ($rsSrvDir + "\SSRS\*") -Destination ($rsSrvDir + "\SSRS.ORIGINAL") -PassThru
     }
 
     If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\Logon.aspx")))

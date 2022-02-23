@@ -69,11 +69,11 @@ If(-Not($IsExtRSAuthInstalled))
 Write-Host "ALTER necessary SSRS SPs to work with ExtRSAuth custom authentication `n" -ForegroundColor Cyan
 Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql1
 Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql2
-
-    If(-Not(Test-Path ($rsSrvDir + "\SSRS.ORIGINAL")))
+    
+    If(-Not(Test-Path ($rsSrvDir + "\SSRS.ORIGINAL\ReportServer")))
     {
         Write-Host "Copy backup of original SSRS config files `n" -ForegroundColor Cyan
-        Copy-Item -Path ($rsSrvDir + "\SSRS\*") -Destination ($rsSrvDir + "\SSRS.ORIGINAL") -PassThru
+        Copy-Item -Path ($rsSrvDir + "\SSRS") -Destination ($rsSrvDir + "\SSRS.ORIGINAL") -Recurse 
     }
 
     If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\Logon.aspx")))

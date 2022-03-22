@@ -222,6 +222,9 @@
     <PreBuildEvent>
     </PreBuildEvent>
     <PostBuildEvent>xcopy /Y "$(ProjectDir)bin\Debug\Sonrai.ExtRSAuth.dll"  "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\ReportServer\bin"
-xcopy /Y "$(ProjectDir)bin\Debug\Sonrai.ExtRSAuth.pdb"  "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\ReportServer\bin"</PostBuildEvent>
+xcopy /Y "$(ProjectDir)bin\Debug\Sonrai.ExtRSAuth.pdb"  "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\ReportServer\bin"
+xcopy /Y "$(ProjectDir)bin\Debug\Sonrai.ExtRSAuth.dll" "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\Portal"
+xcopy /Y "$(ProjectDir)bin\Debug\Sonrai.ExtRSAuth.pdb" "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\Portal"
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

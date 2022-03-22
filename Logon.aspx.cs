@@ -39,15 +39,16 @@ namespace Sonrai.ExtRSAuth
             if (isLocalConn)
             {
                 FormsAuthentication.SetAuthCookie(@"BUILTIN\Administrators", true);
-                Response.Redirect(System.Web.HttpContext.Current.Request.Url.ToString());
+                var returnUrl = System.Web.HttpContext.Current.Request.Url.Query;
+                Response.Redirect("https://localhost" + (returnUrl.ToLower().EndsWith("reports") ? "/reports" : "/reportserver"));
             }
             else
             {
                 try
                 {
-                    var decryptedUri = Encryption.Decrypt(ExtractEncQs(System.Web.HttpContext.Current.Request.Url.PathAndQuery), ConfigurationManager.AppSettings["Cle"]);
+                    var decryptUri = Encryption.Decrypt(ExtractEncQs(System.Web.HttpContext.Current.Request.Url.PathAndQuery), ConfigurationManager.AppSettings["Cle"]);
                     FormsAuthentication.SetAuthCookie(@"\Everyone", true);
-                    Response.Redirect(decryptedUri);
+                    Response.Redirect(decryptUri);
                 }
                 catch (Exception)
                 {

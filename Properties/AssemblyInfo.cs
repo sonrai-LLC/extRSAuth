@@ -4,10 +4,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SSRS 2022 Custom Auth")]
+[assembly: AssemblyTitle("ExtRSAuth")]
 [assembly: AssemblyDescription("Forms-based authentication for authenticating apps to SSRS")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("cfitzg")]
+[assembly: AssemblyCompany("sonrai")]
 [assembly: AssemblyProduct("MSPullRequest")]
 [assembly: AssemblyCopyright("2022")]
 [assembly: AssemblyTrademark("MIT")]

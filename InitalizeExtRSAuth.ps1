@@ -82,22 +82,28 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql2
         Copy-Item -Path ($extRSAuthDir + "\Logon.aspx") -Destination ($rsSrvDir + "\SSRS\ReportServer")
     }
 
-    If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\debug\Sonrai.ExtRSAuth.dll")))
+    If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll")))
     {
         Write-Host "Copying Sonrai.ExtRSAuth.dll `n" -ForegroundColor Cyan
-        Copy-Item -Path ($extRSAuthDir + "\bin\debug\Sonrai.ExtRSAuth.dll") -Destination ($rsSrvDir + "\SSRS\ReportServer\Bin")
+        Copy-Item -Path ($extRSAuthDir + "\Sonrai.ExtRSAuth.dll") -Destination ($rsSrvDir + "\SSRS\ReportServer\bin")
     }
 
-    If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\debug\Sonrai.ExtRSAuth.dll.config")))
-    {
-        Write-Host "Copying Sonrai.ExtRSAuth.dll.config `n" -ForegroundColor Cyan
-        Copy-Item -Path ($extRSAuthDir + "\bin\debug\Sonrai.ExtRSAuth.dll.config") -Destination ($rsSrvDir + "\SSRS\ReportServer\Bin")
-    }
-
-    If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\debug\Sonrai.ExtRSAuth.pdb")))
+    If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.pdb")))
     {
         Write-Host "Copying Sonrai.ExtRSAuth.pdb `n" -ForegroundColor Cyan
-        Copy-Item -Path ($extRSAuthDir + "\bin\debug\Sonrai.ExtRSAuth.pdb") -Destination ($rsSrvDir + "\SSRS\ReportServer\Bin")
+        Copy-Item -Path ($extRSAuthDir + "\Sonrai.ExtRSAuth.pdb") -Destination ($rsSrvDir + "\SSRS\ReportServer\bin")
+    }
+
+    If(-Not(Test-Path ($rsSrvDir + "\SSRS\Portal\Sonrai.ExtRSAuth.dll")))
+    {
+        Write-Host "Copying Sonrai.ExtRSAuth.dll `n" -ForegroundColor Cyan
+        Copy-Item -Path ($extRSAuthDir + "\Sonrai.ExtRSAuth.dll") -Destination ($rsSrvDir + "\SSRS\Portal")
+    }
+
+    If(-Not(Test-Path ($rsSrvDir + "\SSRS\Portal\Sonrai.ExtRSAuth.pdb")))
+    {
+        Write-Host "Copying Sonrai.ExtRSAuth.pdb `n" -ForegroundColor Cyan
+        Copy-Item -Path ($extRSAuthDir + "\Sonrai.ExtRSAuth.pdb") -Destination ($rsSrvDir + "\SSRS\Portal")
     }
 
     If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\rsreportserver.config") 'Sonrai.ExtRSAuth.Authorization'))

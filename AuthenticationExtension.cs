@@ -61,7 +61,7 @@ namespace Sonrai.ExtRSAuth
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public void GetUserInfo(out IIdentity userIdentity, out IntPtr userId)
         {
-            if (HttpContext.Current.User.Identity.IsAuthenticated && HttpContext.Current.User.Identity.Name != string.Empty)
+            if (HttpContext.Current.User.Identity.IsAuthenticated)
                 userIdentity = HttpContext.Current.User.Identity;
             else
             {

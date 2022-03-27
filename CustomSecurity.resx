@@ -123,7 +123,10 @@
   <data name="AdminConfiguration" xml:space="preserve">
     <value>Root element is not \"AdminConfiguration\" in config data.</value>
   </data>
-  <data name="MissingUrlReservation" xml:space="preserve">
+  <data name="Missing
+		
+
+Reservation" xml:space="preserve">
     <value>No Url reservation found for the \"ReportServerWebService\" application.</value>
   </data>
   <data name="OperationNameError" xml:space="preserve">

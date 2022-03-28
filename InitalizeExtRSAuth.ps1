@@ -213,6 +213,10 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql3
         $authorization = $webConfig.CreateElement("authorization")
         $authorization.InnerXml="<deny users=""?"" />"
         $webConfig.Configuration.'System.Web'.AppendChild($authorization)
+        $location = $webConfig.CreateElement("location")
+        $location.SetAttribute("path", "ReportService2010.asmx")
+        $location.InnerXml="<system.web><authorization><allow users=""?"" /></authorization></system.web>"
+        $webConfig.Configuration.AppendChild($location)
         $machineKey = $webConfig.CreateElement("machineKey")
         $machineKey.SetAttribute("validationKey","6A883FF722BC07123704B124939B9E584673875C744CC2BDA0A076CDD68AA8335FC0F5696CFFE5A56FA5E32BC00E010471RFA386FBFF8DCAA3BF3EE1A9B288A5")
         $machineKey.SetAttribute("decryptionKey","AF017F3FF5GDD11B813FC12BB8D4CEB32FA0CB999954A11V")

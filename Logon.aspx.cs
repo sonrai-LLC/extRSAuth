@@ -77,6 +77,9 @@ namespace Sonrai.ExtRSAuth
         {
             Init += new EventHandler(this.Page_Init);
         }
+
+        //TODO: Add #i18n #l10n
+
         #endregion
-   }
+    }
 }

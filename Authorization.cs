@@ -167,7 +167,7 @@ namespace Sonrai.ExtRSAuth
         }
 
         // Overload for Folder operations
-        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation requiredOperation = FolderOperation.ReadProperties)
+        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation requiredOperation = FolderOperation.ReadAuthorizationPolicy)
         {
             if (CheckUserToken(userToken))
                 userName = m_adminUserName;
@@ -207,7 +207,7 @@ namespace Sonrai.ExtRSAuth
         }
 
         // Overload for Resource operations
-        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ResourceOperation requiredOperation = ResourceOperation.ReadProperties)
+        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ResourceOperation requiredOperation = ResourceOperation.ReadAuthorizationPolicy)
         {
             if (CheckUserToken(userToken))
                 userName = m_adminUserName;
@@ -251,7 +251,7 @@ namespace Sonrai.ExtRSAuth
         }
 
         // Overload for Datasource operations
-        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, DatasourceOperation requiredOperation = DatasourceOperation.ReadProperties)
+        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, DatasourceOperation requiredOperation = DatasourceOperation.ReadAuthorizationPolicy)
         {
             if (CheckUserToken(userToken))
                 userName = m_adminUserName;

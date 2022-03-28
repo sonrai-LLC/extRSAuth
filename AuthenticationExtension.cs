@@ -61,8 +61,17 @@ namespace Sonrai.ExtRSAuth
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public void GetUserInfo(out IIdentity userIdentity, out IntPtr userId)
         {
-            if (HttpContext.Current.User.Identity.IsAuthenticated)
-                userIdentity = HttpContext.Current.User.Identity;
+            if (HttpContext.Current.User != null)
+            {
+                if (!HttpContext.Current.User.Identity.IsAuthenticated)
+                    userIdentity = HttpContext.Current.User.Identity;
+            }
+
+            if (HttpContext.Current.Items["OriginalUrl"].ToString() == "http://localhost/ReportServer/ReportService2010.asmx")
+            {
+                FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
+                userIdentity = new GenericIdentity("ReportingServicesTools");
+            }
             else
             {
                 if (HttpContext.Current.Request.IsLocal)

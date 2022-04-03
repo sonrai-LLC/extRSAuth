@@ -61,12 +61,6 @@ namespace Sonrai.ExtRSAuth
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public void GetUserInfo(out IIdentity userIdentity, out IntPtr userId)
         {
-            if (HttpContext.Current.User != null)
-            {
-                if (!HttpContext.Current.User.Identity.IsAuthenticated)
-                    userIdentity = HttpContext.Current.User.Identity;
-            }
-
             if (HttpContext.Current.Items["OriginalUrl"].ToString() == "http://localhost/ReportServer/ReportService2010.asmx")
             {
                 FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
@@ -79,9 +73,8 @@ namespace Sonrai.ExtRSAuth
                     FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
                     userIdentity = HttpContext.Current.User.Identity;
                 }
-
                 else
-                    throw new NullReferenceException("Anonymous logon is not configured. userIdentity should not be null!");
+                    userIdentity = new GenericIdentity(@"BUILTIN\Everyone");
             }
 
             // initialize a pointer to the current user id to zero

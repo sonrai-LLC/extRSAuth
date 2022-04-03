@@ -12,7 +12,7 @@ namespace Sonrai.ExtRSAuth.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.0.3.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.1.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -34,10 +34,10 @@ namespace Sonrai.ExtRSAuth.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[your_sym_encr_key]")]
-        public string Cle {
+        [global::System.Configuration.DefaultSettingValueAttribute("zrea1etIHqgHOkx9r9IwB4OUgipKzeJUzoPq84g2XgzYHSL42Ubx3dj1E7FvzW50")]
+        public string cle {
             get {
-                return ((string)(this["Cle"]));
+                return ((string)(this["cle"]));
             }
         }
     }

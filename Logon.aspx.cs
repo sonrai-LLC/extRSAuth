@@ -46,14 +46,14 @@ namespace Sonrai.ExtRSAuth
             {
                 try
                 {
-                    var decryptUri = Encryption.Decrypt(ExtractEncQs(System.Web.HttpContext.Current.Request.Url.PathAndQuery), ConfigurationManager.AppSettings["Cle"]);
+                    var decryptUri = Encryption.Decrypt(ExtractEncQs(System.Web.HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
                     if (!decryptUri.Contains("ReportServer?"))
                     {
-                        FormsAuthentication.SetAuthCookie(@"\Everyone", false);
-                        Response.Redirect(decryptUri);
+                        FormsAuthentication.SetAuthCookie(@"BUILTIN\Everyone", false);
+                        Response.Redirect(decryptUri, false);
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     FormsAuthentication.SignOut();
                 }

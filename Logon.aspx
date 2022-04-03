@@ -12,6 +12,6 @@
      <br /><br /><br /><br /><br />
      <center><img src="https://24.media.tumblr.com/85f34389b5648ef1bc17ce73a2f7b02d/tumblr_mszqu9VV7B1sw9iyeo1_500.gif" /></center>
     <br /><br />
-     401 UNAUTHORIZED.	
+     <center>401 UNAUTHORIZED.</center>
    </body>
 </HTML>

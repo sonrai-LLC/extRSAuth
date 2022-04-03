@@ -46,6 +46,7 @@ namespace Sonrai.ExtRSAuth
                         using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
                         {
                             cs.Write(cipherBytes, 0, cipherBytes.Length);
+                            cs.FlushFinalBlock();
                             cs.Close();                          
                         }
                         clearText = Encoding.Unicode.GetString(ms.ToArray());

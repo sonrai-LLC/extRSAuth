@@ -5,8 +5,8 @@
     <Setting Name="Database_ConnectionString" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Server=localhost; Integrated Security=SSPI;database=ReportServer</Value>
     </Setting>
-    <Setting Name="Cle" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">[your_sym_encr_key]</Value>
+    <Setting Name="cle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">zrea1etIHqgHOkx9r9IwB4OUgipKzeJUzoPq84g2XgzYHSL42Ubx3dj1E7FvzW50</Value>
     </Setting>
   </Settings>
 </SettingsFile>

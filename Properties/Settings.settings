@@ -6,7 +6,7 @@
       <Value Profile="(Default)">Server=localhost; Integrated Security=SSPI;database=ReportServer</Value>
     </Setting>
     <Setting Name="cle" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">zrea1etIHqgHOkx9r9IwB4OUgipKzeJUzoPq84g2XgzYHSL42Ubx3dj1E7FvzW50</Value>
+      <Value Profile="(Default)">[YourSymetricKey]</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -185,7 +185,6 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql3
         $rsConfigFile.Save($rsConfigFilePath)
     }
 
-
     If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\rssrvpolicy.config") '\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll'))
     {
             Write-Host "Updating RSSrvPolicy.config `n" -ForegroundColor Cyan

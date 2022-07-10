@@ -38,7 +38,7 @@ namespace Sonrai.ExtRSAuth
             var isLocalConn = System.Web.HttpContext.Current.Request.IsLocal;
             if (isLocalConn)
             {
-                FormsAuthentication.SetAuthCookie(@"BUILTIN\Administrators", true);
+                FormsAuthentication.SetAuthCookie(@"Daylite", true);
                 var returnUrl = System.Web.HttpContext.Current.Request.Url.Query;
                 Response.Redirect("https://localhost" + (returnUrl.ToLower().EndsWith("reports") ? "/reports" : "/reportserver"));
             }
@@ -50,7 +50,7 @@ namespace Sonrai.ExtRSAuth
                     if (!decryptUri.Contains("ReportServer?"))
                     {
                         FormsAuthentication.SetAuthCookie(@"BUILTIN\Everyone", false);
-                        Response.Redirect(decryptUri, false);
+                        Response.Redirect(decryptUri, false); // if !local, don't go to /reportserver URLs
                     }
                 }
                 catch (Exception ex)

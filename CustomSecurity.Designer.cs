@@ -79,6 +79,15 @@ namespace Sonrai.ExtRSAuth {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Url reservation found for the \&quot;ReportServerWebService\&quot; application..
+        /// </summary>
+        internal static string MissingReservation {
+            get {
+                return ResourceManager.GetString("MissingReservation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of operation names don&apos;t match..
         /// </summary>
         internal static string OperationNameError {

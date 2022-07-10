@@ -48,7 +48,7 @@ namespace Sonrai.ExtRSAuth
         {
             get
             {
-                return @"BUILTIN\Administrators";
+                return @"Daylite";
             }
         }
 
@@ -61,7 +61,7 @@ namespace Sonrai.ExtRSAuth
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public void GetUserInfo(out IIdentity userIdentity, out IntPtr userId)
         {
-            if (HttpContext.Current.Items["OriginalUrl"].ToString() == "http://localhost/ReportServer/ReportService2010.asmx")
+            if (HttpContext.Current.Items["OriginalUrl"].ToString() == "https://localhost/ReportServer/ReportService2010.asmx")
             {
                 FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
                 userIdentity = new GenericIdentity("ReportingServicesTools");
@@ -85,7 +85,7 @@ namespace Sonrai.ExtRSAuth
         public void GetUserInfo(IRSRequestContext requestContext, out IIdentity userIdentity, out IntPtr userId)
         {
             userIdentity = null;
-            if (requestContext.User != null && requestContext.User.Name == @"BUILTIN\Administrators")
+            if (requestContext.User != null && requestContext.User.Name == @"Daylite")
                 userIdentity = requestContext.User;
 
             // initialize a pointer to the current user id to zero

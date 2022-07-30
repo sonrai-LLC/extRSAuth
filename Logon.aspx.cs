@@ -38,7 +38,7 @@ namespace Sonrai.ExtRSAuth
             var isLocalConn = System.Web.HttpContext.Current.Request.IsLocal;
             if (isLocalConn)
             {
-                FormsAuthentication.SetAuthCookie(@"Daylite", true);
+                FormsAuthentication.SetAuthCookie(@"BUILTIN\Administrator", true);
                 var returnUrl = System.Web.HttpContext.Current.Request.Url.Query;
                 Response.Redirect("https://localhost" + (returnUrl.ToLower().EndsWith("reports") ? "/reports" : "/reportserver"));
             }

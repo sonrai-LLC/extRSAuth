@@ -34,7 +34,7 @@ namespace Sonrai.ExtRSAuth.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("rakKsX7IBXq3R0Q5GWgJoXhhEHDAAA27")]
+        [global::System.Configuration.DefaultSettingValueAttribute("[your symmetric encryption key]")]
         public string cle {
             get {
                 return ((string)(this["cle"]));

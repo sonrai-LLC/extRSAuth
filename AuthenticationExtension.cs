@@ -61,21 +61,19 @@ namespace Sonrai.ExtRSAuth
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public void GetUserInfo(out IIdentity userIdentity, out IntPtr userId)
         {
-            if (HttpContext.Current.Items["OriginalUrl"].ToString() == "https://localhost/ReportServer/ReportService2010.asmx")
+            if (HttpContext.Current.Request.IsLocal && HttpContext.Current.Items["OriginalUrl"].ToString() == "https://localhost/ReportServer/ReportService2010.asmx"
+                || (HttpContext.Current.Items["OriginalUrl"].ToString() == "https://localhost/reportserver/ReportExecution2005.asmx"))
             {
                 FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
                 userIdentity = new GenericIdentity("ReportingServicesTools");
             }
-            else
+            if (HttpContext.Current.Request.IsLocal && HttpContext.Current.User != null)
             {
-                if (HttpContext.Current.Request.IsLocal)
-                {
-                    FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
-                    userIdentity = HttpContext.Current.User.Identity;
-                }
-                else
-                    userIdentity = new GenericIdentity(@"BUILTIN\Everyone");
+                FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
+                userIdentity = HttpContext.Current.User.Identity;
             }
+            else
+                userIdentity = new GenericIdentity(@"BUILTIN\Everyone");
 
             // initialize a pointer to the current user id to zero
             userId = IntPtr.Zero;

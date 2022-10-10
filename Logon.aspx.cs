@@ -40,7 +40,6 @@ namespace Sonrai.ExtRSAuth
             {
                 FormsAuthentication.SetAuthCookie(@"BUILTIN\Administrator", true);
                 var returnUrl = System.Web.HttpContext.Current.Request.Url.Query;
-                //Response.Redirect("https://localhost" + (returnUrl.ToLower().EndsWith("reports") ? "/reports" : "/reportserver"));
                 Response.Redirect(returnUrl, true);
             }
             else
@@ -51,7 +50,7 @@ namespace Sonrai.ExtRSAuth
                     if (!decryptUri.Contains("ReportServer?"))
                     {
                         FormsAuthentication.SetAuthCookie(@"BUILTIN\Everyone", false);
-                        Response.Redirect(decryptUri, false); // if !local, don't go to /reportserver URLs
+                        Response.Redirect(decryptUri, false);
                     }
                 }
                 catch (Exception ex)

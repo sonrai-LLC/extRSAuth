@@ -35,7 +35,7 @@ ALTER PROCEDURE [dbo].[SetAllProperties]
 @Description ntext = NULL,
 @Hidden bit = NULL,
 @ModifiedBySid varbinary (85) = NULL,
-@ModifiedByName nvarchar(260) = 'Daylite',
+@ModifiedByName nvarchar(260) = 'fissonrai',
 @AuthType int,
 @ModifiedDate DateTime
 AS
@@ -72,7 +72,7 @@ ALTER PROCEDURE [dbo].[CreateObject]
 @Description ntext = NULL,
 @Hidden bit = NULL,
 @CreatedBySid varbinary(85) = NULL,
-@CreatedByName nvarchar(260) = 'Daylite',
+@CreatedByName nvarchar(260) = 'fissonrai',
 @AuthType int,
 @CreationDate datetime,
 @ModificationDate datetime,
@@ -175,7 +175,7 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql3
         $extension.SetAttribute("Name","Forms")
         $extension.SetAttribute("Type","Sonrai.ExtRSAuth.Authorization, Sonrai.ExtRSAuth")
         $configuration =$rsConfigFile.CreateElement("Configuration")
-        $configuration.InnerXml="<AdminConfiguration>`n<UserName>Daylite</UserName>`n</AdminConfiguration>"
+        $configuration.InnerXml="<AdminConfiguration>`n<UserName>fissonrai</UserName>`n</AdminConfiguration>"
         $extension.AppendChild($configuration)
         $rsConfigFile.Configuration.Extensions.Security.AppendChild($extension)
         $rsConfigFile.Configuration.Extensions.Security.RemoveChild($rsConfigFile.Configuration.Extensions.Security.FirstChild)

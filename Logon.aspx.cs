@@ -40,7 +40,8 @@ namespace Sonrai.ExtRSAuth
             {
                 FormsAuthentication.SetAuthCookie(@"BUILTIN\Administrator", true);
                 var returnUrl = System.Web.HttpContext.Current.Request.Url.Query;
-                Response.Redirect("https://localhost" + (returnUrl.ToLower().EndsWith("reports") ? "/reports" : "/reportserver"));
+                //Response.Redirect("https://localhost" + (returnUrl.ToLower().EndsWith("reports") ? "/reports" : "/reportserver"));
+                Response.Redirect(returnUrl, true);
             }
             else
             {

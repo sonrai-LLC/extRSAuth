@@ -1,6 +1,6 @@
 #region
 // Copyright (c) 2016 Microsoft Corporation. All Rights Reserved.
-// Modified (c) 2022 cfitzg. All Rights Forfitted.
+// Modified (c) 2022 sonrai LLC. All Rights Forfeited.
 // Licensed under the MIT License (MIT)
 /*============================================================================
   File:     Logon.aspx.cs

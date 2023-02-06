@@ -48,7 +48,7 @@ namespace Sonrai.ExtRSAuth
         {
             get
             {
-                return @"fissonrai";
+                return "ExtRSAuth";
             }
         }
 

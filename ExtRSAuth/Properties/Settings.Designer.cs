@@ -34,7 +34,7 @@ namespace Sonrai.ExtRSAuth.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[Your Authentication Key Goes Here]")]
+        [global::System.Configuration.DefaultSettingValueAttribute("VkYp3s6v9y/B?E(H+MbQeThWmZq4t7w!")]
         public string cle {
             get {
                 return ((string)(this["cle"]));

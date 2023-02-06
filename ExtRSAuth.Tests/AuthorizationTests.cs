@@ -7,14 +7,14 @@ namespace ExtRSAuth.Tests
     public class AuthorizationTests
     {
         [TestMethod]
-        public void AccessReportsSucceeds()
+        public void GetReportsSucceeds()
         {
             Encryption e = new ();
             Assert.IsTrue(1 == 1);
         }
 
         [TestMethod]
-        public void AccessReportsFails()
+        public void GetReportsFails()
         {
             Encryption e = new();
             Assert.IsTrue(1 == 1);

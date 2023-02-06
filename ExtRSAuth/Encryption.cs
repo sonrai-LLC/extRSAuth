@@ -53,10 +53,12 @@ namespace Sonrai.ExtRSAuth
                     }
                 }
             }
+
             catch(Exception ex)
             {
                 throw ex;
             }
+
             return clearText;
         }
     }

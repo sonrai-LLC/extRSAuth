@@ -24,12 +24,12 @@
 namespace Sonrai.ExtRSAuth
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
-    internal sealed class AuthenticationUtilities
+    public class AuthenticationUtilities
     {
-        public const string ExtRsUser = @"fissonrai";
+        public const string ExtRsUser = "ExtRSAuth";
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:DisposeObjectsBeforeLosingScope")]
-        internal static bool VerifyPassword(string username, string password)
+        public static bool VerifyPassword(string username, string password)
         {
             return true; //already auth'd
         }

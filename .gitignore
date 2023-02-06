@@ -4,3 +4,6 @@
 
 /obj/Debug
 /.vs
+/ExtRSAuth.Tests/bin/Debug/net6.0
+/ExtRSAuth.Tests/obj/Debug/net6.0
+/ExtRSAuth.Tests/obj

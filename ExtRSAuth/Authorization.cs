@@ -96,6 +96,7 @@ namespace Sonrai.ExtRSAuth
                     }
                 }
             }
+
             return false;
         }
 
@@ -178,7 +179,7 @@ namespace Sonrai.ExtRSAuth
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
-                if (0 == String.Compare(userName, ace.PrincipalName, true,
+                if (0 == string.Compare(userName, ace.PrincipalName, true,
                    CultureInfo.CurrentCulture))
                 {
                     foreach (FolderOperation aclOperation in
@@ -363,10 +364,11 @@ namespace Sonrai.ExtRSAuth
         private static readonly List<string> _fullPermissions = new List<string>();
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes")]
-        private static void InitializeMaps()
+        public static void InitializeMaps()
         {
             // create model operation names data
-            _modelItemOperNames.Add(ModelItemOperation.ReadProperties, OperationNames.OperReadProperties);
+            if(!_modelItemOperNames.ContainsValue(OperationNames.OperReadProperties))
+                _modelItemOperNames.Add(ModelItemOperation.ReadProperties, OperationNames.OperReadProperties);
 
             if (_modelItemOperNames.Count != Enum.GetValues(typeof(ModelItemOperation)).Length)
             {
@@ -375,17 +377,20 @@ namespace Sonrai.ExtRSAuth
             }
 
             // create model operation names data
-            _modelOperNames.Add(ModelOperation.Delete, OperationNames.OperDelete);
-            _modelOperNames.Add(ModelOperation.ReadAuthorizationPolicy, OperationNames.OperReadAuthorizationPolicy);
-            _modelOperNames.Add(ModelOperation.ReadContent, OperationNames.OperReadContent);
-            _modelOperNames.Add(ModelOperation.ReadDatasource, OperationNames.OperReadDatasources);
-            _modelOperNames.Add(ModelOperation.ReadModelItemAuthorizationPolicies, OperationNames.OperReadModelItemSecurityPolicies);
-            _modelOperNames.Add(ModelOperation.ReadProperties, OperationNames.OperReadProperties);
-            _modelOperNames.Add(ModelOperation.UpdateContent, OperationNames.OperUpdateContent);
-            _modelOperNames.Add(ModelOperation.UpdateDatasource, OperationNames.OperUpdateDatasources);
-            _modelOperNames.Add(ModelOperation.UpdateDeleteAuthorizationPolicy, OperationNames.OperUpdateDeleteAuthorizationPolicy);
-            _modelOperNames.Add(ModelOperation.UpdateModelItemAuthorizationPolicies, OperationNames.OperUpdateModelItemSecurityPolicies);
-            _modelOperNames.Add(ModelOperation.UpdateProperties, OperationNames.OperUpdatePolicy);
+            if (!_modelOperNames.ContainsValue(OperationNames.OperDelete))
+            {
+                _modelOperNames.Add(ModelOperation.Delete, OperationNames.OperDelete);
+                _modelOperNames.Add(ModelOperation.ReadAuthorizationPolicy, OperationNames.OperReadAuthorizationPolicy);
+                _modelOperNames.Add(ModelOperation.ReadContent, OperationNames.OperReadContent);
+                _modelOperNames.Add(ModelOperation.ReadDatasource, OperationNames.OperReadDatasources);
+                _modelOperNames.Add(ModelOperation.ReadModelItemAuthorizationPolicies, OperationNames.OperReadModelItemSecurityPolicies);
+                _modelOperNames.Add(ModelOperation.ReadProperties, OperationNames.OperReadProperties);
+                _modelOperNames.Add(ModelOperation.UpdateContent, OperationNames.OperUpdateContent);
+                _modelOperNames.Add(ModelOperation.UpdateDatasource, OperationNames.OperUpdateDatasources);
+                _modelOperNames.Add(ModelOperation.UpdateDeleteAuthorizationPolicy, OperationNames.OperUpdateDeleteAuthorizationPolicy);
+                _modelOperNames.Add(ModelOperation.UpdateModelItemAuthorizationPolicies, OperationNames.OperUpdateModelItemSecurityPolicies);
+                _modelOperNames.Add(ModelOperation.UpdateProperties, OperationNames.OperUpdatePolicy);
+            }
 
             if (_modelOperNames.Count != Enum.GetValues(typeof(ModelOperation)).Length)
                 throw new Exception("Model name mismatch");

@@ -1,4 +1,7 @@
+using Microsoft.ReportingServices.Interfaces;
+using Moq;
 using Sonrai.ExtRSAuth;
+using System.Security.Principal;
 
 namespace ExtRSAuth.Tests
 {
@@ -6,6 +9,9 @@ namespace ExtRSAuth.Tests
     public class AuthenticationTests
     {
         AuthenticationExtension authExt = new ();
+        private IIdentity? userIdentity;
+        private IntPtr userId;
+        private Mock<IRSRequestContext> request = new ();
 
         [TestMethod]
         public void VerifyValidStringPasswordSucceeds()
@@ -38,15 +44,28 @@ namespace ExtRSAuth.Tests
         }
 
         [TestMethod]
-        public void VerifyLogonUserSucceeds()
+        public void VerifyLogonUserStringSucceeds()
         {
             Assert.IsTrue(authExt.LogonUser("ExtRSAuth", "pwd1", "msft"));
         }
 
         [TestMethod]
-        public void VerifyLogonUserSucceeds2()
+        public void VerifyLogonUserNullSucceeds()
         {
             Assert.IsTrue(authExt.LogonUser(null, null, null));
+        }
+
+        [TestMethod]
+        public void VerifyGetUserInfoSucceeds()
+        {
+            authExt.GetUserInfo(request.Object, out userIdentity, out userId);
+        }
+
+        [ExpectedException(typeof(NullReferenceException))]
+        [TestMethod]
+        public void VerifyGetUserInfoFails()
+        {
+            authExt.GetUserInfo(null, out userIdentity, out userId);
         }
     }
 }

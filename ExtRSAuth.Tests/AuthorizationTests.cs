@@ -7,13 +7,7 @@ namespace ExtRSAuth.Tests
     [TestClass]
     public class AuthorizationTests
     {
-        Authorization auth = new ();
-
-        //[TestInitialize]
-        //public void InitializeTests()
-        //{
-        //    s
-        //}
+        readonly Authorization auth = new ();
 
         [TestMethod]
         public void CreateSecurityDescriptorSucceeds()

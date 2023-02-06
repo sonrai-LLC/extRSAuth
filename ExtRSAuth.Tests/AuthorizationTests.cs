@@ -1,7 +1,7 @@
 using Sonrai.ExtRSAuth;
 
 
-namespace ExtRSAuth.Tests2
+namespace ExtRSAuth.Tests
 {
     [TestClass]
     public class AuthorizationTests

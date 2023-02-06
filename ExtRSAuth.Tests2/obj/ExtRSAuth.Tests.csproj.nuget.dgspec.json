@@ -1,0 +1,105 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\cfitz\\source\\repos\\ExtRSAuth\\ExtRSAuth.Tests2\\ExtRSAuth.Tests.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\cfitz\\source\\repos\\ExtRSAuth\\ExtRSAuth.Tests2\\ExtRSAuth.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\cfitz\\source\\repos\\ExtRSAuth\\ExtRSAuth.Tests2\\ExtRSAuth.Tests.csproj",
+        "projectName": "ExtRSAuth.Tests",
+        "projectPath": "C:\\Users\\cfitz\\source\\repos\\ExtRSAuth\\ExtRSAuth.Tests2\\ExtRSAuth.Tests.csproj",
+        "packagesPath": "C:\\Users\\cfitz\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\cfitz\\source\\repos\\ExtRSAuth\\ExtRSAuth.Tests2\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\cfitz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\cfitz\\source\\repos\\ExtRSAuth\\ExtRSAuth\\ExtRSAuth.csproj": {
+                "projectPath": "C:\\Users\\cfitz\\source\\repos\\ExtRSAuth\\ExtRSAuth\\ExtRSAuth.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "MSTest.TestAdapter": {
+              "target": "Package",
+              "version": "[2.2.10, )"
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[2.2.10, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.3.2, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[3.1.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\cfitz\\source\\repos\\ExtRSAuth\\ExtRSAuth\\ExtRSAuth.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\cfitz\\source\\repos\\ExtRSAuth\\ExtRSAuth\\ExtRSAuth.csproj",
+        "projectName": "ExtRSAuth",
+        "projectPath": "C:\\Users\\cfitz\\source\\repos\\ExtRSAuth\\ExtRSAuth\\ExtRSAuth.csproj",
+        "frameworks": {
+          "net48": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net48": {}
+      }
+    }
+  }
+}

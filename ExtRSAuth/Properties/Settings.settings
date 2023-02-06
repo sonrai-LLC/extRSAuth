@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Sonrai.ExtRSAuth.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Database_ConnectionString" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Server=localhost; Integrated Security=SSPI;database=ReportServer</Value>
+    </Setting>
+    <Setting Name="cle" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">[Your Authentication Key Goes Here]</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

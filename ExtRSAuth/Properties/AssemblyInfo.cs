@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ExtRSAuth")]
-[assembly: AssemblyDescription("Forms-based authentication for authenticating apps to SSRS")]
+[assembly: AssemblyDescription("Custom authentication for authenticating apps to SSRS")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("sonrai")]
+[assembly: AssemblyCompany("sonrai LLC")]
 [assembly: AssemblyProduct("MSPullRequest")]
 [assembly: AssemblyCopyright("2023")]
 [assembly: AssemblyTrademark("MIT")]
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("2.1.0.0")]
+[assembly: AssemblyFileVersion("2.1.0.0")]

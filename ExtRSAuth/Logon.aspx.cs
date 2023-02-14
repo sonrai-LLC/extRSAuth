@@ -25,7 +25,6 @@
 
 using System;
 using System.Web.Security;
-using System.Configuration;
 
 namespace Sonrai.ExtRSAuth
 {
@@ -38,7 +37,7 @@ namespace Sonrai.ExtRSAuth
             var isLocalConn = System.Web.HttpContext.Current.Request.IsLocal;
             if (isLocalConn)
             {
-                FormsAuthentication.SetAuthCookie(@"BUILTIN\Administrator", true);
+                FormsAuthentication.SetAuthCookie(AuthenticationUtilities.AdminUser, true);
                 var returnUrl = System.Web.HttpContext.Current.Request.Url.Query;
                 Response.Redirect(returnUrl, true);
             }
@@ -49,7 +48,7 @@ namespace Sonrai.ExtRSAuth
                     var decryptUri = Encryption.Decrypt(ExtractEncQs(System.Web.HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
                     if (!decryptUri.Contains("ReportServer?"))
                     {
-                        FormsAuthentication.SetAuthCookie(@"BUILTIN\Everyone", false);
+                        FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ReadOnlyUser, false);
                         Response.Redirect(decryptUri, false);
                     }
                 }
@@ -59,27 +58,24 @@ namespace Sonrai.ExtRSAuth
                 }
             }
         }
-
+        
+        //TODO: Add #i18n #l10n
         public string ExtractEncQs(string uri)
         {
             var tmp = Server.UrlDecode(Server.UrlDecode(uri));
             return tmp.Substring(tmp.IndexOf("Qs=") + 3);
         }
-           
-        #region Required Web Form Designer generated code
-        override protected void OnInit(EventArgs e)
-        {
-            InitializeComponent();
-            base.OnInit(e);
-        }
+         
+        //// The below is required .NET web form designer code
+        //override protected void OnInit(EventArgs e)
+        //{
+        //    InitializeComponent();
+        //    base.OnInit(e);
+        //}
 
-        private void InitializeComponent()
-        {
-            Init += new EventHandler(this.Page_Init);
-        }
-
-        //TODO: Add #i18n #l10n
-
-        #endregion
+        //private void InitializeComponent()
+        //{
+        //    Init += new EventHandler(this.Page_Init);
+        //}
     }
 }

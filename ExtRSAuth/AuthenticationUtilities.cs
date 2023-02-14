@@ -23,12 +23,15 @@
 
 namespace Sonrai.ExtRSAuth
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
     public class AuthenticationUtilities
     {
         public const string ExtRsUser = "ExtRSAuth";
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:DisposeObjectsBeforeLosingScope")]
+        public const string ReadOnlyUser = @"BUILTIN\Everyone";
+        public const string AdminUser = @"BUILTIN\Administrator";
+        public const string MSBIToolsUser = "ReportingServicesTools";
+        public const string ReportExecution2005SOAP = "https://localhost/reportserver/ReportExecution2005.asmx";
+        public const string ReportService2010SOAP = "https://localhost/ReportServer/ReportService2010.asmx";
+        
         public static bool VerifyPassword(string username, string password)
         {
             return true; //already auth'd

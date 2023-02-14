@@ -29,7 +29,6 @@ using System.Globalization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.ReportingServices.Interfaces;
 using System.Xml;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Sonrai.ExtRSAuth
 {
@@ -41,7 +40,6 @@ namespace Sonrai.ExtRSAuth
             InitializeMaps();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public byte[] CreateSecurityDescriptor(AceCollection acl, SecurityItemType itemType, out string stringSecDesc)
         {
             // Creates a memory stream and serializes the ACL for storage.
@@ -90,10 +88,8 @@ namespace Sonrai.ExtRSAuth
                 if (0 == String.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
                 {
                     foreach (ModelOperation aclOperation in ace.ModelOperations)
-                    {
                         if (aclOperation == modelOperation)
                             return true;
-                    }
                 }
             }
 
@@ -113,10 +109,8 @@ namespace Sonrai.ExtRSAuth
                 if (0 == String.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
                 {
                     foreach (CatalogOperation aclOperation in ace.CatalogOperations)
-                    {
                         if (aclOperation == requiredOperation)
                             return true;
-                    }
                 }
             }
 
@@ -129,10 +123,9 @@ namespace Sonrai.ExtRSAuth
             if (CheckUserToken(userToken))
                 userName = m_adminUserName;
             foreach (CatalogOperation operation in requiredOperations)
-            {
                 if (!CheckAccess(userName, userToken, secDesc, operation))
                     return false;
-            }
+
             return true;
         }
 
@@ -149,16 +142,14 @@ namespace Sonrai.ExtRSAuth
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
-                if (0 == String.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
+                if (0 == string.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
                 {
-                    foreach (ReportOperation aclOperation in
-                       ace.ReportOperations)
-                    {
+                    foreach (ReportOperation aclOperation in ace.ReportOperations)
                         if (aclOperation == requiredOperation)
                             return true;
-                    }
                 }
             }
+
             return false;
         }
 
@@ -179,15 +170,11 @@ namespace Sonrai.ExtRSAuth
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
-                if (0 == string.Compare(userName, ace.PrincipalName, true,
-                   CultureInfo.CurrentCulture))
+                if (0 == string.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
                 {
-                    foreach (FolderOperation aclOperation in
-                       ace.FolderOperations)
-                    {
+                    foreach (FolderOperation aclOperation in ace.FolderOperations)
                         if (aclOperation == requiredOperation)
                             return true;
-                    }
                 }
             }
 
@@ -199,11 +186,11 @@ namespace Sonrai.ExtRSAuth
         {
             if (CheckUserToken(userToken))
                 userName = m_adminUserName;
+
             foreach (FolderOperation operation in requiredOperations)
-            {
                 if (!CheckAccess(userName, userToken, secDesc, operation))
                     return false;
-            }
+
             return true;
         }
 
@@ -213,21 +200,17 @@ namespace Sonrai.ExtRSAuth
             if (CheckUserToken(userToken))
                 userName = m_adminUserName;
             // If the user is the administrator, allow unrestricted access.
-            if (0 == String.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
+            if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
                 return true;
 
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
-                if (0 == String.Compare(userName, ace.PrincipalName, true,
-                   CultureInfo.CurrentCulture))
+                if (0 == string.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
                 {
-                    foreach (ResourceOperation aclOperation in
-                       ace.ResourceOperations)
-                    {
+                    foreach (ResourceOperation aclOperation in ace.ResourceOperations)
                         if (aclOperation == requiredOperation)
                             return true;
-                    }
                 }
             }
 
@@ -240,14 +223,13 @@ namespace Sonrai.ExtRSAuth
             if (CheckUserToken(userToken))
                 userName = m_adminUserName;
             // If the user is the administrator, allow unrestricted access.
-            if (0 == String.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
+            if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
                 return true;
 
             foreach (ResourceOperation operation in requiredOperations)
-            {
                 if (!CheckAccess(userName, userToken, secDesc, operation))
                     return false;
-            }
+
             return true;
         }
 
@@ -257,80 +239,60 @@ namespace Sonrai.ExtRSAuth
             if (CheckUserToken(userToken))
                 userName = m_adminUserName;
             // If the user is the administrator, allow unrestricted access.
-            if (0 == String.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
+            if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
                 return true;
 
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
-                if (0 == String.Compare(userName, ace.PrincipalName, true,
-                   CultureInfo.CurrentCulture))
+                if (0 == string.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
                 {
-                    foreach (DatasourceOperation aclOperation in
-                       ace.DatasourceOperations)
-                    {
+                    foreach (DatasourceOperation aclOperation in ace.DatasourceOperations)
                         if (aclOperation == requiredOperation)
                             return true;
-                    }
                 }
             }
 
             return false;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public StringCollection GetPermissions(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), SecurityItemType itemType = SecurityItemType.Unknown, byte[] secDesc = null)
         {
             if (CheckUserToken(userToken))
                 userName = m_adminUserName;
+
             StringCollection permissions = new StringCollection();
+
             if (IsAdmin(userName))
-            {
                 permissions.AddRange(_fullPermissions.ToArray());
-            }
             else
             {
                 AceCollection acl = DeserializeAcl(secDesc);
                 foreach (AceStruct ace in acl)
                 {
-                    if (0 == String.Compare(userName, ace.PrincipalName, true,
-                          CultureInfo.CurrentCulture))
+                    if (0 == string.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
                     {
                         foreach (ModelItemOperation aclOperation in ace.ModelItemOperations)
-                        {
                             if (!permissions.Contains(_modelItemOperNames[aclOperation]))
                                 permissions.Add(_modelItemOperNames[aclOperation]);
-                        }
                         foreach (ModelOperation aclOperation in ace.ModelOperations)
-                        {
                             if (!permissions.Contains(_modelOperNames[aclOperation]))
                                 permissions.Add(_modelOperNames[aclOperation]);
-                        }
                         foreach (CatalogOperation aclOperation in ace.CatalogOperations)
-                        {
                             if (!permissions.Contains(_catalogOperationNames[aclOperation]))
                                 permissions.Add(_catalogOperationNames[aclOperation]);
-                        }
                         foreach (ReportOperation aclOperation in ace.ReportOperations)
-                        {
                             if (!permissions.Contains(_reportOperationNames[aclOperation]))
                                 permissions.Add(_reportOperationNames[aclOperation]);
-                        }
                         foreach (FolderOperation aclOperation in ace.FolderOperations)
-                        {
                             if (!permissions.Contains(_folderOperationNames[aclOperation]))
                                 permissions.Add(_folderOperationNames[aclOperation]);
-                        }
                         foreach (ResourceOperation aclOperation in ace.ResourceOperations)
-                        {
                             if (!permissions.Contains(_resourceOperationNames[aclOperation]))
                                 permissions.Add(_resourceOperationNames[aclOperation]);
-                        }
                         foreach (DatasourceOperation aclOperation in ace.DatasourceOperations)
-                        {
                             if (!permissions.Contains(_dataSourceOperationNames[aclOperation]))
                                 permissions.Add(_dataSourceOperationNames[aclOperation]);
-                        }
                     }
                 }
             }
@@ -339,7 +301,6 @@ namespace Sonrai.ExtRSAuth
         }
 
         // Used to deserialize the ACL that is stored by the report server.
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         private AceCollection DeserializeAcl(byte[] secDesc = null)
         {
             AceCollection acl = new AceCollection();
@@ -351,6 +312,7 @@ namespace Sonrai.ExtRSAuth
                     acl = (AceCollection)bf.Deserialize(sdStream);
                 }
             }
+
             return acl;
         }
 
@@ -363,7 +325,6 @@ namespace Sonrai.ExtRSAuth
         private static readonly Dictionary<DatasourceOperation, string> _dataSourceOperationNames = new Dictionary<DatasourceOperation, string>();
         private static readonly List<string> _fullPermissions = new List<string>();
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes")]
         public static void InitializeMaps()
         {
             // create model operation names data
@@ -371,10 +332,7 @@ namespace Sonrai.ExtRSAuth
                 _modelItemOperNames.Add(ModelItemOperation.ReadProperties, OperationNames.OperReadProperties);
 
             if (_modelItemOperNames.Count != Enum.GetValues(typeof(ModelItemOperation)).Length)
-            {
-                //Model item name mismatch
                 throw new Exception("Model item name mismatch");
-            }
 
             // create model operation names data
             if (!_modelOperNames.ContainsValue(OperationNames.OperDelete))
@@ -460,7 +418,6 @@ namespace Sonrai.ExtRSAuth
             _reportOperationNames.Add(ReportOperation.CreateLink, OperationNames.OperCreateLink);
             _reportOperationNames.Add(ReportOperation.Comment, OperationNames.OperComment);
             _reportOperationNames.Add(ReportOperation.ManageComments, OperationNames.OperManageComments);
-
             if (_reportOperationNames.Count != Enum.GetValues(typeof(ReportOperation)).Length)
                 throw new Exception("Report name mismatch");
 
@@ -473,7 +430,6 @@ namespace Sonrai.ExtRSAuth
             _resourceOperationNames.Add(ResourceOperation.UpdateDeleteAuthorizationPolicy, OperationNames.OperUpdateDeleteAuthorizationPolicy);
             _resourceOperationNames.Add(ResourceOperation.Comment, OperationNames.OperComment);
             _resourceOperationNames.Add(ResourceOperation.ManageComments, OperationNames.OperManageComments);
-
             if (_resourceOperationNames.Count != Enum.GetValues(typeof(ResourceOperation)).Length)
                 throw new Exception("Resource name mismatch");
 
@@ -484,57 +440,40 @@ namespace Sonrai.ExtRSAuth
             _dataSourceOperationNames.Add(DatasourceOperation.UpdateContent, OperationNames.OperUpdateContent);
             _dataSourceOperationNames.Add(DatasourceOperation.ReadAuthorizationPolicy, OperationNames.OperReadAuthorizationPolicy);
             _dataSourceOperationNames.Add(DatasourceOperation.UpdateDeleteAuthorizationPolicy, OperationNames.OperUpdateDeleteAuthorizationPolicy);
-
             if (_dataSourceOperationNames.Count != Enum.GetValues(typeof(DatasourceOperation)).Length)
                 throw new Exception("Datasource name mismatch");
 
             foreach (CatalogOperation oper in _catalogOperationNames.Keys)
-            {
                 if (!_fullPermissions.Contains(_catalogOperationNames[oper]))
                     _fullPermissions.Add(_catalogOperationNames[oper]);
-            }
 
             foreach (ModelItemOperation oper in _modelItemOperNames.Keys)
-            {
                 if (!_fullPermissions.Contains(_modelItemOperNames[oper]))
                     _fullPermissions.Add(_modelItemOperNames[oper]);
-            }
 
             foreach (ModelOperation oper in _modelOperNames.Keys)
-            {
                 if (!_fullPermissions.Contains(_modelOperNames[oper]))
                     _fullPermissions.Add(_modelOperNames[oper]);
-            }
 
             foreach (CatalogOperation oper in _catalogOperationNames.Keys)
-            {
                 if (!_fullPermissions.Contains(_catalogOperationNames[oper]))
                     _fullPermissions.Add(_catalogOperationNames[oper]);
-            }
 
             foreach (ReportOperation oper in _reportOperationNames.Keys)
-            {
-                if (!_fullPermissions.Contains((string)_reportOperationNames[oper]))
-                    _fullPermissions.Add((string)_reportOperationNames[oper]);
-            }
+                if (!_fullPermissions.Contains(_reportOperationNames[oper]))
+                    _fullPermissions.Add(_reportOperationNames[oper]);
 
             foreach (FolderOperation oper in _folderOperationNames.Keys)
-            {
-                if (!_fullPermissions.Contains((string)_folderOperationNames[oper]))
-                    _fullPermissions.Add((string)_folderOperationNames[oper]);
-            }
+                if (!_fullPermissions.Contains(_folderOperationNames[oper]))
+                    _fullPermissions.Add(_folderOperationNames[oper]);
 
             foreach (ResourceOperation oper in _resourceOperationNames.Keys)
-            {
-                if (!_fullPermissions.Contains((string)_resourceOperationNames[oper]))
-                    _fullPermissions.Add((string)_resourceOperationNames[oper]);
-            }
+                if (!_fullPermissions.Contains(_resourceOperationNames[oper]))
+                    _fullPermissions.Add(_resourceOperationNames[oper]);
 
             foreach (DatasourceOperation oper in _dataSourceOperationNames.Keys)
-            {
-                if (!_fullPermissions.Contains((string)_dataSourceOperationNames[oper]))
-                    _fullPermissions.Add((string)_dataSourceOperationNames[oper]);
-            }
+                if (!_fullPermissions.Contains(_dataSourceOperationNames[oper]))
+                    _fullPermissions.Add(_dataSourceOperationNames[oper]);
         }
 
         private bool IsAdmin(string userName = AuthenticationUtilities.ExtRsUser)
@@ -548,7 +487,6 @@ namespace Sonrai.ExtRSAuth
             return false;
         }
 
-        [SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes")]
         public void SetConfiguration(string configuration)
         {
             XmlDocument doc = new XmlDocument();
@@ -556,24 +494,21 @@ namespace Sonrai.ExtRSAuth
             if (doc.DocumentElement.Name == "AdminConfiguration")
             {
                 foreach (XmlNode child in doc.DocumentElement.ChildNodes)
-                {
                     if (child.Name == "UserName")
                         m_adminUserName = child.InnerText;
                     else
                         throw new Exception(string.Format(CultureInfo.InvariantCulture, CustomSecurity.UnrecognizedElement));
-                }
             }
             else
                 throw new Exception(string.Format(CultureInfo.InvariantCulture, CustomSecurity.AdminConfiguration));
         }
 
-        [SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public string LocalizedName
         {
             get
             {
                 // Return a localized name for this extension
-                return "ExtRSAuth";
+                return AuthenticationUtilities.ExtRsUser;
             }
         }
     }

@@ -33,7 +33,6 @@ namespace Sonrai.ExtRSAuth
 
     public class AuthenticationExtension : IAuthenticationExtension2, IExtension
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public void SetConfiguration(string configuration)
         {
             if (!string.IsNullOrEmpty(configuration))
@@ -43,29 +42,27 @@ namespace Sonrai.ExtRSAuth
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public string LocalizedName
         {
             get
             {
-                return "ExtRSAuth";
+                return AuthenticationUtilities.ExtRsUser;
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public bool LogonUser(string userName, string password, string authority)
         {
             return AuthenticationUtilities.VerifyPassword(userName, password);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public void GetUserInfo(out IIdentity userIdentity, out IntPtr userId)
         {
-            if (HttpContext.Current.Request.IsLocal && HttpContext.Current.Items["OriginalUrl"].ToString() == "https://localhost/ReportServer/ReportService2010.asmx"
-                || (HttpContext.Current.Items["OriginalUrl"].ToString() == "https://localhost/reportserver/ReportExecution2005.asmx"))
+            if (HttpContext.Current.Request.IsLocal 
+                && HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportExecution2005SOAP
+                || (HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportService2010SOAP))
             {
                 FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
-                userIdentity = new GenericIdentity("ReportingServicesTools");
+                userIdentity = new GenericIdentity(AuthenticationUtilities.MSBIToolsUser);
             }
             if (HttpContext.Current.Request.IsLocal && HttpContext.Current.User != null)
             {
@@ -73,7 +70,7 @@ namespace Sonrai.ExtRSAuth
                 userIdentity = HttpContext.Current.User.Identity;
             }
             else
-                userIdentity = new GenericIdentity(@"BUILTIN\Everyone");
+                userIdentity = new GenericIdentity(AuthenticationUtilities.ReadOnlyUser);
 
             // initialize a pointer to the current user id to zero
             userId = IntPtr.Zero;
@@ -90,13 +87,11 @@ namespace Sonrai.ExtRSAuth
             userId = IntPtr.Zero;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")]
         public bool IsValidPrincipalName(string principalName)
         {
             return VerifyUser(principalName);
         }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:DisposeObjectsBeforeLosingScope")]
+       
         public static bool VerifyUser(string userName)
         {
             return true; //already auth'd

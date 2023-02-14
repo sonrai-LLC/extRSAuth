@@ -65,17 +65,17 @@ namespace Sonrai.ExtRSAuth
             var tmp = Server.UrlDecode(Server.UrlDecode(uri));
             return tmp.Substring(tmp.IndexOf("Qs=") + 3);
         }
-         
-        //// The below is required .NET web form designer code
-        //override protected void OnInit(EventArgs e)
-        //{
-        //    InitializeComponent();
-        //    base.OnInit(e);
-        //}
 
-        //private void InitializeComponent()
-        //{
-        //    Init += new EventHandler(this.Page_Init);
-        //}
+        // The below is required .NET web form designer code
+        override protected void OnInit(EventArgs e)
+        {
+            InitializeComponent();
+            base.OnInit(e);
+        }
+
+        private void InitializeComponent()
+        {
+            Init += new EventHandler(this.Page_Init);
+        }
     }
 }

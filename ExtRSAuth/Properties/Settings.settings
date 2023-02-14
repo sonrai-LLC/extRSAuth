@@ -6,7 +6,8 @@
       <Value Profile="(Default)">Server=localhost; Integrated Security=SSPI;database=ReportServer</Value>
     </Setting>
     <Setting Name="cle" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">your_sym_encr_key</Value>
+      <Value Profile="(Default)">r5u8x/A?D(G+KbPeSgVkYp3s6v9y$B&amp;E
+</Value>
     </Setting>
   </Settings>
 </SettingsFile>

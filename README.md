@@ -10,7 +10,7 @@ This is but one of many approaches we can take with ExtRSAuth in an SSRS-connect
 This Custom Auth assembly has been tested with (1) several .NET Framework 4.8 and .NET 5, 6 and 7 applications, (2) with the SSRS API and all its operations, (3) with the SSRS /ReportServer and the /Reports management web interface as well as (4) Visual Studio 2019 Reporting Services projects (report designers can seamlessly deploy Report Server projects from VS to the Report Server with ExtRSAuth).
 
 # Demonstration
-This [YouTube explainer video](https://www.youtube.com/watch?v=B49b_y42vNA) describes the SSRS external user authentication problem that ExtRSAuth addresses.
+This [YouTube explainer video](https://www.youtube.com/watch?v=B49b_y42vNA) describes the SSRS external user authentication problem that ExtRSAuth addresses. Or for the TL;DR; there is [this short screen capture](https://www.youtube.com/watch?v=0NmlrADXvZo) demonstrating how ExtRSAuth works.
 
 # Requirements
 This plug-in relies on SSRS (2016 or later), and a report server configuration as described in [Microsoft's Reporting Services Custom Security Sample](https://github.com/Microsoft/Reporting-Services/tree/master/CustomSecuritySample)

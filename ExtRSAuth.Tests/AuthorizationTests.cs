@@ -1,6 +1,6 @@
 using Microsoft.ReportingServices.Interfaces;
 using Sonrai.ExtRSAuth;
-
+using System.Collections.Specialized;
 
 namespace ExtRSAuth.Tests
 {
@@ -11,166 +11,93 @@ namespace ExtRSAuth.Tests
         readonly AceCollection aces = new();
         readonly SecurityItemType itemType = SecurityItemType.Folder;
 
-        //[TestInitialize]
-        //public void InitializeTests()
-        //{
-        //    AceStruct ace = new("FolderCheck");
-        //    aces.Add(ace);
-        //}
-
+        [Obsolete("This method's AceCollection serialization has been deprecated in .NET 6+")]
+        [Ignore]
         [TestMethod]
         public void CreateSecurityDescriptorSucceeds()
         {
-            //AceStruct ace = new("Reports");
-            //aces.Add(ace);
-            var bytes = auth.CreateSecurityDescriptor(aces, itemType, out string desc);
+            AceStruct ace = new("Everyone");
+            aces.Add(ace);
+            byte[] bytes = auth.CreateSecurityDescriptor(aces, itemType, out string desc);
             Assert.IsTrue(bytes.Length > 0);
         }
 
         [TestMethod]
-        public void CheckAccessWithSecDescriptorSucceeds()
+        public void CheckAccessModelOperation()
         {
-            //CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelItemOperation modelItemOperation = ModelItemOperation.ReadProperties)
-            //CreateSecurityDescriptor
+            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, ModelOperation.ReadProperties));
+            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, ModelOperation.ReadProperties));
         }
 
         [TestMethod]
-        public void CheckAccessWithSecDescriptorFails()
+        public void CheckAccessModelItemOperation()
         {
-            //CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelItemOperation modelItemOperation = ModelItemOperation.ReadProperties)
-            //CreateSecurityDescriptor
+            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, ModelItemOperation.ReadProperties));
+            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, ModelItemOperation.ReadProperties));
         }
 
         [TestMethod]
-        public void CheckAccessModelItemOperationSucceeds()
+        public void CheckAccessCatalogOperation()
         {
-            //   public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelItemOperation modelItemOperation = ModelItemOperation.ReadProperties)
+            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, CatalogOperation.CreateSchedules));
+            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, CatalogOperation.CreateSchedules));
         }
 
         [TestMethod]
-        public void CheckAccessModelItemOperationFails()
+        public void CheckAccessReportOperation()
         {
-            //   public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelItemOperation modelItemOperation = ModelItemOperation.ReadProperties)
+            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, ReportOperation.CreateSnapshot));
+            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, ReportOperation.CreateSnapshot));
         }
 
         [TestMethod]
-        public void CheckAccessModelOperationSucceeds()
+        public void CheckAccessFolderOperation()
         {
-            // public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelOperation modelOperation = ModelOperation.ReadProperties)
+            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, FolderOperation.CreateFolder));
+            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, FolderOperation.CreateFolder));
         }
 
         [TestMethod]
-        public void CheckAccessModelOperationFails()
+        public void CheckAccessFolderArrayOperation()
         {
-            // public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelOperation modelOperation = ModelOperation.ReadProperties)
+            FolderOperation[] folderOps = new FolderOperation[2];
+            folderOps[0] = FolderOperation.CreateFolder;
+            folderOps[1] = FolderOperation.Delete;
+            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, folderOps));
+            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, folderOps));
         }
 
         [TestMethod]
-        public void CheckAccessCatalogOpSucceeds()
+        public void CheckAccessResourceOperation()
         {
-            //CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, CatalogOperation[] requiredOperations = null)
+            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, ResourceOperation.Comment));
+            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, ResourceOperation.Comment));
         }
 
         [TestMethod]
-        public void CheckAccessCatalogOpFails()
+        public void CheckAccessResourceArrayOperation()
         {
-            //CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, CatalogOperation[] requiredOperations = null)
+            {
+                ResourceOperation[] folderOps = new ResourceOperation[2];
+                folderOps[0] = ResourceOperation.ReadContent;
+                folderOps[1] = ResourceOperation.Delete;
+                Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, folderOps));
+                Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, folderOps));
+            }
         }
 
         [TestMethod]
-        public void CheckAccessReportOpSucceeds()
+        public void CheckAccessDataSourceOperation()
         {
-            //public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ReportOperation requiredOperation = ReportOperation.ReadProperties)
-        }
-
-        [TestMethod]
-        public void CheckAccessReportOpFails()
-        {
-            //public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ReportOperation requiredOperation = ReportOperation.ReadProperties)
-        }
-
-        [TestMethod]
-        public void CheckAccessFolderOpSucceeds()
-        {
-            //public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation requiredOperation = FolderOperation.ReadAuthorizationPolicy)
-        }
-
-        [TestMethod]
-        public void CheckAccessFolderOpFails()
-        {
-            //public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation requiredOperation = FolderOperation.ReadAuthorizationPolicy)
-        }
-
-        [TestMethod]
-        public void CheckAccessArrayFolderOpSucceeds()
-        {
-            //public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation[] requiredOperations = null)
-        }
-
-        [TestMethod]
-        public void CheckAccessArrayFolderOpFails()
-        {
-            //public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation[] requiredOperations = null)
-        }
-
-        [TestMethod]
-        public void CheckAccessResourceOpSucceeds()
-        {
-            //public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ResourceOperation requiredOperation = ResourceOperation.ReadAuthorizationPolicy)
-        }
-
-        [TestMethod]
-        public void CheckAccessResourceOpFails()
-        {
-            //public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ResourceOperation requiredOperation = ResourceOperation.ReadAuthorizationPolicy)
-        }
-
-        [TestMethod]
-        public void CheckAccessArrayResourceOpSucceeds()
-        {
-            //public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ResourceOperation[] requiredOperations = null)
-        }
-
-        [TestMethod]
-        public void CheckAccessArrayResourceOpFails()
-        {
-            //public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ResourceOperation[] requiredOperations = null)
-        }
-
-        [TestMethod]
-        public void CheckAccessDataSourceOpSucceeds()
-        {
-            //public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, DatasourceOperation requiredOperation = DatasourceOperation.ReadAuthorizationPolicy)
-        }
-
-        [TestMethod]
-        public void CheckAccessDataSourceOpFails()
-        {
-            //public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, DatasourceOperation requiredOperation = DatasourceOperation.ReadAuthorizationPolicy)
+            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, DatasourceOperation.UpdateContent));
+            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, DatasourceOperation.UpdateContent));
         }
 
         [TestMethod]
         public void CheckPermissionsForUserSucceeds()
         {
-            //public StringCollection GetPermissions(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), SecurityItemType itemType = SecurityItemType.Unknown, byte[] secDesc = null)
-        }
-
-        [TestMethod]
-        public void CheckPermissionsForUserFails()
-        {
-            //public StringCollection GetPermissions(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), SecurityItemType itemType = SecurityItemType.Unknown, byte[] secDesc = null)
-        }
-
-        [TestMethod]
-        public void DeserializeAclSucceeds()
-        {
-            //public StringCollection GetPermissions(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), SecurityItemType itemType = SecurityItemType.Unknown, byte[] secDesc = null)
-        }
-
-        [TestMethod]
-        public void DeserializeAclFails()
-        {
-            //public StringCollection GetPermissions(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), SecurityItemType itemType = SecurityItemType.Unknown, byte[] secDesc = null)
+            StringCollection perms = auth.GetPermissions(AuthenticationUtilities.ExtRsUser, new IntPtr(), SecurityItemType.Report);
+            Assert.IsTrue(perms.Count > 50);
         }
 
         [TestMethod]

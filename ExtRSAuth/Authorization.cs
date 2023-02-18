@@ -52,9 +52,9 @@ namespace Sonrai.ExtRSAuth
             }
         }
 
-        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelItemOperation modelItemOperation = ModelItemOperation.ReadProperties)
+        public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelItemOperation modelItemOperation = ModelItemOperation.ReadProperties)
         {
-            if (CheckUserToken(userToken))
+            if (CheckUserToken(userToken, userName))
                 userName = m_adminUserName;
             if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
                 return true;
@@ -75,9 +75,9 @@ namespace Sonrai.ExtRSAuth
             return false;
         }
 
-        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelOperation modelOperation = ModelOperation.ReadProperties)
+        public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelOperation modelOperation = ModelOperation.ReadProperties)
         {
-            if (CheckUserToken(userToken))
+            if (CheckUserToken(userToken, userName))
                 userName = m_adminUserName;
             if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
                 return true;
@@ -96,11 +96,11 @@ namespace Sonrai.ExtRSAuth
             return false;
         }
 
-        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, CatalogOperation requiredOperation = CatalogOperation.ReadRoleProperties)
+        public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, CatalogOperation requiredOperation = CatalogOperation.ReadRoleProperties)
         {
-            if (CheckUserToken(userToken))
+            if (CheckUserToken(userToken, userName))
                 userName = m_adminUserName;
-            if (0 == String.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
+            if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
                 return true;
 
             AceCollection acl = DeserializeAcl(secDesc);
@@ -118,9 +118,9 @@ namespace Sonrai.ExtRSAuth
         }
 
         // Overload for array of catalog operations
-        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, CatalogOperation[] requiredOperations = null)
+        public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, CatalogOperation[] requiredOperations = null)
         {
-            if (CheckUserToken(userToken))
+            if (CheckUserToken(userToken, userName))
                 userName = m_adminUserName;
             foreach (CatalogOperation operation in requiredOperations)
                 if (!CheckAccess(userName, userToken, secDesc, operation))
@@ -132,7 +132,7 @@ namespace Sonrai.ExtRSAuth
         // Overload for Report operations
         public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ReportOperation requiredOperation = ReportOperation.ReadProperties)
         {
-            if (CheckUserToken(userToken))
+            if (CheckUserToken(userToken, userName))
                 userName = m_adminUserName;
             // If the user is the administrator, allow unrestricted access.
             if (0 == string.Compare(userName, m_adminUserName, true,
@@ -153,15 +153,15 @@ namespace Sonrai.ExtRSAuth
             return false;
         }
 
-        public bool CheckUserToken(IntPtr token)
+        public bool CheckUserToken(IntPtr token, string userName)
         {
-            return true;
+            return token != null && userName != null;
         }
 
         // Overload for Folder operations
         public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation requiredOperation = FolderOperation.ReadAuthorizationPolicy)
         {
-            if (CheckUserToken(userToken))
+            if (CheckUserToken(userToken, userName))
                 userName = m_adminUserName;
             // If the user is the administrator, allow unrestricted access.
             if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
@@ -182,9 +182,9 @@ namespace Sonrai.ExtRSAuth
         }
 
         // Overload for an array of Folder operations
-        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation[] requiredOperations = null)
+        public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation[] requiredOperations = null)
         {
-            if (CheckUserToken(userToken))
+            if (CheckUserToken(userToken, userName))
                 userName = m_adminUserName;
 
             foreach (FolderOperation operation in requiredOperations)
@@ -195,9 +195,9 @@ namespace Sonrai.ExtRSAuth
         }
 
         // Overload for Resource operations
-        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ResourceOperation requiredOperation = ResourceOperation.ReadAuthorizationPolicy)
+        public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ResourceOperation requiredOperation = ResourceOperation.ReadAuthorizationPolicy)
         {
-            if (CheckUserToken(userToken))
+            if (CheckUserToken(userToken, userName))
                 userName = m_adminUserName;
             // If the user is the administrator, allow unrestricted access.
             if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
@@ -218,9 +218,9 @@ namespace Sonrai.ExtRSAuth
         }
 
         // Overload for an array of Resource operations
-        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ResourceOperation[] requiredOperations = null)
+        public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ResourceOperation[] requiredOperations = null)
         {
-            if (CheckUserToken(userToken))
+            if (CheckUserToken(userToken, userName))
                 userName = m_adminUserName;
             // If the user is the administrator, allow unrestricted access.
             if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
@@ -234,9 +234,9 @@ namespace Sonrai.ExtRSAuth
         }
 
         // Overload for Datasource operations
-        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, DatasourceOperation requiredOperation = DatasourceOperation.ReadAuthorizationPolicy)
+        public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, DatasourceOperation requiredOperation = DatasourceOperation.ReadAuthorizationPolicy)
         {
-            if (CheckUserToken(userToken))
+            if (CheckUserToken(userToken, userName))
                 userName = m_adminUserName;
             // If the user is the administrator, allow unrestricted access.
             if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
@@ -256,9 +256,9 @@ namespace Sonrai.ExtRSAuth
             return false;
         }
 
-        public StringCollection GetPermissions(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), SecurityItemType itemType = SecurityItemType.Unknown, byte[] secDesc = null)
+        public StringCollection GetPermissions(string userName, IntPtr userToken = new IntPtr(), SecurityItemType itemType = SecurityItemType.Unknown, byte[] secDesc = null)
         {
-            if (CheckUserToken(userToken))
+            if (CheckUserToken(userToken, userName))
                 userName = m_adminUserName;
 
             StringCollection permissions = new StringCollection();

@@ -46,11 +46,11 @@ namespace Sonrai.ExtRSAuth
                 try
                 {
                     var decryptUri = Encryption.Decrypt(ExtractEncQs(System.Web.HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
-                    if (!decryptUri.Contains("ReportServer?"))
-                    {
+                    // if (!decryptUri.Contains("ReportServer?"))
+                    // {
                         FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ReadOnlyUser, false);
                         Response.Redirect(decryptUri, false);
-                    }
+                    // }
                 }
                 catch (Exception ex)
                 {
@@ -66,7 +66,7 @@ namespace Sonrai.ExtRSAuth
             return tmp.Substring(tmp.IndexOf("Qs=") + 3);
         }
 
-        // The below is required .NET web form designer code
+        // The below 2 methods are required .NET Framework web form designer code
         override protected void OnInit(EventArgs e)
         {
             InitializeComponent();

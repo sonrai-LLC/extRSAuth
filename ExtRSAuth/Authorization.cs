@@ -56,13 +56,13 @@ namespace Sonrai.ExtRSAuth
         {
             if (CheckUserToken(userToken))
                 userName = m_adminUserName;
-            if (0 == String.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
+            if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
                 return true;
 
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
-                if (0 == String.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
+                if (0 == string.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
                 {
                     foreach (ModelItemOperation aclOperation in ace.ModelItemOperations)
                     {

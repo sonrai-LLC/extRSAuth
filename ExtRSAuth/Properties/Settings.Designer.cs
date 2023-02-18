@@ -25,16 +25,7 @@ namespace Sonrai.ExtRSAuth.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Server=localhost; Integrated Security=SSPI;database=ReportServer")]
-        public string Database_ConnectionString {
-            get {
-                return ((string)(this["Database_ConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("r5u8x/A?D(G+KbPeSgVkYp3s6v9y$B&E\r\n")]
+        [global::System.Configuration.DefaultSettingValueAttribute("[your_enc_key]")]
         public string cle {
             get {
                 return ((string)(this["cle"]));

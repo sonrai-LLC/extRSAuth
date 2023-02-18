@@ -8,13 +8,24 @@ namespace ExtRSAuth.Tests
     public class AuthorizationTests
     {
         readonly Authorization auth = new ();
+        readonly AceCollection aces = new();
+        readonly SecurityItemType itemType = SecurityItemType.Folder;
+
+        //[TestInitialize]
+        //public void InitializeTests()
+        //{
+        //    AceStruct ace = new("FolderCheck");
+        //    aces.Add(ace);
+        //}
 
         [TestMethod]
         public void CreateSecurityDescriptorSucceeds()
         {
-            //public byte[] CreateSecurityDescriptor(AceCollection acl, SecurityItemType itemType, out string stringSecDesc)
+            //AceStruct ace = new("Reports");
+            //aces.Add(ace);
+            var bytes = auth.CreateSecurityDescriptor(aces, itemType, out string desc);
+            Assert.IsTrue(bytes.Length > 0);
         }
-
 
         [TestMethod]
         public void CheckAccessWithSecDescriptorSucceeds()

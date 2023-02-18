@@ -115,7 +115,7 @@ END
 
 
 $rsSrvDir = "C:\Program Files\Microsoft SQL Server Reporting Services"
-$extRSAuthDir = "C:\ExtRSAuth"
+$extRSAuthDir = ".\bin\Debug"
 
 Write-Host "ALTER necessary SSRS SPs to work with ExtRSAuth custom authentication `n" -ForegroundColor Cyan
 Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql1

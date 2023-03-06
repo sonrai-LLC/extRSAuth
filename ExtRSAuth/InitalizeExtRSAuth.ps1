@@ -111,14 +111,15 @@ IF @Intermediate IS NOT NULL AND @@ERROR = 0 BEGIN
    SET PermanentRefcount = PermanentRefcount + 1, TransientRefcount = TransientRefcount - 1
    WHERE SnapshotData.SnapshotDataID = @Intermediate
 END
-
-IF NOT EXISTS(SELECT * FROM Users WHERE UserName = 'ExtRSAuth')
-BEGIN
-	INSERT INTO Users (UserID, UserName, UserType, AuthType)
-	VALUES(newid(), 'ExtRSAuth', 0, 3)
-END
 '@
 
+$sql4 = @'
+IF NOT EXISTS(SELECT * FROM Users WHERE UserName = 'ExtRSAuth')
+          BEGIN
+	          INSERT INTO Users (UserID, UserName, UserType, AuthType)
+	          VALUES(newid(), 'ExtRSAuth', 0, 3)
+          END
+'@
 
 $rsSrvDir = "C:\Program Files\Microsoft SQL Server Reporting Services"
 $extRSAuthDir = ".\bin\Debug"
@@ -127,7 +128,8 @@ Write-Host "ALTER necessary SSRS SPs to work with ExtRSAuth custom authenticatio
 Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql1
 Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql2
 Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql3
-    
+Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql4
+
     If(-Not(Test-Path ($rsSrvDir + "\SSRS.ORIGINAL\ReportServer")))
     {
         Write-Host "Copy backup of original SSRS config files `n" -ForegroundColor Cyan

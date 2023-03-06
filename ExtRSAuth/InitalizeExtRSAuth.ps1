@@ -111,6 +111,12 @@ IF @Intermediate IS NOT NULL AND @@ERROR = 0 BEGIN
    SET PermanentRefcount = PermanentRefcount + 1, TransientRefcount = TransientRefcount - 1
    WHERE SnapshotData.SnapshotDataID = @Intermediate
 END
+
+IF NOT EXISTS(SELECT * FROM Users WHERE UserName = 'ExtRSAuth')
+BEGIN
+	INSERT INTO Users (UserID, UserName, UserType, AuthType)
+	VALUES(newid(), 'ExtRSAuth', 0, 3)
+END
 '@
 
 

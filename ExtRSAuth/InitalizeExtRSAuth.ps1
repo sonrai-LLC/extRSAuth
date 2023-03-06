@@ -111,6 +111,8 @@ IF @Intermediate IS NOT NULL AND @@ERROR = 0 BEGIN
    SET PermanentRefcount = PermanentRefcount + 1, TransientRefcount = TransientRefcount - 1
    WHERE SnapshotData.SnapshotDataID = @Intermediate
 END
+
+
 '@
 
 

@@ -35,6 +35,7 @@ namespace Sonrai.ExtRSAuth
         private void Page_Init(object sender, EventArgs e)
         {
             try
+            
             {
                 var isLocalConn = System.Web.HttpContext.Current.Request.IsLocal;
                 if (isLocalConn)

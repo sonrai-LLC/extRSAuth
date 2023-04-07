@@ -7,3 +7,5 @@
 /ExtRSAuth.Tests/bin/Debug/net6.0
 /ExtRSAuth.Tests/obj/Debug/net6.0
 /ExtRSAuth.Tests/obj
+/ExtRSAuth/Properties/Settings.settings
+/ExtRSAuth/Properties/Settings.Designer.cs

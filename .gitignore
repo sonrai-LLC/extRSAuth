@@ -10,3 +10,6 @@
 /ExtRSAuth/Properties/Settings.settings
 /ExtRSAuth/Properties/Settings.Designer.cs
 /ExtRSAuth/app.config
+/ExtRSAuth/.vs
+/ExtRSAuth/obj
+/ExtRSAuth/bin/Debug

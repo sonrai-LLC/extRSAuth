@@ -96,8 +96,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.ReportingServices.Interfaces">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SQL Server Reporting Services\SSRS\ReportServer\bin\Microsoft.ReportingServices.Interfaces.dll</HintPath>
+    <Reference Include="Microsoft.ReportingServices.Interfaces, Version=2022.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SqlServerTypes\Microsoft.ReportingServices.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SqlServer.Types, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -167,9 +168,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="app.config" />
     <None Include="InitalizeExtRSAuth.ps1" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

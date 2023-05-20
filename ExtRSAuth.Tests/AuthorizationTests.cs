@@ -7,7 +7,7 @@ namespace ExtRSAuth.Tests
     [TestClass]
     public class AuthorizationTests
     {
-        readonly Authorization auth = new ();
+        readonly Authorization auth = new();
         readonly AceCollection aces = new();
         readonly SecurityItemType itemType = SecurityItemType.Folder;
 

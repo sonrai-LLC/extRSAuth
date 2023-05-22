@@ -1,0 +1,90 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\source\\sonrai-LLC\\ExtRSAuth\\ExtRSAuth.Test\\ExtRSAuth.Test.csproj": {}
+  },
+  "projects": {
+    "C:\\source\\sonrai-LLC\\ExtRSAuth\\ExtRSAuth.Test\\ExtRSAuth.Test.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\source\\sonrai-LLC\\ExtRSAuth\\ExtRSAuth.Test\\ExtRSAuth.Test.csproj",
+        "projectName": "ExtRSAuth.Test",
+        "projectPath": "C:\\source\\sonrai-LLC\\ExtRSAuth\\ExtRSAuth.Test\\ExtRSAuth.Test.csproj",
+        "packagesPath": "C:\\Users\\radd\\.nuget\\packages\\",
+        "outputPath": "C:\\source\\sonrai-LLC\\ExtRSAuth\\ExtRSAuth.Test\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\radd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net48"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net48": {
+            "projectReferences": {
+              "C:\\source\\sonrai-LLC\\ExtRSAuth\\ExtRSAuth\\ExtRSAuth.csproj": {
+                "projectPath": "C:\\source\\sonrai-LLC\\ExtRSAuth\\ExtRSAuth\\ExtRSAuth.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net48": {
+          "dependencies": {
+            "MSTest.TestAdapter": {
+              "target": "Package",
+              "version": "[2.2.10, )"
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[2.2.10, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.18.4, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    },
+    "C:\\source\\sonrai-LLC\\ExtRSAuth\\ExtRSAuth\\ExtRSAuth.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\source\\sonrai-LLC\\ExtRSAuth\\ExtRSAuth\\ExtRSAuth.csproj",
+        "projectName": "ExtRSAuth",
+        "projectPath": "C:\\source\\sonrai-LLC\\ExtRSAuth\\ExtRSAuth\\ExtRSAuth.csproj",
+        "frameworks": {
+          "net48": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net48": {}
+      }
+    }
+  }
+}

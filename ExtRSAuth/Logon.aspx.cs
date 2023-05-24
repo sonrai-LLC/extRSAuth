@@ -40,7 +40,6 @@ namespace Sonrai.ExtRSAuth
                 if (isLocalConn)
                 {
                     FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsUser, true);
-                    var returnUrl = System.Web.HttpContext.Current.Request.Url.Query;
                 }
                 else
                 {

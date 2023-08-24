@@ -25,7 +25,7 @@ namespace Sonrai.ExtRSAuth
 {
     public class AuthenticationUtilities
     {
-        public static string ExtRsUser = Properties.Settings.Default.passphrase; // this value should be a secret key/passphrase; it serves as such for external SSRS API v2.0 access
+        public static string ExtRsUser = "ExtRSAuth"; // this value should be a secret key/passphrase; it serves as such for external SSRS API v2.0 access
         public const string ReadOnlyUser = @"BUILTIN\Everyone";
         public const string AdminUser = @"BUILTIN\Administrator";
         public const string MSBIToolsUser = "ReportingServicesTools";
@@ -34,7 +34,14 @@ namespace Sonrai.ExtRSAuth
         
         public static bool VerifyPassword(string username, string password)
         {
-            return true; //already auth'd
+            if (password == Properties.Settings.Default.passphrase)
+            {
+                return true; // auth'd
+            }
+            else
+            {
+                return false;
+            }          
         }
     }
 }

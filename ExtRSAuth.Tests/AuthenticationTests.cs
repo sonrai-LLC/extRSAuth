@@ -16,13 +16,13 @@ namespace ExtRSAuth.Tests
         [TestMethod]
         public void VerifyValidStringPasswordSucceeds()
         {
-            Assert.IsTrue(AuthenticationUtilities.VerifyPassword("some1", "some2"));
+            Assert.IsTrue(AuthenticationUtilities.VerifyPassword("ExtRSAuth", "This_IS_a_simpl_Passphrase"));
         }
 
         [TestMethod]
-        public void VerifyNullRefPasswordSucceeds()
+        public void VerifyNullRefPasswordFails()
         {
-            Assert.IsTrue(AuthenticationUtilities.VerifyPassword(null, null));
+            Assert.IsFalse(AuthenticationUtilities.VerifyPassword(null, null));
         }
 
         [TestMethod]
@@ -40,13 +40,7 @@ namespace ExtRSAuth.Tests
         [TestMethod]
         public void VerifyLogonUserStringSucceeds()
         {
-            Assert.IsTrue(authExt.LogonUser("ExtRSAuth", "pwd1", "msft"));
-        }
-
-        [TestMethod]
-        public void VerifyLogonUserNullSucceeds()
-        {
-            Assert.IsTrue(authExt.LogonUser(null, null, null));
+            Assert.IsTrue(authExt.LogonUser("ExtRSAuth", "This_IS_a_simpl_Passphrase", ""));
         }
 
         [TestMethod]

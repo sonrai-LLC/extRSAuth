@@ -57,34 +57,36 @@ namespace Sonrai.ExtRSAuth
 
         public void GetUserInfo(out IIdentity userIdentity, out IntPtr userId)
         {
-            if (HttpContext.Current.Request.IsLocal 
-                && HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportExecution2005SOAP
-                || (HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportService2010SOAP))
-            {
-                FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
-                userIdentity = new GenericIdentity(AuthenticationUtilities.MSBIToolsUser);
-            }
-            if (HttpContext.Current.Request.IsLocal && HttpContext.Current.User != null)
-            {
-                FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
-                userIdentity = HttpContext.Current.User.Identity;
-            }
-            else
-                userIdentity = new GenericIdentity(AuthenticationUtilities.ReadOnlyUser);
 
-            // initialize a pointer to the current user id to zero
-            userId = IntPtr.Zero;
+                if (HttpContext.Current.Request.IsLocal
+                    && HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportExecution2005SOAP
+                    || (HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportService2010SOAP))
+                {
+                    FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
+                    userIdentity = new GenericIdentity(AuthenticationUtilities.MSBIToolsUser);
+                }
+                if (HttpContext.Current.Request.IsLocal && HttpContext.Current.User != null)
+                {
+                    FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
+                    userIdentity = HttpContext.Current.User.Identity;
+                }
+                else
+                    userIdentity = new GenericIdentity(AuthenticationUtilities.ReadOnlyUser);
+
+
+                // initialize a pointer to the current user id to zero
+                userId = IntPtr.Zero;
         }
 
         //adding new GetUserInfo method for IAuthenticationExtension2
         public void GetUserInfo(IRSRequestContext requestContext, out IIdentity userIdentity, out IntPtr userId)
         {
-            userIdentity = null;
-            if (requestContext.User != null && requestContext.User.Name == AuthenticationUtilities.ExtRsUser)
-                userIdentity = requestContext.User;
+                userIdentity = null;
+                if (requestContext.User != null && requestContext.User.Name == AuthenticationUtilities.ExtRsUser)
+                    userIdentity = requestContext.User;
 
-            // initialize a pointer to the current user id to zero
-            userId = IntPtr.Zero;
+                // initialize a pointer to the current user id to zero
+                userId = IntPtr.Zero;
         }
 
         public bool IsValidPrincipalName(string principalName)

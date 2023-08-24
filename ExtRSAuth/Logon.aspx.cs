@@ -34,28 +34,22 @@ namespace Sonrai.ExtRSAuth
 
         private void Page_Load(object sender, EventArgs e)
         {
-            var isLocalConn = System.Web.HttpContext.Current.Request.IsLocal;
-            if (isLocalConn)
+            try        
             {
-                FormsAuthentication.SetAuthCookie(AuthenticationUtilities.AdminUser, true);
-                var returnUrl = System.Web.HttpContext.Current.Request.Url.Query;
-                Response.Redirect(returnUrl, true);
-            }
-            else
-            {
-                try
+                var isLocalConn = System.Web.HttpContext.Current.Request.IsLocal;
+                if (isLocalConn)
+                {
+                    FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsUser, true);
+                }
+                else
                 {
                     var decryptUri = Encryption.Decrypt(ExtractEncQs(System.Web.HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
-                    // if (!decryptUri.Contains("ReportServer?"))
-                    // {
-                        FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ReadOnlyUser, false);
-                        Response.Redirect(decryptUri, false);
-                    // }
+                    FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ReadOnlyUser, true);
                 }
-                catch (Exception ex)
-                {
-                    FormsAuthentication.SignOut();
-                }
+            }
+            catch (Exception ex)
+            {
+                FormsAuthentication.SignOut();
             }
         }
         

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.31911.260
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtRSAuth", "ExtRSAuth.csproj", "{FE32AA5A-8EAA-43B9-87EE-73271F89BA52}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtRSAuth.Tests", "..\ExtRSAuth.Tests\ExtRSAuth.Tests.csproj", "{F4471136-C264-4CF8-88C0-28F50A36922B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtRSAuth.Test", "..\ExtRSAuth.Test\ExtRSAuth.Test.csproj", "{EB958B35-707D-4582-9111-418EC5C02AD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{FE32AA5A-8EAA-43B9-87EE-73271F89BA52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE32AA5A-8EAA-43B9-87EE-73271F89BA52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE32AA5A-8EAA-43B9-87EE-73271F89BA52}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4471136-C264-4CF8-88C0-28F50A36922B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4471136-C264-4CF8-88C0-28F50A36922B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4471136-C264-4CF8-88C0-28F50A36922B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4471136-C264-4CF8-88C0-28F50A36922B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB958B35-707D-4582-9111-418EC5C02AD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB958B35-707D-4582-9111-418EC5C02AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB958B35-707D-4582-9111-418EC5C02AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB958B35-707D-4582-9111-418EC5C02AD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

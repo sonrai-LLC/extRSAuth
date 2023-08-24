@@ -32,7 +32,7 @@ namespace Sonrai.ExtRSAuth
    {
         public System.Web.UI.WebControls.Button BtnLogon;
 
-        private void Page_Init(object sender, EventArgs e)
+        private void Page_Load(object sender, EventArgs e)
         {
             var isLocalConn = System.Web.HttpContext.Current.Request.IsLocal;
             if (isLocalConn)
@@ -75,7 +75,7 @@ namespace Sonrai.ExtRSAuth
 
         private void InitializeComponent()
         {
-            Init += new EventHandler(this.Page_Init);
+            Init += new EventHandler(this.Page_Load);
         }
     }
 }

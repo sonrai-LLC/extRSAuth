@@ -25,7 +25,7 @@ namespace Sonrai.ExtRSAuth
 {
     public class AuthenticationUtilities
     {
-        public const string ExtRsUser = "ExtRSAuth";
+        public const string ExtRsUser = "ExtRSAuth"; // you should change this value to be a secret key/passphrase; it serves as such
         public const string ReadOnlyUser = @"BUILTIN\Everyone";
         public const string AdminUser = @"BUILTIN\Administrator";
         public const string MSBIToolsUser = "ReportingServicesTools";

@@ -1,4 +1,4 @@
-#region
+﻿#region
 // Copyright (c) 2016 Microsoft Corporation. All Rights Reserved.
 // Licensed under the MIT License (MIT)
 /*============================================================================
@@ -25,7 +25,7 @@ namespace Sonrai.ExtRSAuth
 {
     public class AuthenticationUtilities
     {
-        public const string ExtRsUser = "ExtRSAuth"; // you should change this value to be a secret key/passphrase; it serves as such
+        public static string ExtRsUser = Properties.Settings.Default.passphrase; // this value should be a secret key/passphrase; it serves as such for external SSRS API v2.0 access
         public const string ReadOnlyUser = @"BUILTIN\Everyone";
         public const string AdminUser = @"BUILTIN\Administrator";
         public const string MSBIToolsUser = "ReportingServicesTools";

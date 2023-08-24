@@ -130,7 +130,7 @@ namespace Sonrai.ExtRSAuth
         }
 
         // Overload for Report operations
-        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ReportOperation requiredOperation = ReportOperation.ReadProperties)
+        public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ReportOperation requiredOperation = ReportOperation.ReadProperties)
         {
             if (CheckUserToken(userToken, userName))
                 userName = m_adminUserName;
@@ -159,7 +159,7 @@ namespace Sonrai.ExtRSAuth
         }
 
         // Overload for Folder operations
-        public bool CheckAccess(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation requiredOperation = FolderOperation.ReadAuthorizationPolicy)
+        public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation requiredOperation = FolderOperation.ReadAuthorizationPolicy)
         {
             if (CheckUserToken(userToken, userName))
                 userName = m_adminUserName;
@@ -476,7 +476,7 @@ namespace Sonrai.ExtRSAuth
                     _fullPermissions.Add(_dataSourceOperationNames[oper]);
         }
 
-        private bool IsAdmin(string userName = AuthenticationUtilities.ExtRsUser)
+        private bool IsAdmin(string userName)
         {
             if (string.IsNullOrEmpty(userName))
                 return false;

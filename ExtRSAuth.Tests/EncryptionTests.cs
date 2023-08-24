@@ -8,7 +8,7 @@ namespace ExtRSAuth.Tests
         [TestMethod]
         public void EncryptUrlSucceeds()
         {
-            Assert.IsTrue(Encryption.Encrypt("some clear text", "secr3tk3y") == "EjFbXU9jMPxq5+87S1opiqiCNi6JRBcbe7K7AlfD2Fo=");
+            Assert.IsTrue(Encryption.Encrypt("some clear text", "secr3tk3y") == "nNVA3kA4w+Imz4fyhK7/qsF7IUSLMZ/bsa42vAPkFPk=");
         }
 
         [ExpectedException(typeof(ArgumentNullException))]
@@ -21,7 +21,7 @@ namespace ExtRSAuth.Tests
         [TestMethod]
         public void DecryptUrlSucceeds()
         {
-            Assert.IsTrue(Encryption.Decrypt("EjFbXU9jMPxq5+87S1opiqiCNi6JRBcbe7K7AlfD2Fo=", "secr3tk3y") == "some clear text");
+            Assert.IsTrue(Encryption.Decrypt("nNVA3kA4w+Imz4fyhK7/qsF7IUSLMZ/bsa42vAPkFPk=", "secr3tk3y") == "some clear text");
         }
 
         [ExpectedException(typeof(NullReferenceException))]

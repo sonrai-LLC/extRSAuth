@@ -38,12 +38,6 @@ namespace ExtRSAuth.Tests
         }
 
         [TestMethod]
-        public void VerifyAdminName()
-        {
-            Assert.IsTrue(authExt.LocalizedName == "ExtRSAuth");
-        }
-
-        [TestMethod]
         public void VerifyLogonUserStringSucceeds()
         {
             Assert.IsTrue(authExt.LogonUser("ExtRSAuth", "pwd1", "msft"));

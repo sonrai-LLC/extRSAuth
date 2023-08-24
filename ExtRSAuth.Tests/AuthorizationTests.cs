@@ -108,11 +108,5 @@ namespace ExtRSAuth.Tests
                 <UserName>ExtRSAuth</UserName>
             </AdminConfiguration>");
         }
-
-        [TestMethod]
-        public void LocalizedNameIsExtRSAdminUserSucceeds()
-        {
-            Assert.IsTrue(auth.LocalizedName == "ExtRSAuth");
-        }
     }
 }

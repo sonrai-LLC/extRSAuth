@@ -13,7 +13,7 @@ namespace Sonrai.ExtRSAuth
             byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
             using (Aes encryptor = Aes.Create())
             {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(enc_key, new byte[14], 1000);
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(enc_key, new byte[14], 1000, HashAlgorithmName.SHA256);
                 encryptor.Key = pdb.GetBytes(32);
                 encryptor.IV = pdb.GetBytes(16);
                 using (MemoryStream ms = new MemoryStream())
@@ -38,7 +38,7 @@ namespace Sonrai.ExtRSAuth
             {
                 using (Aes encryptor = Aes.Create())
                 {
-                    Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(enc_key, new byte[14], 1000);
+                    Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(enc_key, new byte[14], 1000, HashAlgorithmName.SHA256);
                     encryptor.Key = pdb.GetBytes(32);
                     encryptor.IV = pdb.GetBytes(16);
                     using (MemoryStream ms = new MemoryStream())
@@ -46,15 +46,13 @@ namespace Sonrai.ExtRSAuth
                         using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
                         {
                             cs.Write(cipherBytes, 0, cipherBytes.Length);
-                            cs.FlushFinalBlock();
-                            cs.Close();                          
+                            cs.Close();
                         }
                         clearText = Encoding.Unicode.GetString(ms.ToArray());
                     }
                 }
             }
-
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }

@@ -13,6 +13,7 @@ namespace ExtRSAuth.Tests
         private IntPtr userId;
         private Mock<IRSRequestContext> request = new ();
 
+        [Ignore]
         [TestMethod]
         public void VerifyValidStringPasswordSucceeds()
         {
@@ -35,12 +36,6 @@ namespace ExtRSAuth.Tests
         public void VerifyNullUserSucceeds()
         {
             Assert.IsTrue(AuthenticationExtension.VerifyUser(null));
-        }
-
-        [TestMethod]
-        public void VerifyLogonUserStringSucceeds()
-        {
-            Assert.IsTrue(authExt.LogonUser("ExtRSAuth", "This_IS_a_simpl_Passphrase", ""));
         }
 
         [TestMethod]

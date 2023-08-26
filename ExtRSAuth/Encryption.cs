@@ -23,6 +23,7 @@ namespace Sonrai.ExtRSAuth
                         cs.Write(clearBytes, 0, clearBytes.Length);
                         cs.Close();
                     }
+
                     cipherText = Convert.ToBase64String(ms.ToArray());
                 }
             }
@@ -48,6 +49,7 @@ namespace Sonrai.ExtRSAuth
                             cs.Write(cipherBytes, 0, cipherBytes.Length);
                             cs.Close();
                         }
+
                         clearText = Encoding.Unicode.GetString(ms.ToArray());
                     }
                 }

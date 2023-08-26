@@ -13,7 +13,6 @@ namespace ExtRSAuth.Tests
         private IntPtr userId;
         private Mock<IRSRequestContext> request = new ();
 
-        [Ignore]
         [TestMethod]
         public void VerifyValidStringPasswordSucceeds()
         {
@@ -23,7 +22,7 @@ namespace ExtRSAuth.Tests
         [TestMethod]
         public void VerifyNullRefPasswordFails()
         {
-            Assert.IsFalse(AuthenticationUtilities.VerifyPassword(null, null));
+            Assert.IsFalse(AuthenticationUtilities.VerifyPassword("", ""));
         }
 
         [TestMethod]

@@ -187,7 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="toggleAuth.ps1" />
+    <None Include="ToggleAuth.ps1" />
     <None Include="InitalizeExtRSAuth.ps1" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

@@ -166,7 +166,7 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql4
         Copy-Item -Path ($extRSAuthDir + "\Sonrai.ExtRSAuth.pdb") -Destination ($rsSrvDir + "\SSRS\Portal")
     }
 
-    If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\rsreportserver.config") 'Sonrai.ExtRSAuth.Authorization'))
+    If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\rsreportserver.config") 'sqlAuthCookie'))
     {
         Write-Host "Updating rsreportserver.config `n" -ForegroundColor Cyan
         $rsConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\rsreportserver.config")
@@ -204,7 +204,7 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql4
         $rsPolicy.Save($rsPolicyFilePath)     
     }
 
-    If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\web.config")  'sqlAuthCookie')) #FIX!
+    If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\web.config")  'machineKey'))
     {
         Write-Host "Updating web.config and adding machine keys `n" -ForegroundColor Cyan
         $webConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\web.config")

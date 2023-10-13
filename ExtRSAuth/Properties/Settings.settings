@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="cle" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">[Your 256bit AES symetric encryption key]</Value>
+      <Value Profile="(Default)">Y8UBeSCX3ZQL1VNqowHEFGfYsMEYiRQN</Value>
     </Setting>
     <Setting Name="passphrase" Type="System.String" Scope="Application">
       <Value Profile="(Default)">This_IS_a_simpl_Passphrase</Value>

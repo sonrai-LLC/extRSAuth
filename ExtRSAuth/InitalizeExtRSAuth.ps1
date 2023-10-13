@@ -190,21 +190,21 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql4
 
     If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\rssrvpolicy.config") '\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll'))
     {
-            Write-Host "Updating RSSrvPolicy.config `n" -ForegroundColor Cyan
-            $rsPolicyFilePath = ($rsSrvDir + "\SSRS\ReportServer\rssrvpolicy.config")
-            [xml]$rsPolicy = (Get-Content $rsPolicyFilePath)  
-            $codeGroup = $rsPolicy.CreateElement("CodeGroup")
-            $codeGroup.SetAttribute("class","UnionCodeGroup")
-            $codeGroup.SetAttribute("version","1")
-            $codeGroup.SetAttribute("Name","SecurityExtensionCodeGroup")
-            $codeGroup.SetAttribute("Description","Code group for ExtRSAuth SSRS Security Extension")
-            $codeGroup.SetAttribute("PermissionSetName","FullTrust")
-            $codeGroup.InnerXml ="<IMembershipCondition class=""UrlMembershipCondition"" version=""1"" Url=""" + ($rsSrvDir + "\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll") + """/>"
-            $rsPolicy.Configuration.mscorlib.security.policy.policylevel.CodeGroup.CodeGroup.AppendChild($codeGroup)
-            $rsPolicy.Save($rsPolicyFilePath)     
+        Write-Host "Updating RSSrvPolicy.config `n" -ForegroundColor Cyan
+        $rsPolicyFilePath = ($rsSrvDir + "\SSRS\ReportServer\rssrvpolicy.config")
+        [xml]$rsPolicy = (Get-Content $rsPolicyFilePath)  
+        $codeGroup = $rsPolicy.CreateElement("CodeGroup")
+        $codeGroup.SetAttribute("class","UnionCodeGroup")
+        $codeGroup.SetAttribute("version","1")
+        $codeGroup.SetAttribute("Name","SecurityExtensionCodeGroup")
+        $codeGroup.SetAttribute("Description","Code group for ExtRSAuth SSRS Security Extension")
+        $codeGroup.SetAttribute("PermissionSetName","FullTrust")
+        $codeGroup.InnerXml ="<IMembershipCondition class=""UrlMembershipCondition"" version=""1"" Url=""" + ($rsSrvDir + "\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll") + """/>"
+        $rsPolicy.Configuration.mscorlib.security.policy.policylevel.CodeGroup.CodeGroup.AppendChild($codeGroup)
+        $rsPolicy.Save($rsPolicyFilePath)     
     }
 
-    If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\web.config")  'sqlAuthCookie'))
+    If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\web.config")  'sqlAuthCookie')) #FIX!
     {
         Write-Host "Updating web.config and adding machine keys `n" -ForegroundColor Cyan
         $webConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\web.config")

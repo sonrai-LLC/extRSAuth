@@ -17,7 +17,6 @@ $rsConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\rsreportserver.config")
 $webConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\web.config")
 [xml]$webConfig = (Get-Content $webConfigFilePath)
 
-Write-Host ":::::::::::::::::::::::::::::::::"
 # Check if ExtRSAuth is installed
 If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll")))
 {
@@ -28,6 +27,7 @@ If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll")))
 
 # Stop the RS Server
 Stop-Service SQLServerReportingServices
+Write-Host ":::::::::::::::::::::::::::::::::"
 
 If(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\web.config")  'sqlAuthCookie')
 {

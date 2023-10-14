@@ -17,10 +17,13 @@ $rsConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\rsreportserver.config")
 $webConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\web.config")
 [xml]$webConfig = (Get-Content $webConfigFilePath)
 
+Write-Host ":::::::::::::::::::::::::::::::::"
 If(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\web.config")  'sqlAuthCookie')
 {
-	Write-Host "UNDO::Updating rsreportserver.config `n" -ForegroundColor Cyan
-	Write-Host "Copy of the original config file in $rsConfigFilePath.backup" -ForegroundColor Cyan
+	Write-Host ":::::::TOGGLE to Windows Auth:::::::"
+	Write-Host ":::::::::::::::::::::::::::::::::"
+	Write-Host "Updating rsreportserver.config `n" -ForegroundColor Cyan
+	Write-Host "Copy reportserver.config file in $rsConfigFilePath.backup" -ForegroundColor Cyan
 	$rsConfigFile.Save("$rsConfigFilePath.backup")
 	$rsConfigFile.Configuration.Authentication.AuthenticationTypes.InnerXml = "<RSWindowsNTLM />"
 	$extension = $rsConfigFile.CreateElement("Extension")
@@ -36,7 +39,9 @@ If(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\web.config")  'sqlAuthCookie'
 	$rsConfigFile.Configuration.Extensions.Authentication.Extension.Type ="Microsoft.ReportingServices.Authentication.WindowsAuthentication, Microsoft.ReportingServices.Authorization"
 	$rsConfigFile.Save($rsConfigFilePath)
 
-	Write-Host "UNDO::Configuring web app Identity Authentication `n" -ForegroundColor Cyan
+	Write-Host "Configuring web app Identity Authentication `n" -ForegroundColor Cyan
+    Write-Host "Copy web.config file in $webConfigFilePath.backup" -ForegroundColor Cyan
+	$webConfig.Save("$webConfigFilePath.backup")
 	$webConfig.Configuration.'System.Web'.Identity.Impersonate="true"
 	$webConfig.Configuration.'System.Web'.Authentication.Mode="Windows"
 	$webConfig.Configuration.'System.Web'.Authentication.InnerXml=""
@@ -44,8 +49,10 @@ If(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\web.config")  'sqlAuthCookie'
 }
 Else
 {
-	Write-Host "REDO::Updating rsreportserver.config `n" -ForegroundColor Cyan
-	Write-Host "Copy of the original config file in $rsConfigFilePath.backup" -ForegroundColor Cyan
+	Write-Host ":::::::TOGGLE to ExtRSAuth:::::::"
+	Write-Host ":::::::::::::::::::::::::::::::::"
+	Write-Host "Updating rsreportserver.config `n" -ForegroundColor Cyan
+	Write-Host "Copy reportserver.config file in $rsConfigFilePath.backup" -ForegroundColor Cyan
 	$rsConfigFile.Save("$rsConfigFilePath.backup")
 	$rsConfigFile.Configuration.Authentication.AuthenticationTypes.InnerXml = "<Custom />"
 	$extension = $rsConfigFile.CreateElement("Extension")
@@ -61,7 +68,9 @@ Else
 	$rsConfigFile.Configuration.Extensions.Authentication.Extension.Type ="Sonrai.ExtRSAuth.AuthenticationExtension, Sonrai.ExtRSAuth"
 	$rsConfigFile.Save($rsConfigFilePath)
 
-	Write-Host "REDO::Configuring web app Identity Authentication `n" -ForegroundColor Cyan
+	Write-Host "Configuring web app Identity Authentication `n" -ForegroundColor Cyan
+	Write-Host "Copy web.config file in $webConfigFilePath.backup" -ForegroundColor Cyan
+	$webConfig.Save("$webConfigFilePath.backup")
 	$webConfig.Configuration.'System.Web'.Identity.Impersonate="true"
 	$webConfig.Configuration.'System.Web'.Authentication.Mode="Forms"
 	$webConfig.Configuration.'System.Web'.Authentication.InnerXml="<forms loginUrl=""logon.aspx"" name=""sqlAuthCookie"" timeout=""60"" path=""/""></forms>"

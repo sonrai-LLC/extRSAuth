@@ -18,6 +18,17 @@ $webConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\web.config")
 [xml]$webConfig = (Get-Content $webConfigFilePath)
 
 Write-Host ":::::::::::::::::::::::::::::::::"
+# Check if ExtRSAuth is installed
+If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll")))
+{
+	Write-Host "Please install ExtRSAuth via: .\InitalizeExtRSAuth" -ForegroundColor Magenta
+	Write-Host "EXITING..." -ForegroundColor Magenta
+	Return
+}
+
+# Stop the RS Server
+Stop-Service SQLServerReportingServices
+
 If(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\web.config")  'sqlAuthCookie')
 {
 	Write-Host ":::::::TOGGLE to Windows Auth:::::::"
@@ -30,7 +41,7 @@ If(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\web.config")  'sqlAuthCookie'
 	$extension.SetAttribute("Name","Windows")
 	$extension.SetAttribute("Type","Microsoft.ReportingServices.Authorization.WindowsAuthorization, Microsoft.ReportingServices.Authorization")
 	$configuration =$rsConfigFile.CreateElement("Configuration")
-	$configuration.InnerXml="<AdminConfiguration>`n<UserName>radd</UserName>`n</AdminConfiguration>"
+	$configuration.InnerXml="<AdminConfiguration>`n<UserName>Administrator</UserName>`n</AdminConfiguration>"
 	$extension.AppendChild($configuration)
 	$rsConfigFile.Configuration.Extensions.Security.AppendChild($extension)
 	$rsConfigFile.Configuration.Extensions.Security.RemoveChild($rsConfigFile.Configuration.Extensions.Security.FirstChild)
@@ -76,3 +87,6 @@ Else
 	$webConfig.Configuration.'System.Web'.Authentication.InnerXml="<forms loginUrl=""logon.aspx"" name=""sqlAuthCookie"" timeout=""60"" path=""/""></forms>"
 	$webConfig.Save($webConfigFilePath)
 }
+
+# Start the RS Server
+Start-Service SQLServerReportingServices

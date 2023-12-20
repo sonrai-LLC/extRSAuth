@@ -178,7 +178,7 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql4
         $extension.SetAttribute("Name","Forms")
         $extension.SetAttribute("Type","Sonrai.ExtRSAuth.Authorization, Sonrai.ExtRSAuth")
         $configuration =$rsConfigFile.CreateElement("Configuration")
-        $configuration.InnerXml="<AdminConfiguration>`n<UserName>ExtRSAuth</UserName>`n</AdminConfiguration>"
+        $configuration.InnerXml="<AdminConfiguration>`n<UserName>extRSAuth</UserName>`n</AdminConfiguration>"
         $extension.AppendChild($configuration)
         $rsConfigFile.Configuration.Extensions.Security.AppendChild($extension)
         $rsConfigFile.Configuration.Extensions.Security.RemoveChild($rsConfigFile.Configuration.Extensions.Security.FirstChild)
@@ -211,7 +211,7 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql4
         [xml]$webConfig = (Get-Content $webConfigFilePath)
         $webConfig.Configuration.'System.Web'.Identity.Impersonate="false"
         $webConfig.Configuration.'System.Web'.Authentication.Mode="Forms"
-        $webConfig.Configuration.'System.Web'.Authentication.InnerXml="<forms loginUrl=""logon.aspx"" name=""sqlAuthCookie"" timeout=""60"" path=""/""></forms>"
+        $webConfig.Configuration.'System.Web'.Authentication.InnerXml="<forms loginUrl=""logon.aspx"" name=""sqlAuthCookie"" cookieSameSite=""None"" timeout=""60"" path=""/"" enableCrossAppRedirects=""true"" requireSSL=""true""></forms>"
         $authorization = $webConfig.CreateElement("authorization")
         $authorization.InnerXml="<deny users=""?"" />"
         $webConfig.Configuration.'System.Web'.AppendChild($authorization)

@@ -490,12 +490,9 @@ namespace Sonrai.ExtRSAuth
 
         public void SetConfiguration(string configuration)
         {
-            if (HttpContext.Current != null)
+            if (HttpContext.Current != null && !HttpContext.Current.Request.IsLocal && HttpContext.Current.Request.Url.AbsolutePath.Contains("/ReportServer/ReportService2010.asmx"))
             {
-                if (!HttpContext.Current.Request.IsLocal && HttpContext.Current.Request.Url.AbsolutePath.Contains("/ReportServer/ReportService2010.asmx"))
-                {
-                    throw new Exception();
-                }
+                throw new Exception("Cannot access internal report server operations from external machines");
             }
 
             XmlDocument doc = new XmlDocument();

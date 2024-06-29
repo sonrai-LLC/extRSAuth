@@ -57,7 +57,6 @@ namespace Sonrai.ExtRSAuth
 
         public void GetUserInfo(out IIdentity userIdentity, out IntPtr userId)
         {
-
                 if (HttpContext.Current.Request.IsLocal
                     && HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportExecution2005SOAP
                     || (HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportService2010SOAP))
@@ -71,8 +70,7 @@ namespace Sonrai.ExtRSAuth
                     userIdentity = HttpContext.Current.User.Identity;
                 }
                 else
-                    userIdentity = new GenericIdentity(AuthenticationUtilities.ReadOnlyUser);
-
+                    userIdentity = new GenericIdentity(AuthenticationUtilities.ReadOnlyUser); //make user account
 
                 // initialize a pointer to the current user id to zero
                 userId = IntPtr.Zero;

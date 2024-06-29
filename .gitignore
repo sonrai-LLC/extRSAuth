@@ -13,3 +13,4 @@
 /ExtRSAuth/.vs
 /ExtRSAuth/obj
 /ExtRSAuth/bin/Debug
+/ExtRSAuth.Tests/bin/Debug/net8.0

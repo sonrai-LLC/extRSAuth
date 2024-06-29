@@ -29,6 +29,7 @@ using System.Globalization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.ReportingServices.Interfaces;
 using System.Xml;
+using System.Web;
 
 namespace Sonrai.ExtRSAuth
 {
@@ -328,7 +329,7 @@ namespace Sonrai.ExtRSAuth
         public static void InitializeMaps()
         {
             // create model operation names data
-            if(!_modelItemOperNames.ContainsValue(OperationNames.OperReadProperties))
+            if (!_modelItemOperNames.ContainsValue(OperationNames.OperReadProperties))
                 _modelItemOperNames.Add(ModelItemOperation.ReadProperties, OperationNames.OperReadProperties);
 
             if (_modelItemOperNames.Count != Enum.GetValues(typeof(ModelItemOperation)).Length)
@@ -489,6 +490,11 @@ namespace Sonrai.ExtRSAuth
 
         public void SetConfiguration(string configuration)
         {
+            if (HttpContext.Current != null && !HttpContext.Current.Request.IsLocal && HttpContext.Current.Request.Url.AbsolutePath.Contains("/ReportServer/ReportService2010.asmx"))
+            {
+                throw new Exception("Cannot access internal report server operations from external machines");
+            }
+
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(configuration);
             if (doc.DocumentElement.Name == "AdminConfiguration")

@@ -66,7 +66,7 @@ namespace Sonrai.ExtRSAuth
                 }
                 if (HttpContext.Current.Request.IsLocal && HttpContext.Current.User != null)
                 {
-                    FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
+                    FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ReadOnlyUser, true);
                     userIdentity = HttpContext.Current.User.Identity;
                 }
                 else

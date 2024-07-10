@@ -25,23 +25,32 @@ namespace Sonrai.ExtRSAuth
 {
     public class AuthenticationUtilities
     {
-        public static string ExtRsUser = "extRSAuth"; // this value should be a secret key/passphrase; it serves as such for external SSRS API v2.0 access
+        public static string ExtRsUser = @"BUILTIN\Everyone";
         public const string ReadOnlyUser = @"BUILTIN\Everyone";
         public const string AdminUser = @"BUILTIN\Administrator";
         public const string MSBIToolsUser = "ReportingServicesTools";
         public const string ReportExecution2005SOAP = "https://localhost/reportserver/ReportExecution2005.asmx";
         public const string ReportService2010SOAP = "https://localhost/ReportServer/ReportService2010.asmx";
-        
+
+        // API auth uses this method
         public static bool VerifyPassword(string username, string password)
         {
-            if (password == Properties.Settings.Default.passphrase)
+            if (password == Properties.Settings.Default.passphrase) // TODO: change this to check the Identity db user&pwd
             {
-                return true; // auth'd
+                return true;
+            }
+
+            var identityConnectionString = "";
+            var userFound = "select from identity table {identityConnectionString}";
+
+            if (userFound == "")
+            {
+                return true;
             }
             else
             {
                 return false;
-            }          
+            }
         }
     }
 }

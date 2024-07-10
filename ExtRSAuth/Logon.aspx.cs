@@ -39,7 +39,14 @@ namespace Sonrai.ExtRSAuth
                 var isLocalConn = System.Web.HttpContext.Current.Request.IsLocal;
                 if (isLocalConn)
                 {
-                    FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsUser, true);
+                    //FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ReadOnlyUser, true);
+
+                    var userName = ExtractEncQs(System.Web.HttpContext.Current.Request.Url.PathAndQuery); //
+                    var password = ExtractEncQs(System.Web.HttpContext.Current.Request.Url.PathAndQuery); //
+                    if(AuthenticationUtilities.VerifyPassword(userName, password))
+                    {
+                        FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ReadOnlyUser, true); // ExtRSAuth, Group
+                    }                 
                 }
                 else
                 {

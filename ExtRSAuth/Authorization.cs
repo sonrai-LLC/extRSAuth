@@ -118,7 +118,7 @@ namespace Sonrai.ExtRSAuth
             return false;
         }
 
-        // Overload for array of catalog operations
+        // Overload for array of Catalog operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, CatalogOperation[] requiredOperations = null)
         {
             if (CheckUserToken(userToken, userName))
@@ -134,7 +134,7 @@ namespace Sonrai.ExtRSAuth
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ReportOperation requiredOperation = ReportOperation.ReadProperties)
         {
             if (CheckUserToken(userToken, userName))
-                userName = m_adminUserName;
+                //userName = m_adminUserName; TODO: restore
             // If the user is the administrator, allow unrestricted access.
             if (0 == string.Compare(userName, m_adminUserName, true,
                   CultureInfo.CurrentCulture))

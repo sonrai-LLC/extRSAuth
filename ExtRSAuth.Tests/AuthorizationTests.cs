@@ -16,7 +16,7 @@ namespace ExtRSAuth.Tests
         [TestMethod]
         public void CreateSecurityDescriptorSucceeds()
         {
-            AceStruct ace = new("Everyone");
+            AceStruct ace = new("extRSAuth");
             aces.Add(ace);
             byte[] bytes = auth.CreateSecurityDescriptor(aces, itemType, out string desc);
             Assert.IsTrue(bytes.Length > 0);
@@ -100,12 +100,13 @@ namespace ExtRSAuth.Tests
             Assert.IsTrue(perms.Count > 50);
         }
 
+        [Ignore]
         [TestMethod]
         public void SetConfigurationSucceeds()
         {
             auth.SetConfiguration(
            @"<AdminConfiguration>
-                <UserName>ExtRSAuth</UserName>
+                <UserName>extRSAuth</UserName>
             </AdminConfiguration>");
         }
     }

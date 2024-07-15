@@ -46,6 +46,7 @@ namespace Sonrai.ExtRSAuth
                 else
                 {
                     var decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
+                    //?UserName={RSUserName}
                     string userName = AuthenticationUtilities.ExtractRSUserName(decryptUri);
                     if (!AuthenticationUtilities.UserExists(userName))
                     {

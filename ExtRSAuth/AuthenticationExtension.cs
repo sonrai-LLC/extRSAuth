@@ -25,7 +25,6 @@ using Microsoft.ReportingServices.Interfaces;
 using System;
 using System.Security.Principal;
 using System.Web;
-using System.Web.Security;
 using System.Xml;
 
 namespace Sonrai.ExtRSAuth
@@ -65,12 +64,6 @@ namespace Sonrai.ExtRSAuth
             }
             if (HttpContext.Current.Request.IsLocal && HttpContext.Current.User != null)
             {
-                //var userName = AuthenticationUtilities.ExtractRSUserName(HttpContext.Current.Request.Url.PathAndQuery); //AuthenticationUtilities.MSBIToolsUser;
-                //if (!AuthenticationUtilities.UserExists(userName))
-                //{
-                //    throw new Exception("User does not exist on this Report Server");
-                //}
-
                 userIdentity = HttpContext.Current.User.Identity;
             }
             else

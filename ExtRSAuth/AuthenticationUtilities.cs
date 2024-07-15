@@ -28,8 +28,8 @@ namespace Sonrai.ExtRSAuth
 {
     public class AuthenticationUtilities
     {
-        public static string ExtRsUser = "extRSAuth"; //@"BUILTIN\Everyone";
-        public const string ReadOnlyUser = "BUILTIN\\Everyone"; // @"BUILTIN\Everyone";
+        public static string ExtRsUser = "extRSAuth";
+        public const string ReadOnlyUser = "BUILTIN\\Everyone";
         public const string MSBIToolsUser = "ReportingServicesTools";
         public const string ReportExecution2005SOAP = "https://localhost/reportserver/ReportExecution2005.asmx";
         public const string ReportService2010SOAP = "https://localhost/ReportServer/ReportService2010.asmx";
@@ -37,7 +37,7 @@ namespace Sonrai.ExtRSAuth
         // API auth uses this method
         public static bool VerifyPassword(string password)
         {
-            if (password == Properties.Settings.Default.passphrase) // TODO: change this to check the Identity db user&pwd
+            if (password == Properties.Settings.Default.passphrase)
             {
                 return true;
             }

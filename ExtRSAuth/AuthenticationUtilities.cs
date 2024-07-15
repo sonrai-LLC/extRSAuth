@@ -21,29 +21,23 @@
 ===========================================================================*/
 #endregion
 
+using System.Data.SqlClient;
+using System.Web;
+
 namespace Sonrai.ExtRSAuth
 {
     public class AuthenticationUtilities
     {
-        public static string ExtRsUser = @"BUILTIN\Everyone";
-        public const string ReadOnlyUser = @"BUILTIN\Everyone";
-        public const string AdminUser = @"BUILTIN\Administrator";
+        public static string ExtRsUser = "extRSAuth"; //@"BUILTIN\Everyone";
+        public const string ReadOnlyUser = "BUILTIN\\Everyone"; // @"BUILTIN\Everyone";
         public const string MSBIToolsUser = "ReportingServicesTools";
         public const string ReportExecution2005SOAP = "https://localhost/reportserver/ReportExecution2005.asmx";
         public const string ReportService2010SOAP = "https://localhost/ReportServer/ReportService2010.asmx";
 
         // API auth uses this method
-        public static bool VerifyPassword(string username, string password)
+        public static bool VerifyPassword(string password)
         {
             if (password == Properties.Settings.Default.passphrase) // TODO: change this to check the Identity db user&pwd
-            {
-                return true;
-            }
-
-            var identityConnectionString = "";
-            var userFound = "select from identity table {identityConnectionString}";
-
-            if (userFound == "")
             {
                 return true;
             }
@@ -51,6 +45,29 @@ namespace Sonrai.ExtRSAuth
             {
                 return false;
             }
+        }
+
+        public static string ExtractEncQs(string uri)
+        {
+            var tmp = HttpUtility.UrlDecode(HttpUtility.UrlDecode(uri));
+            return tmp.Substring(tmp.IndexOf("Qs=") + 3);
+        }
+
+        public static string ExtractRSUserName(string uri)
+        {
+            var tmp = HttpUtility.UrlDecode(HttpUtility.UrlDecode(uri));
+            return tmp.Substring(tmp.IndexOf("UserName=") + 9);
+        }
+
+        public static bool UserExists(string userName)
+        {
+            SqlConnection sqlConnection = new SqlConnection("Data Source=.;Initial Catalog=ReportServer;Integrated Security=True");
+            sqlConnection.Open();
+            SqlCommand sqlCommand = sqlConnection.CreateCommand();
+            sqlCommand.CommandText = string.Format("SELECT COUNT(*) FROM [ReportServer].[dbo].[Users] WHERE UserName = '{0}'", userName);
+            int userCount = (int)sqlCommand.ExecuteScalar();
+
+            return userCount > 0;
         }
     }
 }

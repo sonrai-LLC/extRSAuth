@@ -21,12 +21,12 @@
 ===========================================================================*/
 #endregion
 
-using System;
-using System.Web;
-using System.Security.Principal;
-using System.Xml;
 using Microsoft.ReportingServices.Interfaces;
+using System;
+using System.Security.Principal;
+using System.Web;
 using System.Web.Security;
+using System.Xml;
 
 namespace Sonrai.ExtRSAuth
 {
@@ -52,46 +52,50 @@ namespace Sonrai.ExtRSAuth
 
         public bool LogonUser(string userName, string password, string authority)
         {
-            return AuthenticationUtilities.VerifyPassword(userName, password);
+            return AuthenticationUtilities.VerifyPassword(password);
         }
 
         public void GetUserInfo(out IIdentity userIdentity, out IntPtr userId)
         {
-                if (HttpContext.Current.Request.IsLocal
-                    && HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportExecution2005SOAP
-                    || (HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportService2010SOAP))
-                {
-                    FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
-                    userIdentity = new GenericIdentity(AuthenticationUtilities.MSBIToolsUser);
-                }
-                if (HttpContext.Current.Request.IsLocal && HttpContext.Current.User != null)
-                {
-                    FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ReadOnlyUser, true);
-                    userIdentity = HttpContext.Current.User.Identity;
-                }
-                else
-                    userIdentity = new GenericIdentity(AuthenticationUtilities.ReadOnlyUser); //make user account
+            if (HttpContext.Current.Request.IsLocal
+                && HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportExecution2005SOAP
+                || (HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportService2010SOAP))
+            {
+                userIdentity = new GenericIdentity(AuthenticationUtilities.MSBIToolsUser);
+            }
+            if (HttpContext.Current.Request.IsLocal && HttpContext.Current.User != null)
+            {
+                //var userName = AuthenticationUtilities.ExtractRSUserName(HttpContext.Current.Request.Url.PathAndQuery); //AuthenticationUtilities.MSBIToolsUser;
+                //if (!AuthenticationUtilities.UserExists(userName))
+                //{
+                //    throw new Exception("User does not exist on this Report Server");
+                //}
 
-                // initialize a pointer to the current user id to zero
-                userId = IntPtr.Zero;
+                userIdentity = HttpContext.Current.User.Identity;
+            }
+            else
+                throw new Exception("Something happened");
+
+            // initialize a pointer to the current user id to zero
+            userId = IntPtr.Zero;
         }
 
         //adding new GetUserInfo method for IAuthenticationExtension2
         public void GetUserInfo(IRSRequestContext requestContext, out IIdentity userIdentity, out IntPtr userId)
         {
-                userIdentity = null;
-                if (requestContext.User != null && requestContext.User.Name == AuthenticationUtilities.ExtRsUser)
-                    userIdentity = requestContext.User;
+            userIdentity = null;
+            if (requestContext.User != null) // && requestContext.User.Name == AuthenticationUtilities.ExtRsUser)
+                userIdentity = requestContext.User;
 
-                // initialize a pointer to the current user id to zero
-                userId = IntPtr.Zero;
+            // initialize a pointer to the current user id to zero
+            userId = IntPtr.Zero;
         }
 
         public bool IsValidPrincipalName(string principalName)
         {
             return VerifyUser(principalName);
         }
-       
+
         public static bool VerifyUser(string userName)
         {
             return true; //already auth'd

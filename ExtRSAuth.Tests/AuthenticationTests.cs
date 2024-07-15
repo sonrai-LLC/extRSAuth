@@ -16,13 +16,13 @@ namespace ExtRSAuth.Tests
         [TestMethod]
         public void VerifyValidStringPasswordSucceeds()
         {
-            Assert.IsTrue(AuthenticationUtilities.VerifyPassword("ExtRSAuth", "This_IS_a_simpl_Passphrase"));
+            Assert.IsTrue(AuthenticationUtilities.VerifyPassword("This_IS_a_simpl_Passphrase"));
         }
 
         [TestMethod]
         public void VerifyNullRefPasswordFails()
         {
-            Assert.IsFalse(AuthenticationUtilities.VerifyPassword("", ""));
+            Assert.IsFalse(AuthenticationUtilities.VerifyPassword(""));
         }
 
         [TestMethod]

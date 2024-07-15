@@ -24,33 +24,38 @@
 #endregion
 
 using System;
+using System.Net.PeerToPeer;
+using System.Web;
 using System.Web.Security;
 
 namespace Sonrai.ExtRSAuth
 {
-   public class Logon : System.Web.UI.Page
-   {
+    public class Logon : System.Web.UI.Page
+    {
         public System.Web.UI.WebControls.Button BtnLogon;
 
         private void Page_Load(object sender, EventArgs e)
         {
-            try        
+            try
             {
-                var isLocalConn = System.Web.HttpContext.Current.Request.IsLocal;
+                var isLocalConn = HttpContext.Current.Request.IsLocal;
                 if (isLocalConn)
                 {
-                    //FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ReadOnlyUser, true);
-
-                    var userName = ExtractEncQs(System.Web.HttpContext.Current.Request.Url.PathAndQuery); //
-                    var password = ExtractEncQs(System.Web.HttpContext.Current.Request.Url.PathAndQuery); //
-                    if(AuthenticationUtilities.VerifyPassword(userName, password))
-                    {
-                        FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ReadOnlyUser, true); // ExtRSAuth, Group
-                    }                 
+                    FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsUser, true);
                 }
                 else
                 {
-                    var decryptUri = Encryption.Decrypt(ExtractEncQs(System.Web.HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
+                    var decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
+                    string userName = AuthenticationUtilities.ExtractRSUserName(decryptUri);
+                    if (!AuthenticationUtilities.UserExists(userName))
+                    {
+                        throw new Exception("User does not exist on this Report Server");
+                    }
+
+                    if (userName.Length < 20)
+                    {
+                        FormsAuthentication.RedirectFromLoginPage(userName, true); // ExtRSAuth, Group , userName  
+                    }
                     FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ReadOnlyUser, true);
                 }
             }
@@ -59,14 +64,7 @@ namespace Sonrai.ExtRSAuth
                 FormsAuthentication.SignOut();
             }
         }
-        
-        //TODO: Add #i18n #l10n
-        public string ExtractEncQs(string uri)
-        {
-            var tmp = Server.UrlDecode(Server.UrlDecode(uri));
-            return tmp.Substring(tmp.IndexOf("Qs=") + 3);
-        }
-
+    
         // The below 2 methods are required .NET Framework web form designer code
         override protected void OnInit(EventArgs e)
         {

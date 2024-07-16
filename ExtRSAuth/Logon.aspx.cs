@@ -50,14 +50,9 @@ namespace Sonrai.ExtRSAuth
                     {
                         throw new Exception("User does not exist on this Report Server");
                     }
-
-                    if (userName.Length < 20)
-                    {
-                        FormsAuthentication.RedirectFromLoginPage(userName, true);
-                    }
                     else
                     {
-                        throw new Exception("Unauthorized."); ;
+                        FormsAuthentication.RedirectFromLoginPage(userName, true);
                     }
                 }
             }

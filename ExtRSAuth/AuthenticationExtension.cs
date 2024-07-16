@@ -64,13 +64,13 @@ namespace Sonrai.ExtRSAuth
                 FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
                 userIdentity = new GenericIdentity(AuthenticationUtilities.MSBIToolsUser);
             }
-            if (HttpContext.Current.Request.IsLocal && HttpContext.Current.User != null)
+            if (HttpContext.Current.User != null) //ttpContext.Current.Request.IsLocal && 
             {
-                FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
+                FormsAuthentication.SetAuthCookie(HttpContext.Current.User.Identity.Name, true);
                 userIdentity = HttpContext.Current.User.Identity;
             }
             else
-                userIdentity = new GenericIdentity(AuthenticationUtilities.ReadOnlyUser); //make user account
+                userIdentity = new GenericIdentity(HttpContext.Current.User.Identity.Name); //make user account
 
             // initialize a pointer to the current user id to zero
             userId = IntPtr.Zero;

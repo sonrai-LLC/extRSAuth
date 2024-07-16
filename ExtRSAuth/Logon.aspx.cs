@@ -24,7 +24,6 @@
 #endregion
 
 using System;
-using System.Net.PeerToPeer;
 using System.Web;
 using System.Web.Security;
 
@@ -64,7 +63,7 @@ namespace Sonrai.ExtRSAuth
             }
             catch (Exception ex)
             {
-                FormsAuthentication.SignOut();
+                FormsAuthentication.SignOut(); // Unauthorized
             }
         }
 

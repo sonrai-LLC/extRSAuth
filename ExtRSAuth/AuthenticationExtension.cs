@@ -25,6 +25,7 @@ using Microsoft.ReportingServices.Interfaces;
 using System;
 using System.Security.Principal;
 using System.Web;
+using System.Web.Security;
 using System.Xml;
 
 namespace Sonrai.ExtRSAuth
@@ -60,14 +61,16 @@ namespace Sonrai.ExtRSAuth
                 && HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportExecution2005SOAP
                 || (HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportService2010SOAP))
             {
+                FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
                 userIdentity = new GenericIdentity(AuthenticationUtilities.MSBIToolsUser);
             }
             if (HttpContext.Current.Request.IsLocal && HttpContext.Current.User != null)
             {
+                FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
                 userIdentity = HttpContext.Current.User.Identity;
             }
             else
-                throw new Exception("Something happened");
+                userIdentity = new GenericIdentity(AuthenticationUtilities.ReadOnlyUser); //make user account
 
             // initialize a pointer to the current user id to zero
             userId = IntPtr.Zero;

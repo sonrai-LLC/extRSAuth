@@ -59,7 +59,7 @@ namespace Sonrai.ExtRSAuth
             return tmp.Substring(tmp.IndexOf("UserName=") + 9);
         }
 
-        public static bool UserExists(string userName)
+        public static bool RSUserExists(string userName)
         {
             SqlConnection sqlConnection = new SqlConnection("Data Source=.;Initial Catalog=ReportServer;Integrated Security=True");
             sqlConnection.Open();

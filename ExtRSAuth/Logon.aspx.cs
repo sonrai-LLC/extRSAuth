@@ -46,18 +46,20 @@ namespace Sonrai.ExtRSAuth
                 else
                 {
                     var decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
-                    //?UserName={RSUserName}
                     string userName = AuthenticationUtilities.ExtractRSUserName(decryptUri);
-                    if (!AuthenticationUtilities.UserExists(userName))
+                    if (!AuthenticationUtilities.RSUserExists(userName))
                     {
                         throw new Exception("User does not exist on this Report Server");
                     }
 
                     if (userName.Length < 20)
                     {
-                        FormsAuthentication.RedirectFromLoginPage(userName, true); // ExtRSAuth, Group , userName  
+                        FormsAuthentication.RedirectFromLoginPage(userName, true);
                     }
-                    FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ReadOnlyUser, true);
+                    else
+                    {
+                        throw new Exception("Unauthorized."); ;
+                    }
                 }
             }
             catch (Exception ex)
@@ -65,7 +67,7 @@ namespace Sonrai.ExtRSAuth
                 FormsAuthentication.SignOut();
             }
         }
-    
+
         // The below 2 methods are required .NET Framework web form designer code
         override protected void OnInit(EventArgs e)
         {

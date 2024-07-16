@@ -58,7 +58,7 @@ namespace Sonrai.ExtRSAuth
             }
             catch (Exception ex)
             {
-                FormsAuthentication.SignOut(); // Unauthorized
+                FormsAuthentication.RedirectToLoginPage(); // lock out
             }
         }
 

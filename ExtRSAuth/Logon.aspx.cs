@@ -58,7 +58,7 @@ namespace Sonrai.ExtRSAuth
             }
             catch (Exception ex)
             {
-                FormsAuthentication.RedirectToLoginPage(); // lock out
+                throw new Exception("User does not exist on this Report Server");
             }
         }
 

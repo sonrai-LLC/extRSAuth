@@ -257,43 +257,57 @@ namespace Sonrai.ExtRSAuth
             return false;
         }
 
-        public StringCollection GetPermissions(string userName, IntPtr userToken = new IntPtr(), SecurityItemType itemType = SecurityItemType.Unknown, byte[] secDesc = null)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        public StringCollection GetPermissions(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), SecurityItemType itemType = SecurityItemType.Unknown, byte[] secDesc = null)
         {
-            if (CheckUserToken(userToken, userName))
-                userName = m_adminUserName;
-
             StringCollection permissions = new StringCollection();
-
             if (IsAdmin(userName))
+            {
                 permissions.AddRange(_fullPermissions.ToArray());
+            }
             else
             {
                 AceCollection acl = DeserializeAcl(secDesc);
                 foreach (AceStruct ace in acl)
                 {
-                    if (0 == string.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
+                    if (0 == String.Compare(userName, ace.PrincipalName, true,
+                          CultureInfo.CurrentCulture))
                     {
                         foreach (ModelItemOperation aclOperation in ace.ModelItemOperations)
+                        {
                             if (!permissions.Contains(_modelItemOperNames[aclOperation]))
                                 permissions.Add(_modelItemOperNames[aclOperation]);
+                        }
                         foreach (ModelOperation aclOperation in ace.ModelOperations)
+                        {
                             if (!permissions.Contains(_modelOperNames[aclOperation]))
                                 permissions.Add(_modelOperNames[aclOperation]);
+                        }
                         foreach (CatalogOperation aclOperation in ace.CatalogOperations)
+                        {
                             if (!permissions.Contains(_catalogOperationNames[aclOperation]))
                                 permissions.Add(_catalogOperationNames[aclOperation]);
+                        }
                         foreach (ReportOperation aclOperation in ace.ReportOperations)
+                        {
                             if (!permissions.Contains(_reportOperationNames[aclOperation]))
                                 permissions.Add(_reportOperationNames[aclOperation]);
+                        }
                         foreach (FolderOperation aclOperation in ace.FolderOperations)
+                        {
                             if (!permissions.Contains(_folderOperationNames[aclOperation]))
                                 permissions.Add(_folderOperationNames[aclOperation]);
+                        }
                         foreach (ResourceOperation aclOperation in ace.ResourceOperations)
+                        {
                             if (!permissions.Contains(_resourceOperationNames[aclOperation]))
                                 permissions.Add(_resourceOperationNames[aclOperation]);
+                        }
                         foreach (DatasourceOperation aclOperation in ace.DatasourceOperations)
+                        {
                             if (!permissions.Contains(_dataSourceOperationNames[aclOperation]))
                                 permissions.Add(_dataSourceOperationNames[aclOperation]);
+                        }
                     }
                 }
             }

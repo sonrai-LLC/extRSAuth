@@ -28,7 +28,7 @@ namespace Sonrai.ExtRSAuth
 {
     public class AuthenticationUtilities
     {
-        public static string ExtRsUser = "extRSAuth";
+        public const string ExtRsUser = "extRSAuth";
         public const string ReadOnlyUser = "BUILTIN\\Everyone";
         public const string MSBIToolsUser = "ReportingServicesTools";
         public const string ReportExecution2005SOAP = "https://localhost/reportserver/ReportExecution2005.asmx";

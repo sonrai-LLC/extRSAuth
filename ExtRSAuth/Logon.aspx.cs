@@ -45,6 +45,12 @@ namespace Sonrai.ExtRSAuth
                 else
                 {
                     var decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
+                   
+                    if(decryptUri.Contains("Sources"))
+                    {
+                        throw new Exception("Invalid operation");
+                    }
+
                     string userName = AuthenticationUtilities.ExtractRSUserName(decryptUri);
                     if (!AuthenticationUtilities.RSUserExists(userName))
                     {
@@ -58,7 +64,8 @@ namespace Sonrai.ExtRSAuth
             }
             catch (Exception ex)
             {
-                throw new Exception("User does not exist on this Report Server");
+                Response.Redirect("https://extrs.net");
+                //throw new Exception("User does not exist on this Report Server");
             }
         }
 

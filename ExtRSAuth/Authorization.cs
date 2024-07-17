@@ -55,11 +55,6 @@ namespace Sonrai.ExtRSAuth
 
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelItemOperation modelItemOperation = ModelItemOperation.ReadProperties)
         {
-            if (CheckUserToken(userToken, userName))
-                userName = m_adminUserName;
-            if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
-                return true;
-
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
@@ -78,15 +73,10 @@ namespace Sonrai.ExtRSAuth
 
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelOperation modelOperation = ModelOperation.ReadProperties)
         {
-            if (CheckUserToken(userToken, userName))
-                userName = m_adminUserName;
-            if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
-                return true;
-
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
-                if (0 == String.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
+                if (0 == string.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
                 {
                     foreach (ModelOperation aclOperation in ace.ModelOperations)
                         if (aclOperation == modelOperation)
@@ -99,15 +89,10 @@ namespace Sonrai.ExtRSAuth
 
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, CatalogOperation requiredOperation = CatalogOperation.ReadRoleProperties)
         {
-            if (CheckUserToken(userToken, userName))
-                userName = m_adminUserName;
-            if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
-                return true;
-
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
-                if (0 == String.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
+                if (0 == string.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
                 {
                     foreach (CatalogOperation aclOperation in ace.CatalogOperations)
                         if (aclOperation == requiredOperation)
@@ -121,8 +106,6 @@ namespace Sonrai.ExtRSAuth
         // Overload for array of Catalog operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, CatalogOperation[] requiredOperations = null)
         {
-            if (CheckUserToken(userToken, userName))
-                userName = m_adminUserName;
             foreach (CatalogOperation operation in requiredOperations)
                 if (!CheckAccess(userName, userToken, secDesc, operation))
                     return false;
@@ -133,13 +116,6 @@ namespace Sonrai.ExtRSAuth
         // Overload for Report operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ReportOperation requiredOperation = ReportOperation.ReadProperties)
         {
-            if (CheckUserToken(userToken, userName))
-                //userName = m_adminUserName; TODO: restore
-            // If the user is the administrator, allow unrestricted access.
-            if (0 == string.Compare(userName, m_adminUserName, true,
-                  CultureInfo.CurrentCulture))
-                return true;
-
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
@@ -162,12 +138,6 @@ namespace Sonrai.ExtRSAuth
         // Overload for Folder operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation requiredOperation = FolderOperation.ReadAuthorizationPolicy)
         {
-            if (CheckUserToken(userToken, userName))
-                userName = m_adminUserName;
-            // If the user is the administrator, allow unrestricted access.
-            if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
-                return true;
-
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
@@ -185,9 +155,6 @@ namespace Sonrai.ExtRSAuth
         // Overload for an array of Folder operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation[] requiredOperations = null)
         {
-            if (CheckUserToken(userToken, userName))
-                userName = m_adminUserName;
-
             foreach (FolderOperation operation in requiredOperations)
                 if (!CheckAccess(userName, userToken, secDesc, operation))
                     return false;
@@ -198,12 +165,6 @@ namespace Sonrai.ExtRSAuth
         // Overload for Resource operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ResourceOperation requiredOperation = ResourceOperation.ReadAuthorizationPolicy)
         {
-            if (CheckUserToken(userToken, userName))
-                userName = m_adminUserName;
-            // If the user is the administrator, allow unrestricted access.
-            if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
-                return true;
-
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
@@ -221,12 +182,6 @@ namespace Sonrai.ExtRSAuth
         // Overload for an array of Resource operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ResourceOperation[] requiredOperations = null)
         {
-            if (CheckUserToken(userToken, userName))
-                userName = m_adminUserName;
-            // If the user is the administrator, allow unrestricted access.
-            if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
-                return true;
-
             foreach (ResourceOperation operation in requiredOperations)
                 if (!CheckAccess(userName, userToken, secDesc, operation))
                     return false;
@@ -237,27 +192,22 @@ namespace Sonrai.ExtRSAuth
         // Overload for Datasource operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, DatasourceOperation requiredOperation = DatasourceOperation.ReadAuthorizationPolicy)
         {
-            if (CheckUserToken(userToken, userName))
-                userName = m_adminUserName;
-            // If the user is the administrator, allow unrestricted access.
-            if (0 == string.Compare(userName, m_adminUserName, true, CultureInfo.CurrentCulture))
-                return true;
-
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
                 if (0 == string.Compare(userName, ace.PrincipalName, true, CultureInfo.CurrentCulture))
                 {
                     foreach (DatasourceOperation aclOperation in ace.DatasourceOperations)
+                    {
                         if (aclOperation == requiredOperation)
                             return true;
+                    }
                 }
             }
 
             return false;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public StringCollection GetPermissions(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), SecurityItemType itemType = SecurityItemType.Unknown, byte[] secDesc = null)
         {
             StringCollection permissions = new StringCollection();

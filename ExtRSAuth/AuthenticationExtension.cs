@@ -23,7 +23,6 @@
 
 using Microsoft.ReportingServices.Interfaces;
 using System;
-using System.Security;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
@@ -58,9 +57,9 @@ namespace Sonrai.ExtRSAuth
 
         public void GetUserInfo(out IIdentity userIdentity, out IntPtr userId)
         {
-            if (HttpContext.Current.Request.IsLocal
-                && HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportExecution2005SOAP
-                || (HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportService2010SOAP))
+             //&& HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportExecution2005SOAP
+             //   || (HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportService2010SOAP)
+            if (HttpContext.Current.Request.IsLocal)
             {
                 FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
                 userIdentity = new GenericIdentity(AuthenticationUtilities.MSBIToolsUser);
@@ -72,7 +71,8 @@ namespace Sonrai.ExtRSAuth
             }
             else
             {
-                throw new SecurityException();
+                userIdentity = null;
+                throw new Exception("User does not exist on this Report Server");
             }
                 //userIdentity = new GenericIdentity(AuthenticationUtilities.ReadOnlyUser); //make user account
 

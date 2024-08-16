@@ -62,7 +62,7 @@ namespace Sonrai.ExtRSAuth
                 FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
                 userIdentity = new GenericIdentity(AuthenticationUtilities.MSBIToolsUser);
             }
-            if (HttpContext.Current.User != null)// && HttpContext.Current.Request.IsLocal)
+            if (HttpContext.Current.User != null)
             {
                 FormsAuthentication.SetAuthCookie(HttpContext.Current.User.Identity.Name, true);
                 userIdentity = HttpContext.Current.User.Identity;
@@ -81,7 +81,7 @@ namespace Sonrai.ExtRSAuth
         public void GetUserInfo(IRSRequestContext requestContext, out IIdentity userIdentity, out IntPtr userId)
         {
             userIdentity = null;
-            if (requestContext.User != null) // && requestContext.User.Name == AuthenticationUtilities.ExtRsUser)
+            if (requestContext.User != null)
                 userIdentity = requestContext.User;
 
             // initialize a pointer to the current user id to zero

@@ -64,8 +64,7 @@ namespace Sonrai.ExtRSAuth
             }
             catch (Exception ex)
             {
-                Response.Redirect("https://extrs.net");
-                //throw new Exception("User does not exist on this Report Server");
+                throw new Exception("User does not exist on this Report Server");
             }
         }
 

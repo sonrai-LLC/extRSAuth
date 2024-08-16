@@ -57,8 +57,6 @@ namespace Sonrai.ExtRSAuth
 
         public void GetUserInfo(out IIdentity userIdentity, out IntPtr userId)
         {
-             //&& HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportExecution2005SOAP
-             //   || (HttpContext.Current.Items["OriginalUrl"].ToString() == AuthenticationUtilities.ReportService2010SOAP)
             if (HttpContext.Current.Request.IsLocal)
             {
                 FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
@@ -74,7 +72,6 @@ namespace Sonrai.ExtRSAuth
                 userIdentity = null;
                 throw new Exception("User does not exist on this Report Server");
             }
-                //userIdentity = new GenericIdentity(AuthenticationUtilities.ReadOnlyUser); //make user account
 
             // initialize a pointer to the current user id to zero
             userId = IntPtr.Zero;

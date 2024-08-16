@@ -46,11 +46,7 @@ namespace Sonrai.ExtRSAuth
                 {
                     var decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
                    
-                    if(decryptUri.Contains("Sources"))
-                    {
-                        throw new Exception("Invalid operation");
-                    }
-
+                    // verify user exists
                     string userName = AuthenticationUtilities.ExtractRSUserName(decryptUri);
                     if (!AuthenticationUtilities.RSUserExists(userName))
                     {

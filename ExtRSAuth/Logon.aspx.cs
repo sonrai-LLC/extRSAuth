@@ -24,6 +24,7 @@
 #endregion
 
 using System;
+using System.Net.PeerToPeer;
 using System.Web;
 using System.Web.Security;
 
@@ -40,27 +41,47 @@ namespace Sonrai.ExtRSAuth
                 var isLocalConn = HttpContext.Current.Request.IsLocal;
                 if (isLocalConn)
                 {
-                    FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsUser, true);
+                    var decryptUri = "";
+
+                    try
+                    {
+                        decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
+                    }
+                    catch(Exception ex)
+                    {
+                        FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsUser, true);
+                    }
+
+                    LoginExternalUser(decryptUri);
                 }
                 else
                 {
-                    var decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
-                   
-                    // verify user exists
-                    string userName = AuthenticationUtilities.ExtractRSUserName(decryptUri);
-                    if (!AuthenticationUtilities.RSUserExists(userName))
-                    {
-                        throw new Exception("User does not exist on this Report Server");
-                    }
-                    else
-                    {
-                        FormsAuthentication.RedirectFromLoginPage(userName, true);
-                    }
+                    LoginExternalUser();
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception("User does not exist on this Report Server");
+            }
+        }
+
+        private void LoginExternalUser(string decryptUri = "")
+        {
+            if (decryptUri == "")
+            {
+                decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
+            }
+           
+            // verify user exists
+            string userName = AuthenticationUtilities.ExtractRSUserName(decryptUri);
+            if (!AuthenticationUtilities.RSUserExists(userName))
+            {
+                throw new Exception("User does not exist on this Report Server");
+            }
+            else
+            {
+                FormsAuthentication.SetAuthCookie(userName, false, "/");
+                FormsAuthentication.RedirectFromLoginPage(userName, true);
             }
         }
 

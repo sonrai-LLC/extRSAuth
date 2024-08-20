@@ -80,7 +80,7 @@ namespace Sonrai.ExtRSAuth
             }
             else
             {
-                FormsAuthentication.SetAuthCookie(userName, false, "/");
+                FormsAuthentication.SignOut(); // reset the user (needed due to cookie expiry overlap from user session wsitch within same browser)
                 FormsAuthentication.RedirectFromLoginPage(userName, true);
             }
         }

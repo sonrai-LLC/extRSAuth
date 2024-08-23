@@ -733,7 +733,10 @@
       },
       "ExtRSAuth/1.0.0": {
         "runtime": {
-          "Sonrai.ExtRSAuth.dll": {}
+          "Sonrai.ExtRSAuth.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": ""
+          }
         }
       },
       "Microsoft.ReportingServices.Interfaces/2022.1.0.0": {

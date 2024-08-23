@@ -30,71 +30,77 @@ using System.Web.Security;
 
 namespace Sonrai.ExtRSAuth
 {
-    public class Logon : System.Web.UI.Page
-    {
-        public System.Web.UI.WebControls.Button BtnLogon;
+	public class Logon : System.Web.UI.Page
+	{
+		public System.Web.UI.WebControls.Button BtnLogon;
 
-        private void Page_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                var isLocalConn = HttpContext.Current.Request.IsLocal;
-                if (isLocalConn)
-                {
-                    var decryptUri = "";
+		private void Page_Load(object sender, EventArgs e)
+		{
+			try
+			{
+				var isLocalConn = HttpContext.Current.Request.IsLocal;
+				if (isLocalConn)
+				{
+					LoginExternalUser(AuthenticationUtilities.ExtRsUser);
+				}
+				else
+				{				
+					var decryptUri = "";
+					try
+					{
+						decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
+					}
+					catch (Exception ex)
+					{
+						FormsAuthentication.SignOut();
+					}
 
-                    try
-                    {
-                        decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
-                    }
-                    catch(Exception ex)
-                    {
-                        FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsUser, true);
-                    }
+					LoginExternalUser(decryptUri);
+				}
+			}
+			catch (Exception ex)
+			{
+				FormsAuthentication.SignOut();
+			}
+		}
 
-                    LoginExternalUser(decryptUri);
-                }
-                else
-                {
-                    LoginExternalUser();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("User does not exist on this Report Server");
-            }
-        }
+		private void LoginExternalUser(string decryptUri = "")
+		{
+			if (decryptUri == "")
+			{
+				decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
+			}
+			// verify user exists
+			string userName = AuthenticationUtilities.ExtractRSUserName(decryptUri);
+			try
+			{
+				if (!AuthenticationUtilities.RSUserExists(userName))
+				{
+					throw new Exception("User does not exist on this Report Server");
+				}
+				else
+				{
+					FormsAuthentication.SignOut(); // reset the user (needed due to cookie expiry overlap from user session wsitch within same browser)
+					FormsAuthentication.RedirectFromLoginPage(userName, true);
+				}
+			}
+			catch (Exception e)
+			{
+				FormsAuthentication.SignOut();
+				FormsAuthentication.RedirectFromLoginPage(userName, true);
+			}
+		}
 
-        private void LoginExternalUser(string decryptUri = "")
-        {
-            if (decryptUri == "")
-            {
-                decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
-            }
-           
-            // verify user exists
-            string userName = AuthenticationUtilities.ExtractRSUserName(decryptUri);
-            if (!AuthenticationUtilities.RSUserExists(userName))
-            {
-                throw new Exception("User does not exist on this Report Server");
-            }
-            else
-            {
-                FormsAuthentication.SignOut(); // reset the user (needed due to cookie expiry overlap from user session wsitch within same browser)
-                FormsAuthentication.RedirectFromLoginPage(userName, true);
-            }
-        }
+		// The below 2 methods are required .NET Framework web form designer code
+		override protected void OnInit(EventArgs e)
+		{
+			InitializeComponent();
+			base.OnInit(e);
+		}
 
-        // The below 2 methods are required .NET Framework web form designer code
-        override protected void OnInit(EventArgs e)
-        {
-            InitializeComponent();
-            base.OnInit(e);
-        }
-
-        private void InitializeComponent()
-        {
-            Init += new EventHandler(this.Page_Load);
-        }
-    }
+		private void InitializeComponent()
+		{
+			Init += new EventHandler(this.Page_Load);
+		}
+	}
 }

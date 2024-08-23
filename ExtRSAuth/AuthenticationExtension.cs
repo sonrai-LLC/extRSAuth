@@ -59,12 +59,12 @@ namespace Sonrai.ExtRSAuth
         {
             if (HttpContext.Current.Request.IsLocal)
             {
-                FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, true);
+                FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, false);
                 userIdentity = new GenericIdentity(AuthenticationUtilities.MSBIToolsUser);
             }
             if (HttpContext.Current.User != null)
             {
-                FormsAuthentication.SetAuthCookie(HttpContext.Current.User.Identity.Name, true);
+                FormsAuthentication.SetAuthCookie(HttpContext.Current.User.Identity.Name, false);
                 userIdentity = HttpContext.Current.User.Identity;
             }
             else

@@ -41,7 +41,7 @@ namespace Sonrai.ExtRSAuth
 				var isLocalConn = HttpContext.Current.Request.IsLocal;
 				if (isLocalConn)
 				{
-					LoginExternalUser(AuthenticationUtilities.ExtRsUser);
+					FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsUser, true);
 				}
 				else
 				{				

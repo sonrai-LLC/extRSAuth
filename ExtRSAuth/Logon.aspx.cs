@@ -66,6 +66,9 @@ namespace Sonrai.ExtRSAuth
 
 		private void LoginExternalUser(string decryptUri = "")
 		{
+			//FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsReadOnlyUser, false);
+			//return;
+
 			if (decryptUri == "")
 			{
 				decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
@@ -76,18 +79,16 @@ namespace Sonrai.ExtRSAuth
 			{
 				if (!AuthenticationUtilities.RSUserExists(userName))
 				{
-					throw new Exception("User does not exist on this Report Server");
+					FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsReadOnlyUser, false);
 				}
 				else
 				{
-					FormsAuthentication.SignOut(); // reset the user (needed due to cookie expiry overlap from user session wsitch within same browser)
-					FormsAuthentication.RedirectFromLoginPage(userName, true);
+					FormsAuthentication.RedirectFromLoginPage(userName, false);
 				}
 			}
 			catch (Exception e)
 			{
 				FormsAuthentication.SignOut();
-				FormsAuthentication.RedirectFromLoginPage(userName, true);
 			}
 		}
 

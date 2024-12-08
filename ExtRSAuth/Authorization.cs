@@ -30,6 +30,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.ReportingServices.Interfaces;
 using System.Xml;
 using System.Web;
+using System.Diagnostics.Eventing.Reader;
 
 namespace Sonrai.ExtRSAuth
 {
@@ -55,6 +56,12 @@ namespace Sonrai.ExtRSAuth
 
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelItemOperation modelItemOperation = ModelItemOperation.ReadProperties)
         {
+#if DEBUG
+            if (AuthenticationUtilities.NoAuth)
+            {
+                return true;
+            }
+#endif
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
@@ -73,6 +80,12 @@ namespace Sonrai.ExtRSAuth
 
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ModelOperation modelOperation = ModelOperation.ReadProperties)
         {
+#if DEBUG
+            if (AuthenticationUtilities.NoAuth)
+            {
+                return true;
+            }
+#endif
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
@@ -89,6 +102,12 @@ namespace Sonrai.ExtRSAuth
 
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, CatalogOperation requiredOperation = CatalogOperation.ReadRoleProperties)
         {
+#if DEBUG
+            if (AuthenticationUtilities.NoAuth)
+            {
+                return true;
+            }
+#endif
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
@@ -106,6 +125,12 @@ namespace Sonrai.ExtRSAuth
         // Overload for array of Catalog operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, CatalogOperation[] requiredOperations = null)
         {
+#if DEBUG
+            if (AuthenticationUtilities.NoAuth)
+            {
+                return true;
+            }
+#endif
             foreach (CatalogOperation operation in requiredOperations)
                 if (!CheckAccess(userName, userToken, secDesc, operation))
                     return false;
@@ -116,6 +141,12 @@ namespace Sonrai.ExtRSAuth
         // Overload for Report operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ReportOperation requiredOperation = ReportOperation.ReadProperties)
         {
+#if DEBUG
+            if (AuthenticationUtilities.NoAuth)
+            {
+                return true;
+            }
+#endif
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
@@ -138,6 +169,12 @@ namespace Sonrai.ExtRSAuth
         // Overload for Folder operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation requiredOperation = FolderOperation.ReadAuthorizationPolicy)
         {
+#if DEBUG
+            if (AuthenticationUtilities.NoAuth)
+            {
+                return true;
+            }
+#endif
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
@@ -155,8 +192,14 @@ namespace Sonrai.ExtRSAuth
         // Overload for an array of Folder operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, FolderOperation[] requiredOperations = null)
         {
+#if DEBUG
+            if (AuthenticationUtilities.NoAuth)
+            {
+                return true;
+            }
+#endif
             foreach (FolderOperation operation in requiredOperations)
-                if (!CheckAccess(userName, userToken, secDesc, operation))
+            if (!CheckAccess(userName, userToken, secDesc, operation))
                     return false;
 
             return true;
@@ -165,6 +208,12 @@ namespace Sonrai.ExtRSAuth
         // Overload for Resource operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ResourceOperation requiredOperation = ResourceOperation.ReadAuthorizationPolicy)
         {
+#if DEBUG
+            if (AuthenticationUtilities.NoAuth)
+            {
+                return true;
+            }
+#endif
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {
@@ -182,6 +231,8 @@ namespace Sonrai.ExtRSAuth
         // Overload for an array of Resource operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, ResourceOperation[] requiredOperations = null)
         {
+            //  return true;
+
             foreach (ResourceOperation operation in requiredOperations)
                 if (!CheckAccess(userName, userToken, secDesc, operation))
                     return false;
@@ -192,6 +243,12 @@ namespace Sonrai.ExtRSAuth
         // Overload for Datasource operations
         public bool CheckAccess(string userName, IntPtr userToken = new IntPtr(), byte[] secDesc = null, DatasourceOperation requiredOperation = DatasourceOperation.ReadAuthorizationPolicy)
         {
+#if DEBUG
+            if(AuthenticationUtilities.NoAuth)
+            {
+                return true;
+            }          
+#endif
             AceCollection acl = DeserializeAcl(secDesc);
             foreach (AceStruct ace in acl)
             {

@@ -24,13 +24,12 @@
 #endregion
 
 using System;
-using System.Net.PeerToPeer;
 using System.Web;
 using System.Web.Security;
 
 namespace Sonrai.ExtRSAuth
 {
-	public class Logon : System.Web.UI.Page
+    public class Logon : System.Web.UI.Page
 	{
 		public System.Web.UI.WebControls.Button BtnLogon;
 

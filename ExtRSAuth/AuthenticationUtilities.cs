@@ -61,12 +61,29 @@ namespace Sonrai.ExtRSAuth
             return tmp.Substring(tmp.IndexOf("UserName=") + 9);
         }
 
+        public static string ExtractRSUserSession(string uri)
+        {
+            var tmp = HttpUtility.UrlDecode(HttpUtility.UrlDecode(uri));
+            return tmp.Substring(tmp.IndexOf("UserSessionName=") + 16);
+        }
+
         public static bool RSUserExists(string userName)
         {
             SqlConnection sqlConnection = new SqlConnection("Data Source=.;Initial Catalog=ReportServer;Integrated Security=True");
             sqlConnection.Open();
             SqlCommand sqlCommand = sqlConnection.CreateCommand();
             sqlCommand.CommandText = string.Format("SELECT COUNT(*) FROM [ReportServer].[dbo].[Users] WHERE UserName = '{0}'", userName);
+            int userCount = (int)sqlCommand.ExecuteScalar();
+
+            return userCount > 0;
+        }
+
+        public static bool UserSessionExists(string userSessionId)
+        {
+            SqlConnection sqlConnection = new SqlConnection("Data Source=.;Initial Catalog=UserSessionDatabase;Integrated Security=True");
+            sqlConnection.Open();
+            SqlCommand sqlCommand = sqlConnection.CreateCommand();
+            sqlCommand.CommandText = string.Format("SELECT COUNT(*) FROM [UserSessionDatabase].[dbo].[UserSessions] WHERE UserSessionId = '{0}'", userSessionId);
             int userCount = (int)sqlCommand.ExecuteScalar();
 
             return userCount > 0;

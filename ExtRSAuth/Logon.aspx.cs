@@ -69,18 +69,19 @@ namespace Sonrai.ExtRSAuth
 			{
 				decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);
 			}
-			// verify user exists
-			string userName = AuthenticationUtilities.ExtractRSUserName(decryptUri);
-			try
+            // verify user exists AND verify that the user session exists in the UserSessions table
+            string userName = AuthenticationUtilities.ExtractRSUserName(decryptUri);
+            string userSessionId = AuthenticationUtilities.ExtractRSUserSession(decryptUri);
+            try
 			{
-				if (!AuthenticationUtilities.RSUserExists(userName))
+				if (AuthenticationUtilities.RSUserExists(userName) && AuthenticationUtilities.UserSessionExists(userSessionId))
 				{
-					FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsReadOnlyUser, false);
-				}
+                    FormsAuthentication.RedirectFromLoginPage(userName, true);
+                }
 				else
 				{
-					FormsAuthentication.RedirectFromLoginPage(userName, false);
-				}
+                    FormsAuthentication.SignOut();
+                }
 			}
 			catch (Exception e)
 			{

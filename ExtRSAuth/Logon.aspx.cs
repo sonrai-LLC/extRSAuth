@@ -65,9 +65,6 @@ namespace Sonrai.ExtRSAuth
 
 		private void LoginExternalUser(string decryptUri = "")
 		{
-			//FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsReadOnlyUser, false);
-			//return;
-
 			if (decryptUri == "")
 			{
 				decryptUri = Encryption.Decrypt(AuthenticationUtilities.ExtractEncQs(HttpContext.Current.Request.Url.PathAndQuery), Properties.Settings.Default.cle);

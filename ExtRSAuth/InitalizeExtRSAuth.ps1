@@ -9,6 +9,17 @@ Function Get-StrPattern{
    return $found
 }
 
+# Elevate permissions to run SQLPS commands
+Set-ExecutionPolicy Unrestricted
+
+# Check to ensure SQLPS is installed as some minor SSRS SP adjustments are necessary
+try {
+    Import-Module SQLPS -ErrorAction Stop
+    Write-Output "Module SQLPS is installed."
+} catch {
+    Write-Output "Module SQLPS is not installed."
+}
+
 # This script configures everything needed for ExtRSAuth to work
 $SQLServer = "."
 $db = "ReportServer"

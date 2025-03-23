@@ -25,7 +25,7 @@ namespace Sonrai.ExtRSAuth.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("/Zl1Ct/h2gogiHQ8fKFrA9Ix+QWJtN+JaX2QLZbfFsU=")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string cle {
             get {
                 return ((string)(this["cle"]));
@@ -34,7 +34,7 @@ namespace Sonrai.ExtRSAuth.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("This!Be?SumthingAsAPssFrAezee32743")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string passphrase {
             get {
                 return ((string)(this["passphrase"]));

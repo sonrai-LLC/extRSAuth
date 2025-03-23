@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="cle" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">/Zl1Ct/h2gogiHQ8fKFrA9Ix+QWJtN+JaX2QLZbfFsU=</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="passphrase" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">This!Be?SumthingAsAPssFrAezee32743</Value>
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

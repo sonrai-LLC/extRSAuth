@@ -734,8 +734,7 @@
       "ExtRSAuth/1.0.0": {
         "runtime": {
           "Sonrai.ExtRSAuth.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": ""
+            "fileVersion": "0.0.0.0"
           }
         }
       },

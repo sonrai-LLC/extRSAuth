@@ -32,7 +32,6 @@ namespace Sonrai.ExtRSAuth
         public const bool NoAuth = false; // ONLY set == true when initializing extRSAuth Admin user
         public const string ExtRsReadOnlyUser = "extRS.Portal";
         public const string ReadOnlyUser = "BUILTIN\\Everyone";
-        public const string MSBIToolsUser = "ReportingServicesTools";
         public const string ReportExecution2005SOAP = "https://localhost/reportserver/ReportExecution2005.asmx";
         public const string ReportService2010SOAP = "https://localhost/ReportServer/ReportService2010.asmx";
 

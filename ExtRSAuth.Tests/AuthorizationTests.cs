@@ -7,54 +7,73 @@ namespace ExtRSAuth.Tests
     [TestClass]
     public class AuthorizationTests
     {
-        readonly Authorization auth = new();
-        readonly AceCollection aces = new();
-        readonly SecurityItemType itemType = SecurityItemType.Folder;
+        private readonly Authorization _auth = new();
+        private readonly AceCollection _aces = new();
+        private readonly SecurityItemType _itemType = SecurityItemType.Folder;
+        private byte[] _bytes = [];
 
-        [Obsolete("This method's AceCollection serialization has been deprecated in .NET 6+")]
-        [Ignore]
+        [TestInitialize]
+        public void Initialize()
+        {
+            AceStruct ace = new("extRSAuth");
+            ace.ModelOperations.Add(ModelOperation.ReadProperties);
+            ace.ModelItemOperations.Add(ModelItemOperation.ReadProperties);
+            ace.CatalogOperations.Add(CatalogOperation.ReadSchedules);
+            ace.ReportOperations.Add(ReportOperation.CreateSnapshot);
+            ace.ResourceOperations.Add(ResourceOperation.ReadContent);
+            ace.ResourceOperations.Add(ResourceOperation.Delete);
+            ace.ResourceOperations.Add(ResourceOperation.Comment);
+            ace.FolderOperations.Add(FolderOperation.CreateFolder);
+            ace.FolderOperations.Add(FolderOperation.Delete);
+            ace.DatasourceOperations.Add(DatasourceOperation.UpdateContent);
+            ace.CatalogOperations.Add(CatalogOperation.CreateSchedules);
+
+            _aces.Add(ace);
+            _bytes = _auth.CreateSecurityDescriptor(_aces, _itemType, out string desc);
+        }
+
         [TestMethod]
         public void CreateSecurityDescriptorSucceeds()
         {
             AceStruct ace = new("extRSAuth");
-            aces.Add(ace);
-            byte[] bytes = auth.CreateSecurityDescriptor(aces, itemType, out string desc);
+            _aces.Add(ace);
+            byte[] bytes = _auth.CreateSecurityDescriptor(_aces, _itemType, out string desc);
             Assert.IsTrue(bytes.Length > 0);
         }
 
         [TestMethod]
         public void CheckAccessModelOperation()
         {
-            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, ModelOperation.ReadProperties));
-            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, ModelOperation.ReadProperties));
+            Assert.IsTrue(_auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), _bytes, ModelOperation.ReadProperties));
+            Assert.IsFalse(_auth.CheckAccess(null, new IntPtr(), null, ModelOperation.ReadProperties));
         }
 
         [TestMethod]
         public void CheckAccessModelItemOperation()
         {
-            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, ModelItemOperation.ReadProperties));
-            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, ModelItemOperation.ReadProperties));
+            Assert.IsTrue(_auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), _bytes, ModelItemOperation.ReadProperties));
+            Assert.IsFalse(_auth.CheckAccess(null, new IntPtr(), null, ModelItemOperation.ReadProperties));
         }
 
         [TestMethod]
         public void CheckAccessCatalogOperation()
         {
-            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, CatalogOperation.CreateSchedules));
-            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, CatalogOperation.CreateSchedules));
+            Assert.IsTrue(_auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), _bytes, CatalogOperation.CreateSchedules));
+            Assert.IsFalse(_auth.CheckAccess(null, new IntPtr(), null, CatalogOperation.CreateSchedules));
         }
 
         [TestMethod]
         public void CheckAccessReportOperation()
         {
-            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, ReportOperation.CreateSnapshot));
-            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, ReportOperation.CreateSnapshot));
+            Assert.IsTrue(_auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), _bytes, ReportOperation.CreateSnapshot));
+            Assert.IsFalse(_auth.CheckAccess(null, new IntPtr(), null, ReportOperation.CreateSnapshot));
         }
 
         [TestMethod]
         public void CheckAccessFolderOperation()
         {
-            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, FolderOperation.CreateFolder));
-            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, FolderOperation.CreateFolder));
+            Assert.IsTrue(_auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), _bytes, FolderOperation.CreateFolder));
+            Assert.IsFalse(_auth.CheckAccess(null, new IntPtr(), null, FolderOperation.CreateFolder));
         }
 
         [TestMethod]
@@ -63,15 +82,15 @@ namespace ExtRSAuth.Tests
             FolderOperation[] folderOps = new FolderOperation[2];
             folderOps[0] = FolderOperation.CreateFolder;
             folderOps[1] = FolderOperation.Delete;
-            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, folderOps));
-            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, folderOps));
+            Assert.IsTrue(_auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), _bytes, folderOps));
+            Assert.IsFalse(_auth.CheckAccess(null, new IntPtr(), null, folderOps));
         }
 
         [TestMethod]
         public void CheckAccessResourceOperation()
         {
-            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, ResourceOperation.Comment));
-            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, ResourceOperation.Comment));
+            Assert.IsTrue(_auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), _bytes, ResourceOperation.Comment));
+            Assert.IsFalse(_auth.CheckAccess(null, new IntPtr(), null, ResourceOperation.Comment));
         }
 
         [TestMethod]
@@ -81,30 +100,29 @@ namespace ExtRSAuth.Tests
                 ResourceOperation[] folderOps = new ResourceOperation[2];
                 folderOps[0] = ResourceOperation.ReadContent;
                 folderOps[1] = ResourceOperation.Delete;
-                Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, folderOps));
-                Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, folderOps));
+                Assert.IsTrue(_auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), _bytes, folderOps));
+                Assert.IsFalse(_auth.CheckAccess(null, new IntPtr(), null, folderOps));
             }
         }
 
         [TestMethod]
         public void CheckAccessDataSourceOperation()
         {
-            Assert.IsTrue(auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), null, DatasourceOperation.UpdateContent));
-            Assert.IsFalse(auth.CheckAccess(null, new IntPtr(), null, DatasourceOperation.UpdateContent));
+            Assert.IsTrue(_auth.CheckAccess(AuthenticationUtilities.ExtRsUser, new IntPtr(), _bytes, DatasourceOperation.UpdateContent));
+            Assert.IsFalse(_auth.CheckAccess(null, new IntPtr(), null, DatasourceOperation.UpdateContent));
         }
 
         [TestMethod]
         public void CheckPermissionsForUserSucceeds()
         {
-            StringCollection perms = auth.GetPermissions(AuthenticationUtilities.ExtRsUser, new IntPtr(), SecurityItemType.Report);
+            StringCollection perms = _auth.GetPermissions(AuthenticationUtilities.ExtRsUser, new IntPtr(), SecurityItemType.Report);
             Assert.IsTrue(perms.Count > 50);
         }
 
-        [Ignore]
         [TestMethod]
         public void SetConfigurationSucceeds()
         {
-            auth.SetConfiguration(
+            _auth.SetConfiguration(
            @"<AdminConfiguration>
                 <UserName>extRSAuth</UserName>
             </AdminConfiguration>");

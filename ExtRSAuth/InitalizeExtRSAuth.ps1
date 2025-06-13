@@ -222,7 +222,7 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql4
         [xml]$webConfig = (Get-Content $webConfigFilePath)
         $webConfig.Configuration.'System.Web'.Identity.Impersonate="false"
         $webConfig.Configuration.'System.Web'.Authentication.Mode="Forms"
-        $webConfig.Configuration.'System.Web'.Authentication.InnerXml="<forms loginUrl=""logon.aspx"" name=""sqlAuthCookie"" cookieSameSite=""None"" timeout=""60"" path=""/"" enableCrossAppRedirects=""true"" requireSSL=""true""></forms>"
+        $webConfig.Configuration.'System.Web'.Authentication.InnerXml="<forms loginUrl=""logon.aspx"" name=""sqlAuthCookie"" timeout=""60""></forms>"
         $authorization = $webConfig.CreateElement("authorization")
         $authorization.InnerXml="<deny users=""?"" />"
         $webConfig.Configuration.'System.Web'.AppendChild($authorization)

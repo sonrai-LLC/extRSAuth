@@ -84,7 +84,7 @@ Else
 	$webConfig.Save("$webConfigFilePath.backup")
 	$webConfig.Configuration.'System.Web'.Identity.Impersonate="true"
 	$webConfig.Configuration.'System.Web'.Authentication.Mode="Forms"
-	$webConfig.Configuration.'System.Web'.Authentication.InnerXml="<forms loginUrl=""logon.aspx"" name=""sqlAuthCookie"" timeout=""60"" path=""/""></forms>"
+	$webConfig.Configuration.'System.Web'.Authentication.InnerXml="<forms loginUrl=""logon.aspx"" name=""sqlAuthCookie"" cookieSameSite=""None"" timeout=""60"" path=""/"" enableCrossAppRedirects=""true"" requireSSL=""true""></forms>"
 	$webConfig.Save($webConfigFilePath)
 }
 

@@ -21,6 +21,7 @@ try {
 }
 
 # This script configures everything needed for ExtRSAuth to work
+Write-Host ":::::::::::::::::::::::::::::::::"
 $SQLServer = "."
 $db = "ReportServer"
 $sql1 = @'
@@ -141,6 +142,10 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql2
 Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql3
 Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql4
 
+# Stop the RS Server
+Stop-Service SQLServerReportingServices
+Write-Host ":::::::::::::::::::::::::::::::::"
+
     If(-Not(Test-Path ($rsSrvDir + "\SSRS.ORIGINAL\ReportServer")))
     {
         Write-Host "Copy backup of original SSRS config files `n" -ForegroundColor Cyan
@@ -256,6 +261,9 @@ Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql4
         $rsConfigFile.Configuration.UI.AppendChild($customUI)
         $rsConfigFile.Save($rsConfigFilePath)
     }
+
+# Start the RS Server
+Start-Service SQLServerReportingServices
     
-    Write-Host "Configuration of ExtRSAuth complete! Happy ExtRSing... :) `n" -ForegroundColor Green
-        break;
+Write-Host "Configuration of ExtRSAuth complete! Happy ExtRSing... :) `n" -ForegroundColor Green
+break;

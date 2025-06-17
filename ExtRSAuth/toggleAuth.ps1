@@ -70,7 +70,7 @@ Else
 	$extension.SetAttribute("Name","Forms")
 	$extension.SetAttribute("Type","Sonrai.ExtRSAuth.Authorization, Sonrai.ExtRSAuth")
 	$configuration =$rsConfigFile.CreateElement("Configuration")
-	$configuration.InnerXml="<AdminConfiguration>`n<UserName>ExtRSAuth</UserName>`n</AdminConfiguration>"
+	$configuration.InnerXml="<AdminConfiguration>`n<UserName>extRSAuth</UserName>`n</AdminConfiguration>"
 	$extension.AppendChild($configuration)
 	$rsConfigFile.Configuration.Extensions.Security.AppendChild($extension)
 	$rsConfigFile.Configuration.Extensions.Security.RemoveChild($rsConfigFile.Configuration.Extensions.Security.FirstChild)

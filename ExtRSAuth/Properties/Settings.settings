@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="cle" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">w7j9D4o0v5d9LEQmRY4BpRWaRO8qmwp/WkoXXaLBB3gyZWGcfEMXZXQfFp+cPtrn </Value>
+      <Value Profile="(Default)">vcvRTrQVygy/MfJBccw3Smrq0Ik7srZuSp3I2vLeoMpECuICVaCpvQ==</Value>
     </Setting>
     <Setting Name="passphrase" Type="System.String" Scope="Application">
       <Value Profile="(Default)">This_IS_a_simpl_Passphrase</Value>

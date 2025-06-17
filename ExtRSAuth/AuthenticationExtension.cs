@@ -60,9 +60,9 @@ namespace Sonrai.ExtRSAuth
             if (HttpContext.Current.Request.IsLocal)
             {
                 FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, false);
-                userIdentity = new GenericIdentity(AuthenticationUtilities.ExtRsUser);
+                userIdentity = new GenericIdentity(AuthenticationUtilities.MSBIToolsUser);
             }
-            else if (HttpContext.Current.User != null && HttpContext.Current.User.Identity.Name != "")
+            if (HttpContext.Current.User != null)
             {
                 FormsAuthentication.SetAuthCookie(HttpContext.Current.User.Identity.Name, false);
                 userIdentity = HttpContext.Current.User.Identity;

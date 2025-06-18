@@ -19,3 +19,7 @@
 /ExtRSAuth.Tests/bin/Debug/net7.0
 /ExtRSAuth/bin/Release
 /ExtRSAuth/ExtRSAuth.csproj
+/ExtRSAuth.Tests/bin/Debug/net481/ExtRSAuth.Tests.dll
+/ExtRSAuth.Tests/bin/Debug/net481/ExtRSAuth.Tests.pdb
+/ExtRSAuth.Tests/bin/Debug/net481/Sonrai.ExtRSAuth.dll
+/ExtRSAuth.Tests/bin/Debug/net481/Sonrai.ExtRSAuth.pdb

@@ -15,9 +15,9 @@ This Custom Auth assembly has been tested with (1) several .NET Framework 4.8 an
 This [YouTube explainer video](https://www.youtube.com/watch?v=B49b_y42vNA) describes the SSRS external user authentication problem that extRSAuth addresses. Or for the TL;DR; there is [this short screen capture](https://www.youtube.com/watch?v=0NmlrADXvZo) demonstrating how extRSAuth works.
 
 # Requirements
-This plug-in relies on SSRS 2022 (older versions will work but latest is best to have), and a report server configuration as described in [Microsoft's Reporting Services Custom Security Sample](https://github.com/Microsoft/Reporting-Services/tree/master/CustomSecuritySample)
+This plug-in has been tested to work with SSRS 2022 v16.0.9276.19198 running on SQL Server 2019, SQL Server 2022 and SQL Server 2025.
 
--Replace **[your_sym_encr_key]** with your symetric encryption key. Clients can encrypt SSRS URL access querystring with `Sonrai.ExtRSAuth.Encryption.Encrypt()` or a similiar 256-bit AES encryption implementation, or modify Encrypt() with any encryption algorithm and key and block sizes.
+-In the Settings resource, replace the default values for "cle" and "passphrase" with your symetric encryption key and desired pass phrase, respectively. Clients can encrypt SSRS URL access querystring with `Sonrai.ExtRSAuth.Encryption.Encrypt()` or a similiar 256-bit AES encryption implementation, or modify Encrypt() with another encryption algorithm implementation.
 
 This package includes the following components:
 - ExtRSAuth.dll

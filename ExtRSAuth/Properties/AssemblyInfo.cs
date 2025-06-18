@@ -5,14 +5,13 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ExtRSAuth")]
-[assembly: AssemblyDescription("Custom authentication for authenticating apps to SSRS")]
+[assembly: AssemblyDescription("Custom security extension for SSRS 2022")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("sonrai LLC")]
 [assembly: AssemblyProduct("MSPullRequest")]
 [assembly: AssemblyCopyright("2025")]
 [assembly: AssemblyTrademark("MIT")]
 [assembly: AssemblyCulture("")]
-
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -29,5 +28,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.0.0")]
+[assembly: AssemblyVersion("3.1.0.0")]
+[assembly: AssemblyFileVersion("3.1.0.0")]

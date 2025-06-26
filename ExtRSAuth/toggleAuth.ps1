@@ -10,7 +10,7 @@ Function Get-StrPattern{
 }
 
 # Init RS variables
-$rsServiceName = "ReportServer"
+$rsServiceName = "SQLServerReportingServices"
 $rsSrvDir = "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS"
 $extRSAuthDir = ".\bin\Debug"
 

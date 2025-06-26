@@ -23,7 +23,7 @@ try {
 # This script configures everything needed for extRSAuth to work
 Write-Host ":::::::::::::::::::::::::::::::::"
 $SQLServer = "."
-$db = "ReportServer2"
+$db = "ReportServer"
 $sql1 = @'
 ALTER PROCEDURE [dbo].[SetLastModified]
 @Path nvarchar (425),

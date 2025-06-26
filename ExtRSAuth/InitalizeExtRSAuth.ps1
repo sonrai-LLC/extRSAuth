@@ -20,10 +20,10 @@ try {
     Write-Output "Module SQLPS is not installed."
 }
 
-# This script configures everything needed for ExtRSAuth to work
+# This script configures everything needed for extRSAuth to work
 Write-Host ":::::::::::::::::::::::::::::::::"
 $SQLServer = "."
-$db = "ReportServer"
+$db = "ReportServer2"
 $sql1 = @'
 ALTER PROCEDURE [dbo].[SetLastModified]
 @Path nvarchar (425),
@@ -47,7 +47,7 @@ ALTER PROCEDURE [dbo].[SetAllProperties]
 @Description ntext = NULL,
 @Hidden bit = NULL,
 @ModifiedBySid varbinary (85) = NULL,
-@ModifiedByName nvarchar(260) = 'ExtRSAuth',
+@ModifiedByName nvarchar(260) = 'extRSAuth',
 @AuthType int,
 @ModifiedDate DateTime
 AS
@@ -84,7 +84,7 @@ ALTER PROCEDURE [dbo].[CreateObject]
 @Description ntext = NULL,
 @Hidden bit = NULL,
 @CreatedBySid varbinary(85) = NULL,
-@CreatedByName nvarchar(260) = 'ExtRSAuth',
+@CreatedByName nvarchar(260) = 'extRSAuth',
 @AuthType int,
 @CreationDate datetime,
 @ModificationDate datetime,
@@ -126,66 +126,74 @@ END
 '@
 
 $sql4 = @'
-IF NOT EXISTS(SELECT * FROM Users WHERE UserName = 'ExtRSAuth')
+IF NOT EXISTS(SELECT * FROM Users WHERE UserName = 'extRSAuth')
           BEGIN
 	          INSERT INTO Users (UserID, UserName, UserType, AuthType)
-	          VALUES(newid(), 'ExtRSAuth', 0, 3)
+	          VALUES(newid(), 'extRSAuth', 0, 3)
           END
 '@
 
-$rsSrvDir = "C:\Program Files\Microsoft SQL Server Reporting Services"
+$rsServiceName = "ReportServer"
+$rsSrvDir = "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS"
 $extRSAuthDir = ".\bin\Debug"
 
-Write-Host "ALTER necessary SSRS SPs to work with ExtRSAuth custom authentication `n" -ForegroundColor Cyan
+# If PBIRS is installed, use the service and directory for it
+If((Test-Path ("C:\Program Files\Microsoft Power BI Report Server\PBIRS")))
+{
+    $rsServiceName = "PowerBIReportServer"
+    $rsSrvDir = "C:\Program Files\Microsoft Power BI Report Server\PBIRS"
+}
+
+Write-Host "ALTER necessary SSRS SPs to work with extRSAuth custom authentication `n" -ForegroundColor Cyan
 Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql1
 Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql2
 Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql3
 Invoke-Sqlcmd -ServerInstance $SQLServer -Database $db -Query $sql4
 
 # Stop the RS Server
-Stop-Service SQLServerReportingServices
+Stop-Service $rsServiceName
 Write-Host ":::::::::::::::::::::::::::::::::"
 
     If(-Not(Test-Path ($rsSrvDir + "\SSRS.ORIGINAL\ReportServer")))
     {
         Write-Host "Copy backup of original SSRS config files `n" -ForegroundColor Cyan
-        Copy-Item -Path ($rsSrvDir + "\SSRS") -Destination ($rsSrvDir + "\SSRS.ORIGINAL") -Recurse 
+        Copy-Item -Path ($rsSrvDir) -Destination ($rsSrvDir + "\SSRS.ORIGINAL") -Recurse 
     }
 
-    If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\Logon.aspx")))
+    If(-Not(Test-Path ($rsSrvDir + "\ReportServer\Logon.aspx")))
     {
         Write-Host "Copying Logon.aspx page `n" -ForegroundColor Cyan
-        Copy-Item -Path ($extRSAuthDir + "\Logon.aspx") -Destination ($rsSrvDir + "\SSRS\ReportServer")
+        Copy-Item -Path ($extRSAuthDir + "\Logon.aspx") -Destination ($rsSrvDir + "\ReportServer")
     }
 
-    If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll")))
+    If(-Not(Test-Path ($rsSrvDir + "\ReportServer\bin\Sonrai.ExtRSAuth.dll")))
     {
         Write-Host "Copying Sonrai.ExtRSAuth.dll `n" -ForegroundColor Cyan
-        Copy-Item -Path ($extRSAuthDir + "\Sonrai.ExtRSAuth.dll") -Destination ($rsSrvDir + "\SSRS\ReportServer\bin")
+        Copy-Item -Path ($extRSAuthDir + "\Sonrai.ExtRSAuth.dll") -Destination ($rsSrvDir + "\ReportServer\bin")
     }
 
-    If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.pdb")))
+    If(-Not(Test-Path ($rsSrvDir + "\ReportServer\bin\Sonrai.ExtRSAuth.pdb")))
     {
         Write-Host "Copying Sonrai.ExtRSAuth.pdb `n" -ForegroundColor Cyan
-        Copy-Item -Path ($extRSAuthDir + "\Sonrai.ExtRSAuth.pdb") -Destination ($rsSrvDir + "\SSRS\ReportServer\bin")
+        Copy-Item -Path ($extRSAuthDir + "\Sonrai.ExtRSAuth.pdb") -Destination ($rsSrvDir + "\ReportServer\bin")
     }
 
-    If(-Not(Test-Path ($rsSrvDir + "\SSRS\Portal\Sonrai.ExtRSAuth.dll")))
+    If(-Not(Test-Path ($rsSrvDir + "\Portal\Sonrai.ExtRSAuth.dll")))
     {
         Write-Host "Copying Sonrai.ExtRSAuth.dll `n" -ForegroundColor Cyan
-        Copy-Item -Path ($extRSAuthDir + "\Sonrai.ExtRSAuth.dll") -Destination ($rsSrvDir + "\SSRS\Portal")
+        Copy-Item -Path ($extRSAuthDir + "\Sonrai.ExtRSAuth.dll") -Destination ($rsSrvDir + "\Portal")
     }
 
-    If(-Not(Test-Path ($rsSrvDir + "\SSRS\Portal\Sonrai.ExtRSAuth.pdb")))
+    If(-Not(Test-Path ($rsSrvDir + "\Portal\Sonrai.ExtRSAuth.pdb")))
     {
         Write-Host "Copying Sonrai.ExtRSAuth.pdb `n" -ForegroundColor Cyan
-        Copy-Item -Path ($extRSAuthDir + "\Sonrai.ExtRSAuth.pdb") -Destination ($rsSrvDir + "\SSRS\Portal")
+        Copy-Item -Path ($extRSAuthDir + "\Sonrai.ExtRSAuth.pdb") -Destination ($rsSrvDir + "\Portal")
     }
 
-    If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\rsreportserver.config") 'sqlAuthCookie'))
+    If(-Not(Get-StrPattern ($rsSrvDir + "\ReportServer\rsreportserver.config") 'sqlAuthCookie'))
     {
         Write-Host "Updating rsreportserver.config `n" -ForegroundColor Cyan
-        $rsConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\rsreportserver.config")
+        $rsConfigFilePath = ($rsSrvDir + "\ReportServer\rsreportserver.config")
         [xml]$rsConfigFile = (Get-Content $rsConfigFilePath)
         Write-Host "Copy of the original config file in $rsConfigFilePath.backup" -ForegroundColor Cyan
         $rsConfigFile.Save("$rsConfigFilePath.backup")
@@ -204,10 +212,10 @@ Write-Host ":::::::::::::::::::::::::::::::::"
         $rsConfigFile.Save($rsConfigFilePath)
     }
 
-    If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\rssrvpolicy.config") '\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll'))
+    If(-Not(Get-StrPattern ($rsSrvDir + "\ReportServer\rssrvpolicy.config") '\ReportServer\bin\Sonrai.ExtRSAuth.dll'))
     {
         Write-Host "Updating RSSrvPolicy.config `n" -ForegroundColor Cyan
-        $rsPolicyFilePath = ($rsSrvDir + "\SSRS\ReportServer\rssrvpolicy.config")
+        $rsPolicyFilePath = ($rsSrvDir + "\ReportServer\rssrvpolicy.config")
         [xml]$rsPolicy = (Get-Content $rsPolicyFilePath)  
         $codeGroup = $rsPolicy.CreateElement("CodeGroup")
         $codeGroup.SetAttribute("class","UnionCodeGroup")
@@ -215,15 +223,15 @@ Write-Host ":::::::::::::::::::::::::::::::::"
         $codeGroup.SetAttribute("Name","SecurityExtensionCodeGroup")
         $codeGroup.SetAttribute("Description","Code group for ExtRSAuth SSRS Security Extension")
         $codeGroup.SetAttribute("PermissionSetName","FullTrust")
-        $codeGroup.InnerXml ="<IMembershipCondition class=""UrlMembershipCondition"" version=""1"" Url=""" + ($rsSrvDir + "\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll") + """/>"
+        $codeGroup.InnerXml ="<IMembershipCondition class=""UrlMembershipCondition"" version=""1"" Url=""" + ($rsSrvDir + "\ReportServer\bin\Sonrai.ExtRSAuth.dll") + """/>"
         $rsPolicy.Configuration.mscorlib.security.policy.policylevel.CodeGroup.CodeGroup.AppendChild($codeGroup)
         $rsPolicy.Save($rsPolicyFilePath)     
     }
 
-    If(-Not(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\web.config")  'machineKey'))
+    If(-Not(Get-StrPattern ($rsSrvDir + "\ReportServer\web.config")  'machineKey'))
     {
         Write-Host "Updating web.config and adding machine keys `n" -ForegroundColor Cyan
-        $webConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\web.config")
+        $webConfigFilePath = ($rsSrvDir + "\ReportServer\web.config")
         [xml]$webConfig = (Get-Content $webConfigFilePath)
         $webConfig.Configuration.'System.Web'.Identity.Impersonate="false"
         $webConfig.Configuration.'System.Web'.Authentication.Mode="Forms"
@@ -263,7 +271,7 @@ Write-Host ":::::::::::::::::::::::::::::::::"
     }
 
 # Start the RS Server
-Start-Service SQLServerReportingServices
+Start-Service $rsServiceName
     
-Write-Host "Configuration of ExtRSAuth complete! Happy ExtRSing... :) `n" -ForegroundColor Green
+Write-Host "Configuration of extRSAuth complete! Happy extRSing... :) `n" -ForegroundColor Green
 break;

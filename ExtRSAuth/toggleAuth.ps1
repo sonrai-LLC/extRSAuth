@@ -10,15 +10,23 @@ Function Get-StrPattern{
 }
 
 # Init RS variables
-$rsSrvDir = "C:\Program Files\Microsoft SQL Server Reporting Services"
+$rsServiceName = "ReportServer"
+$rsSrvDir = "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS"
 $extRSAuthDir = ".\bin\Debug"
-$rsConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\rsreportserver.config")
+
+# If PBIRS is installed, use the service and directory for it
+If((Test-Path ("C:\Program Files\Microsoft Power BI Report Server\PBIRS")))
+{
+    $rsServiceName = "PowerBIReportServer"
+    $rsSrvDir = "C:\Program Files\Microsoft Power BI Report Server\PBIRS"
+}
+$rsConfigFilePath = ($rsSrvDir + "\ReportServer\rsreportserver.config")
 [xml]$rsConfigFile = (Get-Content $rsConfigFilePath)
-$webConfigFilePath = ($rsSrvDir + "\SSRS\ReportServer\web.config")
+$webConfigFilePath = ($rsSrvDir + "\ReportServer\web.config")
 [xml]$webConfig = (Get-Content $webConfigFilePath)
 
 # Check if ExtRSAuth is installed
-If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll")))
+If(-Not(Test-Path ($rsSrvDir + "\ReportServer\bin\Sonrai.ExtRSAuth.dll")))
 {
 	Write-Host "Please install ExtRSAuth via: .\InitalizeExtRSAuth" -ForegroundColor Magenta
 	Write-Host "EXITING..." -ForegroundColor Magenta
@@ -26,10 +34,10 @@ If(-Not(Test-Path ($rsSrvDir + "\SSRS\ReportServer\bin\Sonrai.ExtRSAuth.dll")))
 }
 
 # Stop the RS Server
-Stop-Service SQLServerReportingServices
+Stop-Service $rsServiceName
 Write-Host ":::::::::::::::::::::::::::::::::"
 
-If(Get-StrPattern ($rsSrvDir + "\SSRS\ReportServer\web.config")  'sqlAuthCookie')
+If(Get-StrPattern ($rsSrvDir + "\ReportServer\web.config")  'sqlAuthCookie')
 {
 	Write-Host ":::::::TOGGLE to Windows Auth:::::::"
 	Write-Host ":::::::::::::::::::::::::::::::::"
@@ -89,4 +97,4 @@ Else
 }
 
 # Start the RS Server
-Start-Service SQLServerReportingServices
+Start-Service $rsServiceName

@@ -226,11 +226,10 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>xcopy /Y "$(ProjectDir)bin\Debug\Sonrai.ExtRSAuth.dll"  "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\ReportServer\bin"
-xcopy /Y "$(ProjectDir)bin\Debug\Sonrai.ExtRSAuth.pdb"  "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\ReportServer\bin"
-xcopy /Y "$(ProjectDir)bin\Debug\Sonrai.ExtRSAuth.dll" "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\Portal"
-xcopy /Y "$(ProjectDir)bin\Debug\Sonrai.ExtRSAuth.pdb" "C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\Portal"
-</PostBuildEvent>
+    <PostBuildEvent>xcopy /Y "$(ProjectDir)bin\Debug\Sonrai.ExtRSAuth.dll"  "C:\Program Files\Microsoft Power BI Report Server\PBIRS\ReportServer\bin"
+xcopy /Y "$(ProjectDir)bin\Debug\Sonrai.ExtRSAuth.pdb"  "C:\Program Files\Microsoft Power BI Report Server\PBIRS\ReportServer\bin"
+xcopy /Y "$(ProjectDir)bin\Debug\Sonrai.ExtRSAuth.dll" "C:\Program Files\Microsoft Power BI Report Server\PBIRS\Portal"
+xcopy /Y "$(ProjectDir)bin\Debug\Sonrai.ExtRSAuth.pdb" "C:\Program Files\Microsoft Power BI Report Server\PBIRS\Portal"</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

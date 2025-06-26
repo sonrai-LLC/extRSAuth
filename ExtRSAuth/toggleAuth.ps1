@@ -21,8 +21,6 @@ If((Test-Path ("C:\Program Files\Microsoft Power BI Report Server\PBIRS")))
     $rsSrvDir = "C:\Program Files\Microsoft Power BI Report Server\PBIRS"
 }
 
-Write-Host $rsSrvDir
-
 $rsConfigFilePath = ($rsSrvDir + "\ReportServer\rsreportserver.config")
 [xml]$rsConfigFile = (Get-Content $rsConfigFilePath)
 $webConfigFilePath = ($rsSrvDir + "\ReportServer\web.config")

@@ -75,7 +75,7 @@ namespace Sonrai.ExtRSAuth
 			{
 				if (!AuthenticationUtilities.RSUserExists(userName))
 				{
-					FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsReadOnlyUser, false);
+					FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsUser, false);
 				}
 				else
 				{

@@ -36,7 +36,7 @@ namespace Sonrai.ExtRSAuth
 {
     public class Authorization : IAuthorizationExtension
     {
-        private static string m_adminUserName = AuthenticationUtilities.ExtRsUser;
+        private static string m_adminUserName = AuthenticationUtilities.ExtRsAuthUser;
         static Authorization()
         {
             InitializeMaps();
@@ -265,7 +265,7 @@ namespace Sonrai.ExtRSAuth
             return false;
         }
 
-        public StringCollection GetPermissions(string userName = AuthenticationUtilities.ExtRsUser, IntPtr userToken = new IntPtr(), SecurityItemType itemType = SecurityItemType.Unknown, byte[] secDesc = null)
+        public StringCollection GetPermissions(string userName = AuthenticationUtilities.ExtRsAuthUser, IntPtr userToken = new IntPtr(), SecurityItemType itemType = SecurityItemType.Unknown, byte[] secDesc = null)
         {
             StringCollection permissions = new StringCollection();
             if (IsAdmin(userName))
@@ -535,7 +535,7 @@ namespace Sonrai.ExtRSAuth
             get
             {
                 // Return a localized name for this extension
-                return AuthenticationUtilities.ExtRsUser;
+                return AuthenticationUtilities.ExtRsAuthUser;
             }
         }
     }

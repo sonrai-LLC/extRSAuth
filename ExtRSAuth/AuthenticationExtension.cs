@@ -46,7 +46,7 @@ namespace Sonrai.ExtRSAuth
         {
             get
             {
-                return AuthenticationUtilities.ExtRsUser;
+                return AuthenticationUtilities.ExtRsAuthUser;
             }
         }
 
@@ -59,8 +59,10 @@ namespace Sonrai.ExtRSAuth
         {
             if (HttpContext.Current.Request.IsLocal)
             {
-                FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsUser, false);
-                userIdentity = new GenericIdentity(AuthenticationUtilities.MSBIToolsUser);
+                //FormsAuthentication.SetAuthCookie(AuthenticationUtilities.ExtRsAuthUser, true);
+                userIdentity = new GenericIdentity(AuthenticationUtilities.ExtRsAuthUser);
+                userId = IntPtr.Zero;
+                return;
             }
             if (HttpContext.Current.User != null)
             {

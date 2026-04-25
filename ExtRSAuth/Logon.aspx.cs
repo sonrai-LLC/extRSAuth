@@ -40,7 +40,7 @@ namespace Sonrai.ExtRSAuth
 				var isLocalConn = HttpContext.Current.Request.IsLocal;
 				if (isLocalConn)
 				{
-					FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsUser, true);
+					FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsAuthUser, true);
 				}
 				else
 				{				
@@ -75,7 +75,7 @@ namespace Sonrai.ExtRSAuth
 			{
 				if (!AuthenticationUtilities.RSUserExists(userName))
 				{
-					FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsUser, false);
+					FormsAuthentication.RedirectFromLoginPage(AuthenticationUtilities.ExtRsAuthUser, false);
 				}
 				else
 				{

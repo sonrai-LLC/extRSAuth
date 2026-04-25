@@ -28,7 +28,7 @@ namespace Sonrai.ExtRSAuth
 {
     public class AuthenticationUtilities
     {
-        public const string ExtRsUser = "extRSAuth";
+        public const string ExtRsAuthUser = "extRSAuth";
         public const bool NoAuth = false; // ONLY set == true when initializing extRSAuth Admin user
         public const string ReadOnlyUser = "BUILTIN\\Everyone";
         public const string MSBIToolsUser = "ReportingServicesTools";

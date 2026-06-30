@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.QualityTools.Testing.Fakes" Version="18.1.1" />
     <PackageReference Include="Moq" Version="4.20.72" />
   </ItemGroup>
 
@@ -25,6 +26,25 @@
     <Reference Include="Microsoft.ReportingServices.Interfaces">
       <HintPath>..\ExtRSAuth\bin\Debug\Microsoft.ReportingServices.Interfaces.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="MSTest.Analyzers" Version="4.2.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="MSTest.TestAdapter" Version="4.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="MSTest.TestFramework" Version="4.2.3" />
   </ItemGroup>
 
 </Project>

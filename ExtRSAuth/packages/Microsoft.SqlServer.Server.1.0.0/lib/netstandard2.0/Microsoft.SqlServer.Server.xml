@@ -1,0 +1,700 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.SqlServer.Server</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.SqlServer.Server.IBinarySerialize">
+            <summary>Provides custom implementation for user-defined type (UDT) and user-defined aggregate serialization and deserialization.</summary><remarks>
+            <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ User-defined types (UDTs) and user-defined aggregates are required to define a storage format, which can be either <xref:Microsoft.Data.SqlClient.Server.Format>.`Native` or <xref:Microsoft.Data.SqlClient.Server.Format>.`UserDefined`.  
+  
+ <xref:Microsoft.Data.SqlClient.Server.Format>.`Native` allows SQL Server to handle serialization and deserialization automatically, but the format has restrictions on the kind of types it can handle. <xref:Microsoft.Data.SqlClient.Server.Format>.`UserDefined` allows user-defined types and aggregates to handle their own serialization. User-defined types and aggregates must be marked with <xref:Microsoft.Data.SqlClient.Server.Format>.`UserDefined` in the `SqlUserDefinedType` or `SqlUserDefinedAggregate` attribute, and must implement the <xref:Microsoft.Data.SqlClient.Server.IBinarySerialize> interface.  
+  
+ Note that even with custom serialization, the total size of each instance must be under the maximum allowed limit, currently 8000 bytes.  
+  
+ ]]></format>
+            </remarks>
+        </member>
+        <member name="M:Microsoft.SqlServer.Server.IBinarySerialize.Read(System.IO.BinaryReader)">
+            <param name="r">The <see cref="T:System.IO.BinaryReader" /> stream from which the object is deserialized.</param><summary>Generates a user-defined type (UDT) or user-defined aggregate from its binary form.</summary><remarks>
+            <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ The <xref:Microsoft.Data.SqlClient.Server.IBinarySerialize.Read%2A> method must reconstitute your object using the information written by the <xref:Microsoft.Data.SqlClient.Server.IBinarySerialize.Write%2A> method.  
+
+## Examples  
+ The following example shows the implementation of the <xref:Microsoft.Data.SqlClient.Server.IBinarySerialize.Read%2A> method of a UDT, which uses a <xref:System.IO.BinaryReader> to de-serialize a previously persisted UDT. This example assumes that the UDT has two data properties: `StringValue` and `DoubleValue`.  
+  
+ [!code-csharp[IBinarySerialize Samples#1](~/../sqlclient/doc/samples/IBinarySerialize.cs#1)]
+  
+ ]]></format>
+            </remarks>
+        </member>
+        <member name="M:Microsoft.SqlServer.Server.IBinarySerialize.Write(System.IO.BinaryWriter)">
+            <param name="w">The <see cref="T:System.IO.BinaryWriter" /> stream to which the UDT or user-defined aggregate is serialized.</param><summary>Converts a user-defined type (UDT) or user-defined aggregate into its binary format so that it may be persisted.</summary><remarks>
+            <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Write sufficient information to the binary stream to allow the <xref:Microsoft.Data.SqlClient.Server.IBinarySerialize.Read%2A> method to reconstitute your UDT or user-defined aggregate.  
+
+## Examples  
+ The following example shows the implementation of the <xref:Microsoft.Data.SqlClient.Server.IBinarySerialize.Write%2A> method of a UDT, which uses a <xref:System.IO.BinaryWriter> to serialize the UDT in the user-defined binary format. The purpose of the null character padding is to ensure that the string value is completely separated from the double value, so that one UDT is compared to another in Transact-SQL code, string bytes are compared to string bytes and double bytes are compared to double bytes.  
+  
+ [!code-csharp[IBinarySerialize Samples#2](~/../sqlclient/doc/samples/IBinarySerialize.cs#2)]
+  
+ ]]></format>
+            </remarks>
+        </member>
+        <member name="T:Microsoft.SqlServer.Server.InvalidUdtException">
+            <summary>Thrown when SQL Server or the ADO.NET <see cref="N:Microsoft.Data.SqlClient" /> provider detects an invalid user-defined type (UDT).</summary><remarks>To be added.</remarks>
+        </member>
+        <member name="M:Microsoft.SqlServer.Server.InvalidUdtException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <param name="si">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> object.</param><param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> object.</param><summary>Streams all the <see cref="T:Microsoft.Data.SqlClient.Server.InvalidUdtException" /> properties into the <see cref="T:System.Runtime.Serialization.SerializationInfo" /> class for the given <see cref="T:System.Runtime.Serialization.StreamingContext" />.</summary><remarks>
+            <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ This method is present in the <xref:Microsoft.Data.SqlClient.Server.InvalidUdtException> class to make the class serializable.  
+  
+ ]]></format>
+            </remarks>
+        </member>
+        <member name="M:Microsoft.SqlServer.Server.InvalidUdtException.Create(System.Type,System.String)">
+            <param name="udtType">The <see cref="T:System.Type" /> object.</param><param name="resourceReason">The <see cref="T:System.String" /> object that represents a string in string resources. The default value is `SqlUdtReason_NoUdtAttribute` which looks up a localized string similar to "no UDT attribute".</param><summary>Create a new <see cref="T:Microsoft.Data.SqlClient.Server.InvalidUdtException" /> object.</summary><returns>A new <see cref="T:Microsoft.Data.SqlClient.Server.InvalidUdtException" /> object.</returns><remarks>
+            <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ This method Looks up a localized string similar to "&apos;{0}&apos; is an invalid user defined type, reason: {1}.", and fills it in order with `udtType` and `resourceReason` resolved value.
+
+> [!IMPORTANT]
+> This function exposes for backward compatibility, and should be used with default value for `resourceReason` parameter.
+  
+ ]]></format>
+            </remarks>
+        </member>
+        <member name="T:Microsoft.SqlServer.Server.SqlFacetAttribute">
+            <summary>Annotates the returned result of a user-defined type (UDT) with additional information that can be used in Transact-SQL.</summary><remarks>
+            <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute> may only be specified on non-void return values.  
+  
+ <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute> is used only to derive information about the return type, and is not intended to be a constraint specification on what can be stored in the type. Thus, if a field has a <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute> indicating its size to be 2 characters, then the SQL Server type of the field access expression is of size 2, but assignments into the field are not restricted by this facet.  
+  
+ The table below captures the matrix of valid values for the various properties for specific field types. In this table, "Y" indicates that the property is valid, and "N" indicates that the property is not valid.  
+  
+ The specified <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute> must be compatible with the field type. If the property is not valid, type registration will report an error if the user specifies a non-default value for the property. The maximum values for <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute.Precision%2A> and <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute.Scale%2A> properties are 38. For the <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute.MaxSize%2A> property, the value should be in the range of 1-8000 for binary and non-Unicode data, 1-4000 for Unicode data, or -1. All other values are not valid.  
+  
+|Type|IsFixedLength|MaxSize|Precision|Scale|IsNullable|  
+|----------|-------------------|-------------|---------------|-----------|----------------|  
+|<xref:System.Data.SqlTypes.SqlBoolean>|N|N|N|N|Y|  
+|<xref:System.Data.SqlTypes.SqlByte>|N|N|N|N|Y|  
+|<xref:System.Data.SqlTypes.SqlInt16>|N|N|N|N|Y|  
+|<xref:System.Data.SqlTypes.SqlInt32>|N|N|N|N|Y|  
+|<xref:System.Data.SqlTypes.SqlInt64>|N|N|N|N|Y|  
+|<xref:System.Data.SqlTypes.SqlSingle>|N|N|N|N|Y|  
+|<xref:System.Data.SqlTypes.SqlDouble>|N|N|N|N|Y|  
+|<xref:System.Data.SqlTypes.SqlDateTime>|N|N|N|N|Y|  
+|<xref:System.Data.SqlTypes.SqlMoney>|N|N|N|N|Y|  
+|<xref:System.Data.SqlTypes.SqlGuid>|N|N|N|N|Y|  
+|<xref:System.Data.SqlTypes.SqlDecimal>|N|N|Y|Y|Y|  
+|<xref:System.Data.SqlTypes.SqlString>|Y|Y|N|N|Y|  
+|<xref:System.Data.SqlTypes.SqlBinary>|Y|Y|N|N|Y|  
+|<xref:System.Data.SqlTypes.SqlXml>|N|N|N|N|Y|  
+|<xref:System.Data.SqlTypes.SqlBytes>|Y|Y|N|N|Y|  
+|<xref:System.Data.SqlTypes.SqlChars>|Y|Y|N|N|Y|  
+|Embedded UDTs|N|N|N|N|Y|  
+|<xref:System.String>|Y|Y|N|N|Y|  
+|Byte[]|Y|Y|N|N|Y|  
+|Char[]|Y|Y|N|N|Y|  
+|<xref:System.DateTime>|N|N|N|Y<sup>1</sup>|N|  
+|<xref:System.Decimal>|N|N|Y|Y|Y|  
+  
+ (1) Specifying the scale on a DateTime type will cause the value to be returned to Transact-SQL as a DateTime2 type with the specified scale.  
+  
+ ]]></format>
+            </remarks>
+        </member>
+        <member name="M:Microsoft.SqlServer.Server.SqlFacetAttribute.#ctor">
+            <summary>An optional attribute on a user-defined type (UDT) return type, used to annotate the returned result with additional information that can be used in Transact-SQL.</summary><remarks>To be added.</remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlFacetAttribute.IsFixedLength">
+            <summary>Indicates whether the return type of the user-defined type is of a fixed length.</summary><value>
+            <see langword="true" /> if the return type is of a fixed length; otherwise <see langword="false" />.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+## Remarks  
+This property must be set to `false` if the <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute.MaxSize%2A> property is set to 1.  
+
+The default value is `false`.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlFacetAttribute.MaxSize">
+            <summary>The maximum size, in logical units, of the underlying field type of the user-defined type.</summary><value>An <see cref="T:System.Int32" /> representing the maximum size, in logical units, of the underlying field type.</value><remarks>
+            <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Logical unit is bytes (with a maximum size of 8000) for the binary and non-Unicode data types, and the number of Unicode characters (with a maximum size of 4000) for the character field types.  
+  
+ The value -1 is reserved for large character and binary types.  
+  
+ The default value is 4000 for Unicode character types and 8000 for binary and non-Unicode types.  
+  
+ ]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlFacetAttribute.Precision">
+            <summary>The precision of the return type of the user-defined type.</summary><value>An <see cref="T:System.Int32" /> representing the precision of the return type.</value><remarks>
+            <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ The <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute.Precision%2A> property is valid only for numeric types. The <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute.Scale%2A> property must also be specified when setting the <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute.Precision%2A> property.  
+  
+ The maximum value of the <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute.Precision%2A> property is 38; the default value is 38.  
+  
+ ]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlFacetAttribute.Scale">
+            <summary>The scale of the return type of the user-defined type.</summary><value>An <see cref="T:System.Int32" /> representing the scale of the return type.</value><remarks>
+            <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ The <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute.Scale%2A> property is valid only for decimal types. The <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute.Precision%2A> property must also be specified when setting the <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute.Scale%2A> property.  
+  
+ The maximum value of the <xref:Microsoft.Data.SqlClient.Server.SqlFacetAttribute.Scale%2A> property is 38; the default value is 0.  
+  
+ ]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlFacetAttribute.IsNullable">
+            <summary>Indicates whether the return type of the user-defined type can be <see langword="null" />.</summary><value>
+            <see langword="true" /> if the return type of the user-defined type can be <see langword="null" />; otherwise <see langword="false" />.</value><remarks>
+            <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ The default value is `true`.  
+  
+ ]]></format>
+            </remarks>
+        </member>
+        <member name="T:Microsoft.SqlServer.Server.DataAccessKind">
+            <summary>Describes the type of access to user data for a user-defined method or function.</summary><remarks>
+            <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Describes the type of access to user data for a user-defined method or function.  
+  
+ This enumeration is used in <xref:Microsoft.Data.SqlClient.Server.SqlMethodAttribute> and <xref:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute> to indicate whether the method or function uses ADO.NET to connect back to the database using the "context connection."  
+  
+ Note that methods and functions are not allowed to make changes to the database, so the options for this enumeration are `None` (meaning no data-access performed by the method or function) and `Read` (meaning that the method or function perform read-only data-access operations, such as executing SELECT statements).  
+  
+ ]]></format>
+            </remarks>
+        </member>
+        <member name="F:Microsoft.SqlServer.Server.DataAccessKind.None">
+            <summary>The method or function does not access user data.</summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Server.DataAccessKind.Read">
+            <summary>The method or function reads user data.</summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Server.SystemDataAccessKind">
+            <summary>Describes the type of access to system data for a user-defined method or function.</summary><remarks>
+            <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Describes the type of access to system data for a user-defined method or function.  
+  
+ This enumeration is used in <xref:Microsoft.Data.SqlClient.Server.SqlMethodAttribute> and <xref:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute> to indicate what type of access to system data the method or function has.  
+  
+ Note that methods and functions are not allowed to make changes to the database, so the options for this enumeration are `None` (meaning no data-access performed by the method or function) and `Read` (meaning that the method or function performs read-only data-access operations, such as executing SELECT statements).  
+  
+ ]]></format>
+            </remarks>
+        </member>
+        <member name="F:Microsoft.SqlServer.Server.SystemDataAccessKind.None">
+            <summary>The method or function does not access system data.</summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Server.SystemDataAccessKind.Read">
+            <summary>The method or function reads system data.</summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Server.SqlFunctionAttribute">
+            <summary>Used to mark a method definition of a user-defined aggregate as a function in SQL Server. The properties on the attribute reflect the physical characteristics used when the type is registered with SQL Server.</summary><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Examples  
+The following example shows an aggregate function that returns a list of files in the specified directory path.  
+
+[!code-csharp[SqlFunctionAttribute Sample#1](~/../sqlclient/doc/samples/SqlFunctionAttribute.cs#1)]
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="M:Microsoft.SqlServer.Server.SqlFunctionAttribute.#ctor">
+            <summary>An optional attribute on a user-defined aggregate, used to indicate that the method should be registered in SQL Server as a function. Also used to set the <see cref="P:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute.DataAccess" />, <see cref="P:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute.FillRowMethodName" />, <see cref="P:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute.IsDeterministic" />, <see cref="P:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute.IsPrecise" />, <see cref="P:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute.Name" />, <see cref="P:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute.SystemDataAccess" />, and <see cref="P:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute.TableDefinition" /> properties of the function attribute.</summary><remarks>To be added.</remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlFunctionAttribute.IsDeterministic">
+            <summary>Indicates whether the user-defined function is deterministic.</summary><value>
+            <see langword="true" /> if the function is deterministic; otherwise <see langword="false" />.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+A user-defined function is said to be deterministic if it always produces the same output values given the same input values and the same database state.  
+
+The <xref:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute.IsDeterministic%2A> property is also useful for indexing the result of the function in the form of indexed computed columns and indexed views. If this property is not specified, the function is assumed to be non-deterministic.  
+
+Functions that access local data can be deterministic. The data access characteristic is captured separately by the <xref:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute.DataAccess%2A> and <xref:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute.SystemDataAccess%2A> properties.  
+
+Note that data access to remote servers (for example, using a <xref:Microsoft.Data.SqlClient.SqlConnection> to connect to another SQL Server instance) is available in user-defined functions. However, you must still honor the <xref:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute.IsDeterministic%2A> declaration. If the common language runtime (CLR) function is marked as deterministic, it should not cause side-effects in the remote server. While side-effects against the context connection are restricted, SQL Server will not enforce the restriction for side-effects over remote connections.  
+
+The default value of this attribute is `false`.  
+
+Do not mark a function as deterministic if the function does not always produce the same output values, given the same input values and the same database state. Marking a function as deterministic when the function is not truly deterministic can result in corrupted indexed views and computed columns.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlFunctionAttribute.DataAccess">
+            <summary>Indicates whether the function involves access to user data stored in the local instance of SQL Server.</summary><value>
+            <see cref="T:Microsoft.Data.SqlClient.Server.DataAccessKind" />.<see langword="None" />: Does not access data. <see cref="T:Microsoft.Data.SqlClient.Server.DataAccessKind" />.<see langword="Read" />: Only reads user data.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+The default is <xref:Microsoft.Data.SqlClient.Server.DataAccessKind.None>.<xref:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute.DataAccess%2A> is also required when connecting to remote servers if transactions integration is required (the default).  
+
+If a Transact-SQL query is executed from inside a table-valued function (TVF), the <xref:Microsoft.Data.SqlClient.Server.DataAccessKind.Read> property should be set.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlFunctionAttribute.SystemDataAccess">
+            <summary>Indicates whether the function requires access to data stored in the system catalogs or virtual system tables of SQL Server.</summary><value>
+            <see cref="T:Microsoft.Data.SqlClient.Server.DataAccessKind" />.<see langword="None" />: Does not access system data. <see cref="T:Microsoft.Data.SqlClient.Server.DataAccessKind" />.<see langword="Read" />: Only reads system data.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+The default is <xref:Microsoft.Data.SqlClient.Server.SystemDataAccessKind.None>.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlFunctionAttribute.IsPrecise">
+            <summary>Indicates whether the function involves imprecise computations, such as floating point operations.</summary><value>
+            <see langword="true" /> if the function involves precise computations; otherwise <see langword="false" />.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+Precision of a function is one of the properties used to determine if computed columns that use this function can be indexed.  
+
+The default value of this attribute is `false`.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlFunctionAttribute.Name">
+            <summary>The name under which the function should be registered in SQL Server.</summary><value>A <see cref="T:System.String" /> value representing the name under which the function should be registered.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+This attribute is used only by Microsoft Visual Studio to automatically register the specified method as a user-defined function. It is not used by SQL Server.  
+
+Thee following example specifies that the user-defined function is referenced using the name `sp_scalarFunc`.  
+
+## Examples  
+[!code-csharp[SqlFunction#10](~/../sqlclient/doc/samples/SqlFunction.cs#10)]
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlFunctionAttribute.TableDefinition">
+            <summary>A string that represents the table definition of the results, if the method is used as a table-valued function (TVF).</summary><value>A <see cref="T:System.String" /> value representing the table definition of the results.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+This attribute is used only by Microsoft Visual Studio to automatically register the specified method as a TVF. It is not used by SQL Server.  
+
+The following example specifies that the user-defined function is referenced using the name `sp_tableFunc`. The `TableDefinition` property has the value `letter nchar(1)`.  
+
+## Examples  
+[!code-csharp[SqlFunction#11](~/../sqlclient/doc/samples/SqlFunction.cs#11)]
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlFunctionAttribute.FillRowMethodName">
+            <summary>The name of a method in the same class which is used to fill a row of data in the table returned by the table-valued function.</summary><value>A <see cref="T:System.String" /> value representing the name of a method in the same class which is used to fill a row of data in the table returned by the table-valued function.</value>
+        </member>
+        <member name="T:Microsoft.SqlServer.Server.SqlMethodAttribute">
+            <summary>Indicates the determinism and data access properties of a method or property on a user-defined type (UDT). The properties on the attribute reflect the physical characteristics that are used when the type is registered with SQL Server.</summary><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+For a property, the <xref:Microsoft.Data.SqlClient.Server.SqlMethodAttribute> should be used on the setter or the getter directly.  
+
+<xref:Microsoft.Data.SqlClient.Server.SqlMethodAttribute> inherits from a <xref:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute>, so <xref:Microsoft.Data.SqlClient.Server.SqlMethodAttribute> inherits the `FillRowMethodName` and `TableDefinition` fields from <xref:Microsoft.Data.SqlClient.Server.SqlFunctionAttribute>. Note that it is not possible to write a table-valued method, although the names of these fields might suggest that it is possible.  
+
+## Examples  
+The following example shows a UDT method that is attributed to indicate that the method will not be invoked on null instances of the type, that the method will not change the state of the type, and that the method will not be called when `null` parameters are supplied to the method invocation.  
+
+[!code-csharp[SqlMethod Sample#1](~/../sqlclient/doc/samples/SqlMethod.cs#1)]
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="M:Microsoft.SqlServer.Server.SqlMethodAttribute.#ctor">
+            <summary>An attribute on a user-defined type (UDT), used to indicate the determinism and data access properties of a method or a property on a UDT.</summary><remarks>To be added.</remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlMethodAttribute.OnNullCall">
+            <summary>Indicates whether the method on a user-defined type (UDT) is called when <see langword="null" /> input arguments are specified in the method invocation.</summary><value> <see langword="true" /> if the method is called when <see langword="null" /> input arguments are specified in the method invocation; <see langword="false" /> if the method returns a <see langword="null" /> value when any of its input parameters are <see langword="null" />. If the method cannot be invoked (because of an attribute on the method), the SQL Server <see langword="DbNull" /> is returned.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+The default value of the <xref:Microsoft.Data.SqlClient.Server.SqlMethodAttribute.OnNullCall%2A> property is `true`.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlMethodAttribute.IsMutator">
+            <summary>Indicates whether a method on a user-defined type (UDT) is a mutator.</summary><value> <see langword="true" /> if the method is a mutator; otherwise <see langword="false" />.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+If the <xref:Microsoft.Data.SqlClient.Server.SqlMethodAttribute.IsMutator%2A> property is set to `true` and the return type of the method is `void`, SQL Server marks the method as a mutator. A mutator method is one that causes a state change in the UDT instance. Mutator methods can be called in assignment statements or data modification statements, but cannot be used in queries. If a method is marked as a mutator but does not return void, then CREATE TYPE does not fail with an error. Even though a returned value other than `void` does not raise an error, the returned value is not accessible and cannot be used.  
+
+The default value of the <xref:Microsoft.Data.SqlClient.Server.SqlMethodAttribute.IsMutator%2A> property is `false`.  
+
+A property can be a mutator if <xref:Microsoft.Data.SqlClient.Server.SqlMethodAttribute> is used on the setter and <xref:Microsoft.Data.SqlClient.Server.SqlMethodAttribute.IsMutator%2A> is set to `true`. However, a property setter is implicitly treated as a mutator, so it is not necessary to set the <xref:Microsoft.Data.SqlClient.Server.SqlMethodAttribute.IsMutator%2A> property of the <xref:Microsoft.Data.SqlClient.Server.SqlMethodAttribute> to `true`.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlMethodAttribute.InvokeIfReceiverIsNull">
+            <summary>Indicates whether SQL Server should invoke the method on null instances.</summary><value> <see langword="true" /> if SQL Server should invoke the method on null instances; otherwise, <see langword="false" />. If the method cannot be invoked (because of an attribute on the method), the SQL Server <see langword="DbNull" /> is returned.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+
+The default value of the `InvokeIfReceiverIsNull` property is `false`. That is, the method is not invoked on a null instance. If `InvokeIfReceiverIsNull` is `true`, the return value of the method depends upon its type. If the return type of the method is nullable, the distinguished null value for the type is returned. If the return type is non-nullable, the default CLR value for the type is returned. The default value for reference types is `null`. The default value for a value type is the value that is returned when you call the parameterless constructor for the type.
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="T:Microsoft.SqlServer.Server.SqlUserDefinedAggregateAttribute">
+            <summary>Indicates that the type should be registered as a user-defined aggregate. The properties on the attribute reflect the physical attributes used when the type is registered with SQL Server. This class cannot be inherited.</summary><remarks>
+                <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+SQL Server creates a user-defined aggregate that is bound to the class definition that has the <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedAggregateAttribute> custom attribute. Every user-defined aggregate must be annotated with this attribute.  
+
+See "CLR User-Defined Aggregates" in SQL Server 2005 Books Online for more information on user-defined aggregates and examples.  
+
+## Examples  
+The following example shows the <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedAggregateAttribute> attribute for a user-defined aggregate.  The aggregate uses custom serialization, has a maximum size of 8000 bytes when serialized, and is invariant to nulls, duplicates, and order.  
+
+[!code-csharp[SqlUserDefinedAggregate Sample#1](~/../sqlclient/doc/samples/SqlUserDefinedAggregate.cs#1)]
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="F:Microsoft.SqlServer.Server.SqlUserDefinedAggregateAttribute.MaxByteSizeValue">
+            <summary>The maximum size, in bytes, required to store the state of this aggregate instance during computation.</summary><remarks>
+                <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+An <xref:System.Int32> value representing the maximum size of the aggregate instance.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="M:Microsoft.SqlServer.Server.SqlUserDefinedAggregateAttribute.#ctor(Microsoft.SqlServer.Server.Format)">
+            <param name="format">One of the <see cref="T:Microsoft.Data.SqlClient.Server.Format" /> values representing the serialization format of the aggregate.</param><summary>A required attribute on a user-defined aggregate, used to indicate that the given type is a user-defined aggregate and the storage format of the user-defined aggregate.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlUserDefinedAggregateAttribute.MaxByteSize">
+            <summary>The maximum size, in bytes, of the aggregate instance.</summary><value>An <see cref="T:System.Int32" /> value representing the maximum size of the aggregate instance.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+This property does not have to be specified for Native format serialization.  
+
+You must specify the <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedAggregateAttribute.MaxByteSize%2A> property with the UserDefined serialization <xref:Microsoft.Data.SqlClient.Server.Format>.  
+
+The maximum allowed value for this property is specified by the <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedAggregateAttribute.MaxByteSizeValue> field.  
+
+The maximum size allowed is 2 gigabytes (GB). You can specify a number from 1 to 8000 bytes, or -1 to represent a value larger than 8000 bytes, up to 2 gigabytes.  
+
+For an aggregate with user-defined serialization specified, <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedAggregateAttribute.MaxByteSize%2A> refers to the total size of the serialized data. Consider an aggregate serializing a string of 10 characters (<xref:System.Char>). When the string is serialized using a <xref:System.IO.BinaryWriter>, the total size of the serialized string is 22 bytes: 2 bytes per Unicode UTF-16 character, multiplied by the maximum number of characters, plus 2 control bytes of overhead incurred from serializing a binary stream. So, when determining the value of <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedAggregateAttribute.MaxByteSize%2A>, the total size of the serialized data must be considered: the size of the data serialized in binary form plus the overhead incurred by serialization.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlUserDefinedAggregateAttribute.IsInvariantToDuplicates">
+            <summary>Indicates whether the aggregate is invariant to duplicates.</summary><value> <see langword="true" /> if the aggregate is invariant to duplicates; otherwise <see langword="false" />.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+                    
+## Remarks  
+Used by the query processor, this property is `true` if the aggregate is invariant to duplicates. That is, the aggregate of S, {X} is the same as aggregate of S when X is already in S. For example, aggregate functions such as MIN and MAX satisfy this property, while SUM does not.  
+
+Incorrectly setting this property can result in incorrect query results. This property is not an optimizer hint; it affects both the plan selected and the results returned by the query.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlUserDefinedAggregateAttribute.IsInvariantToNulls">
+            <summary>Indicates whether the aggregate is invariant to nulls.</summary><value> <see langword="true" /> if the aggregate is invariant to nulls; otherwise <see langword="false" />.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+Used by the query processor, this property is `true` if the aggregate is invariant to nulls. That is, the aggregate of S, {NULL} is the same as aggregate of S. For example, aggregate functions such as MIN and MAX satisfy this property, while COUNT(*) does not.  
+
+Incorrectly setting this property can result in incorrect query results. This property is not an optimizer hint; it affects the plan selected and the results returned by the query.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlUserDefinedAggregateAttribute.IsInvariantToOrder">
+            <summary>Indicates whether the aggregate is invariant to order.</summary><value> <see langword="true" /> if the aggregate is invariant to order; otherwise <see langword="false" />.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+Reserved for future use. This property is not currently used by the query processor: order is currently not guaranteed.  
+
+Incorrectly setting this property can result in incorrect query results. This property is not an optimizer hint; it affects the plan selected and the results returned by the query.  
+
+The default value for this property is `false`.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlUserDefinedAggregateAttribute.IsNullIfEmpty">
+            <summary>Indicates whether the aggregate returns <see langword="null" /> if no values have been accumulated.</summary><value> <see langword="true" /> if the aggregate returns <see langword="null" /> if no values have been accumulated; otherwise <see langword="false" />.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+Used by the query processor, this property is `true` if the aggregate returns `null` if no values have been accumulated.  
+
+Incorrectly setting this property can result in incorrect query results. This property is not an optimizer hint; it affects the plan selected and the results returned by the query.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlUserDefinedAggregateAttribute.Format">
+            <summary>The serialization format as a <see cref="T:Microsoft.Data.SqlClient.Server.Format" />.</summary><value>A <see cref="T:Microsoft.Data.SqlClient.Server.Format" /> representing the serialization format.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Examples  
+[!code-csharp[SqlUserDefinedAggregate1#6](~/../sqlclient/doc/samples/SqlUserDefinedAggregate1.cs#6)]
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlUserDefinedAggregateAttribute.Name">
+            <summary>The name of the aggregate.</summary><value>A <see cref="T:System.String" /> value representing the name of the aggregate.</value>
+        </member>
+        <member name="T:Microsoft.SqlServer.Server.Format">
+            <summary>Used by <see cref="T:Microsoft.Data.SqlClient.Server.SqlUserDefinedTypeAttribute" /> and <see cref="T:Microsoft.Data.SqlClient.Server.SqlUserDefinedAggregateAttribute" /> to indicate the serialization format of a user-defined type (UDT) or aggregate.</summary><remarks>
+            <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+This enumeration is used by <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedTypeAttribute> and <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedAggregateAttribute> to indicate the serialization format of a user-defined type (UDT) or aggregate. Use of the `Native` and `UserDefined` enumeration members has special requirements.   
+- `Format.Native`
+   The requirements for the `Format.Native` format are:  
+  
+   - The <xref:System.Runtime.InteropServices.StructLayoutAttribute> with a <xref:System.Runtime.InteropServices.StructLayoutAttribute.Value> property value of <xref:System.Runtime.InteropServices.LayoutKind.Sequential?displayProperty=nameWithType> must be applied to the aggregate or UDT if it is defined in a class and not a structure. This controls the physical layout of the data fields and is used to force the members to be laid out sequentially in the order they appear. SQL Server uses this attribute to determine the field order for UDTs with multiple fields.
+  
+   - The type must contain at least one member (serialized values cannot be zero bytes in size).  
+  
+   - All the fields of the aggregate must be *blittable*; that is, they must have a common representation in both managed and unmanaged memory and not require special handling by the interop marshaler.  
+  
+   - All the fields of the UDT should be of one of the following types that can be serialized: `bool`, `byte`, `sbyte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`, `float`, `double`, <xref:System.Data.SqlTypes.SqlByte>, <xref:System.Data.SqlTypes.SqlInt16>, <xref:System.Data.SqlTypes.SqlInt32>, <xref:System.Data.SqlTypes.SqlInt64>, <xref:System.Data.SqlTypes.SqlDateTime>, <xref:System.Data.SqlTypes.SqlSingle>, <xref:System.Data.SqlTypes.SqlDouble>, <xref:System.Data.SqlTypes.SqlMoney>, or other value types defined by the user that contain fields of one of these types.  
+   - The aggregate must not specify a value for `MaxByteSize`.  
+  
+   - The aggregate must not have any [NonSerialized] fields.  
+  
+   - Fields must not be marked as an explicit layout (with a <xref:System.Runtime.InteropServices.StructLayoutAttribute.Value?displayProperty=nameWithType> of <xref:System.Runtime.InteropServices.LayoutKind.Explicit?displayProperty=nameWithType>).  
+- `Format.UserDefined`
+   The requirements for the `Format.UserDefined` format are:
+   - The aggregate must specify a value for `MaxByteSize`.  
+  
+   - Specify the <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedTypeAttribute.IsByteOrdered%2A?displayProperty=nameWithType> attribute property. The default value is `false`.  
+  
+   - If you omit any field in the <xref:Microsoft.Data.SqlClient.Server.IBinarySerialize.Read%2A?displayProperty=nameWithType> or <xref:Microsoft.Data.SqlClient.Server.IBinarySerialize.Write%2A?displayProperty=nameWithType> methods, the state of that field is not serialized.  
+## Examples  
+The following example shows the `UserDefinedType` attribute of the Point UDT.  The UDT is byte-ordered, is named "Point", has a validation method named "ValidatePoint", and uses the native serialization format.  
+  
+[!code-csharp[SqlUserDefinedType Example#1](~/../sqlclient/doc/samples/SqlUserDefinedType.cs#1)]
+  
+ ]]></format>
+            </remarks>
+        </member>
+        <member name="F:Microsoft.SqlServer.Server.Format.Unknown">
+            <summary>The serialization format is unknown.</summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Server.Format.Native">
+            <summary>This serialization format uses a very simple algorithm that enables SQL Server to store an efficient representation of the UDT on disk. Types marked for <see langword="Native" /> serialization can only have value types (structs in Microsoft Visual C# and structures in Microsoft Visual Basic .NET) as members. Members of reference types (such as classes in Visual C# and Visual Basic), either user-defined or those existing in .NET class libraries (such as <see cref="T:System.String" />), are not supported.</summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Server.Format.UserDefined">
+            <summary>This serialization format gives the developer full control over the binary format through the <see cref="M:Microsoft.Data.SqlClient.Server.IBinarySerialize.Write(System.IO.BinaryWriter)" /> and <see cref="M:Microsoft.Data.SqlClient.Server.IBinarySerialize.Read(System.IO.BinaryReader)" /> methods.</summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Server.SqlUserDefinedTypeAttribute">
+            <summary>Used to mark a type definition in an assembly as a user-defined type (UDT) in SQL Server. The properties on the attribute reflect the physical characteristics used when the type is registered with SQL Server. This class cannot be inherited.</summary><remarks>
+                <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+SQL Server creates a user-defined type that is bound to the type definition that has the <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedTypeAttribute> custom attribute. Every UDT must be annotated with this attribute. See [CLR User-Defined Types](https://go.microsoft.com/fwlink/?LinkId=128028) for more information about UDTs, including an example of a UDT.  
+
+## Examples  
+The following example shows the `UserDefinedType` attribute of the Point UDT.  The UDT is byte-ordered, is named "Point", has a validation method named "ValidatePoint", and uses the native serialization format.  
+
+[!code-csharp[SqlUserDefinedType Example#1](~/../sqlclient/doc/samples/SqlUserDefinedType.cs#1)]
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="M:Microsoft.SqlServer.Server.SqlUserDefinedTypeAttribute.#ctor(Microsoft.SqlServer.Server.Format)">
+            <param name="format">One of the <see cref="T:Microsoft.Data.SqlClient.Server.Format" /> values representing the serialization format of the type.</param><summary>A required attribute on a user-defined type (UDT), used to confirm that the given type is a UDT and to indicate the storage format of the UDT.</summary><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+The following example specifies that the `Format` of the user-defined type is `SerializedDataWithMetadata` and the `MaxByteSize` is 8000 bytes.  
+
+## Examples  
+[!code-csharp[SqlUserDefinedType1#12](~/../sqlclient/doc/samples/SqlUserDefinedType1.cs#12)]
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlUserDefinedTypeAttribute.MaxByteSize">
+            <summary>The maximum size of the instance, in bytes.</summary><value>An <see cref="T:System.Int32" /> value representing the maximum size of the instance.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+You must specify the <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedTypeAttribute.MaxByteSize%2A> property with the `UserDefined` serialization <xref:Microsoft.Data.SqlClient.Server.Format>.  
+
+When connecting to SQL Server 2005 or earlier, <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedTypeAttribute.MaxByteSize%2A> must be between 1 and 8000.  
+
+When connecting to SQL Server 2008 or later, set <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedTypeAttribute.MaxByteSize%2A> between 1 and 8000, for a type whose instances are always 8,000 bytes or less. For types that can have instances larger than 8000, specify -1.  
+
+For a UDT with user-defined serialization specified, <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedTypeAttribute.MaxByteSize%2A> refers to the total size of the UDT in its serialized form as defined by the user. Consider a UDT with a property of a string of 10 characters (<xref:System.Char>). When the UDT is serialized using a <xref:System.IO.BinaryWriter>, the total size of the serialized string is 22 bytes: 2 bytes per Unicode UTF-16 character, multiplied by the maximum number of characters, plus 2 control bytes of overhead incurred from serializing a binary stream. So, when determining the value of <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedTypeAttribute.MaxByteSize%2A>, the total size of the serialized UDT must be considered: the size of the data serialized in binary form plus the overhead incurred by serialization.  
+
+This property should not be used with `Native` serialization <xref:Microsoft.Data.SqlClient.Server.Format>.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlUserDefinedTypeAttribute.IsFixedLength">
+            <summary>Indicates whether all instances of this user-defined type are the same length.</summary><value>
+                <see langword="true" /> if all instances of this type are the same length; otherwise <see langword="false" />.
+            </value><remarks>
+                <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+If set to `true`, all instances of UDTs corresponding to this common language runtime (CLR) type must have a length in bytes exactly equal to <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedTypeAttribute.MaxByteSize%2A>. This attribute is only relevant for UDTs with `UserDefined` serialization <xref:Microsoft.Data.SqlClient.Server.Format>.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlUserDefinedTypeAttribute.IsByteOrdered">
+            <summary>Indicates whether the user-defined type is byte ordered.</summary><value>
+                <see langword="true" /> if the user-defined type is byte ordered; otherwise <see langword="false" /> .</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+When set to `true`, the <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedTypeAttribute.IsByteOrdered%2A> property in effect guarantees that the serialized binary data can be used for semantic ordering of the information. Thus, each instance of a byte-ordered UDT object can only have one serialized representation. When a comparison operation is performed in SQL Server on the serialized bytes, its results should be the same as if the same comparison operation had taken place in managed code.  
+
+The following features are supported when <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedTypeAttribute.IsByteOrdered%2A> is set to `true`:  
+
+-   The ability to create indexes on columns of this type.  
+
+-   The ability to create primary and foreign keys as well as CHECK and UNIQUE constraints on columns of this type.  
+
+-   The ability to use Transact-SQL ORDER BY, GROUP BY, and PARTITION BY clauses. In these cases, the binary representation of the type is used to determine the order.  
+
+-   The ability to use comparison operators in Transact-SQL statements.  
+
+-   The ability to persist computed columns of this type.  
+
+Note that both the `Native` and `UserDefined` serialization formats support the following comparison operators when <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedTypeAttribute.IsByteOrdered%2A> is set to `true`:  
+
+-   Equal to (=)  
+
+-   Not equal to (!=)  
+
+-   Greater than (>)  
+
+-   Less than (\<)  
+
+-   Greater than or equal to (>=)  
+
+-   Less than or equal to (<=)  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlUserDefinedTypeAttribute.Format">
+            <summary>The serialization format as a <see cref="T:Microsoft.Data.SqlClient.Server.Format" /> .</summary><value>A <see cref="T:Microsoft.Data.SqlClient.Server.Format" /> value representing the serialization format.</value>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlUserDefinedTypeAttribute.ValidationMethodName">
+            <summary>The name of the method used to validate instances of the user-defined type.</summary><value>A <see cref="T:System.String" /> representing the name of the method used to validate instances of the user-defined type.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+The method specified by this attribute validates instances of the UDT when the UDT has been deserialized from a binary value that is not trusted.  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.SqlUserDefinedTypeAttribute.Name">
+            <summary>The SQL Server name of the user-defined type.</summary><value>A <see cref="T:System.String" /> value representing the SQL Server name of the user-defined type.</value><remarks>
+                <format type="text/markdown"><![CDATA[  
+
+## Remarks  
+The <xref:Microsoft.Data.SqlClient.Server.SqlUserDefinedTypeAttribute.Name%2A> property is not used within SQL Server, but is used by the Microsoft Visual Studio .NET Integrated Development Environment (IDE).  
+
+]]></format>
+            </remarks>
+        </member>
+        <member name="T:Microsoft.SqlServer.Server.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.Strings.ADP_InvalidEnumerationValue">
+            <summary>
+              Looks up a localized string similar to The {0} enumeration value, {1}, is invalid..
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.Strings.ADP_NotSupportedEnumerationValue">
+            <summary>
+              Looks up a localized string similar to The {0} enumeration value, {1}, is not supported by the {2} method..
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.Strings.SqlUdt_InvalidUdtMessage">
+            <summary>
+              Looks up a localized string similar to &apos;{0}&apos; is an invalid user defined type, reason: {1}..
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.Strings.SQLUDT_MaxByteSizeValue">
+            <summary>
+              Looks up a localized string similar to range: 0-8000.
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Server.Strings.SqlUdtReason_NoUdtAttribute">
+            <summary>
+              Looks up a localized string similar to no UDT attribute.
+            </summary>
+        </member>
+    </members>
+</doc>

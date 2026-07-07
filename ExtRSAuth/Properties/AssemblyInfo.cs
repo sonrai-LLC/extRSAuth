@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("sonrai LLC")]
 [assembly: AssemblyProduct("MSPullRequest")]
-[assembly: AssemblyCopyright("2025")]
+[assembly: AssemblyCopyright("2026")]
 [assembly: AssemblyTrademark("MIT")]
 [assembly: AssemblyCulture("")]
 

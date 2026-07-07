@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Sonrai.ExtRSAuth
 {
-   public class Encryption
-   {
+    public class Encryption
+    {
         public static string Encrypt(string clearText, string enc_key)
         {
             var cipherText = "";
@@ -27,6 +27,7 @@ namespace Sonrai.ExtRSAuth
                     cipherText = Convert.ToBase64String(ms.ToArray());
                 }
             }
+
             return cipherText;
         }
 
@@ -35,28 +36,21 @@ namespace Sonrai.ExtRSAuth
             var clearText = "";
             cipherText = cipherText.Replace(" ", "+");
             byte[] cipherBytes = Convert.FromBase64String(cipherText);
-            try
+            using (Aes encryptor = Aes.Create())
             {
-                using (Aes encryptor = Aes.Create())
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(enc_key, new byte[14], 1000, HashAlgorithmName.SHA256);
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (MemoryStream ms = new MemoryStream())
                 {
-                    Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(enc_key, new byte[14], 1000, HashAlgorithmName.SHA256);
-                    encryptor.Key = pdb.GetBytes(32);
-                    encryptor.IV = pdb.GetBytes(16);
-                    using (MemoryStream ms = new MemoryStream())
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
                     {
-                        using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
-                        {
-                            cs.Write(cipherBytes, 0, cipherBytes.Length);
-                            cs.Close();
-                        }
-
-                        clearText = Encoding.Unicode.GetString(ms.ToArray());
+                        cs.Write(cipherBytes, 0, cipherBytes.Length);
+                        cs.Close();
                     }
+
+                    clearText = Encoding.Unicode.GetString(ms.ToArray());
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
 
             return clearText;

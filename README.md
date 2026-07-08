@@ -13,7 +13,7 @@ This Custom Auth assembly has been tested with (1) several .NET Framework 4.8 an
 This [walkthrough](https://www.youtube.com/watch?v=8E-ESx3kSXc) provides a step-by-step guide to implementation of extRSAuth. Or for the TL;DR; there is [this short screen capture](https://www.youtube.com/watch?v=0NmlrADXvZo) demonstrating how extRSAuth works.
 
 # Requirements
-This plug-in has been tested to work with Reporting Services 2022 v16.0.9276.19198 and Power BI Reporting Services v1.23.9274.14406 running on SQL Server 2022 and SQL Server 2025.
+This plug-in has been tested to work with Reporting Services 2022 v16.0 and Power BI Reporting Services v1.23 running on SQL Server 2022 and SQL Server 2025.
 
 This package includes the following components:
 - ExtRSAuth.dll

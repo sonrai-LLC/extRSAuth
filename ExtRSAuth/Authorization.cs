@@ -21,16 +21,15 @@
 ===========================================================================*/
 #endregion
 
+using Microsoft.ReportingServices.Interfaces;
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Microsoft.ReportingServices.Interfaces;
-using System.Xml;
 using System.Web;
-using System.Diagnostics.Eventing.Reader;
+using System.Xml;
 
 namespace Sonrai.ExtRSAuth
 {
